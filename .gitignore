@@ -2,3 +2,12 @@
 /shelf/
 /.idea/workspace.xml
 /.idea/
+/out/
+# IntelliJ
+ Maven.idea/
+target/
+
+# Build
+*.class
+*.iml
+
