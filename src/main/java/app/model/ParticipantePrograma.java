@@ -16,11 +16,11 @@ public abstract class ParticipantePrograma {
     @Enumerated(EnumType.STRING)
     private NivelSenioridade nivelSenioridade;
 
-    @ElementCollection(targetClass = Skill.class) //Essa anotação permite mapear a lista de enums sem criar uma entidade Skill
+    @ElementCollection(targetClass = Skill.class) //Essa anotação permite mapear a lista de enums sem precisar criar uma entidade Skill, o Hibernate cria uma tabela auxiliar automaticamente
     @Enumerated(EnumType.STRING)
     private List<Skill> skills;
 
-    private Double valorHora;
+    private Double valorHora; //Valor hora é o custo por hora do participante, usado para calcular o custo total do programa
 
     public ParticipantePrograma() {}
 
@@ -31,7 +31,7 @@ public abstract class ParticipantePrograma {
         this.valorHora = valorHora;
     }
 
-    public abstract Double calcularCustoOportunidadeMensal();
+    public abstract Double calcularCustoOportunidadeMensal(); //AC1: Calcula o valor financeiro das horas investidas no programa com base no nível do funcionário.
 
     public Long getId() {
         return id;
@@ -72,4 +72,5 @@ public abstract class ParticipantePrograma {
     public void setValorHora(Double valorHora) {
         this.valorHora = valorHora;
     }
+
 }
