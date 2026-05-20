@@ -1,5 +1,13 @@
-# Default ignored files
-/shelf/
-/.idea/workspace.xml
-/.idea/
+# IntelliJ
+.idea/
+*.iml
+
+# Build (Maven)
+target/
+
+# Java
+*.class
+
+# Outros
 /out/
+``
