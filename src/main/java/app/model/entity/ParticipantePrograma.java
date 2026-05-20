@@ -1,7 +1,10 @@
-package app.model;
+package app.model.entity;
 
+import app.model.enums.NivelSenioridade;
+import app.model.enums.Skill;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,7 +21,7 @@ public abstract class ParticipantePrograma {
 
     @ElementCollection(targetClass = Skill.class) //Essa anotação permite mapear a lista de enums sem precisar criar uma entidade Skill, o Hibernate cria uma tabela auxiliar automaticamente
     @Enumerated(EnumType.STRING)
-    private List<Skill> skills;
+    private List<Skill> skills = new ArrayList<>();
 
     private Double valorHora; //Valor hora é o custo por hora do participante, usado para calcular o custo total do programa
 
@@ -61,8 +64,8 @@ public abstract class ParticipantePrograma {
         return skills;
     }
 
-    public void setSkills(List<Skill> skills) {
-        this.skills = skills;
+    public void adicionarSkill(Skill skill){
+        this.skills.add(skill);
     }
 
     public Double getValorHora() {
@@ -73,4 +76,14 @@ public abstract class ParticipantePrograma {
         this.valorHora = valorHora;
     }
 
+    @Override
+    public String toString() {
+        return "ParticipantePrograma{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", nivelSenioridade=" + nivelSenioridade +
+                ", skills=" + skills +
+                ", valorHora=" + valorHora +
+                '}';
+    }
 }
