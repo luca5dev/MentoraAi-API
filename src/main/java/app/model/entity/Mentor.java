@@ -1,5 +1,7 @@
-package app.model;
+package app.model.entity;
 
+import app.model.enums.NivelSenioridade;
+import app.model.enums.Skill;
 import jakarta.persistence.Entity;
 
 import java.util.List;
@@ -45,5 +47,7 @@ public class Mentor extends ParticipantePrograma {
     public void setMaximoMentorados(Integer maximoMentorados) {
         this.maximoMentorados = maximoMentorados;
     }
+
+
 }
 
