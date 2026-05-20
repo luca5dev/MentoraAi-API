@@ -1,7 +1,7 @@
 package app.model.entity;
 
-import app.model.enums.NivelSenioridade;
-import app.model.enums.Skill;
+import app.model.NivelSenioridade;
+import app.model.Skill;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -12,8 +12,7 @@ import java.util.List;
 @Entity
 public class Mentorado extends ParticipantePrograma {
 
-    private Integer horasMentoriaMensal;
-    //Será usada para calcular o custo de oportunidade do mentorado, multiplicando pelo valor hora, e também para validar a regra de negócio de trava de carga horária
+    private Integer horasMentoriaMensal; //Será usada para calcular o custo de oportunidade do mentorado, multiplicando pelo valor hora, e também para validar a regra de negócio de trava de carga horária
 
     @ElementCollection(targetClass = Skill.class)
     @Enumerated(EnumType.STRING)
