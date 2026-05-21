@@ -8,12 +8,12 @@
         <class>com.jvmhub.tutorial.entity.AppUser</class>
         <properties>
 
-            <property name="hibernate.connection.url" value="jdbc:postgresql://localhost/mentoraAi"/>
-            <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
-            <property name="hibernate.connection.username" value="postgres"/>
-            <property name="hibernate.connection.password" value="root"/>
+            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://brad3-start.mysql.database.azure.com/mentoraai" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
+            <property name="jakarta.persistence.jdbc.user" value="system_mentoraai" />
+            <property name="jakarta.persistence.jdbc.password" value="SystemMentor@Ai" />
 
-            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
         </properties>
     </persistence-unit>
