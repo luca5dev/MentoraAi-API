@@ -1,5 +1,3 @@
-package app;
-
 import app.model.entity.Mentor;
 import app.model.entity.ParticipantePrograma;
 import app.service.useCase.AdicionarSkillUseCase;

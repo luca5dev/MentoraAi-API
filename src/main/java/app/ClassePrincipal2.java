@@ -1,4 +1,4 @@
-package main.java.app;
+package app;
 
 import app.model.entity.Mentor;
 import app.model.entity.ParticipantePrograma;

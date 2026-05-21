@@ -1,9 +1,10 @@
 package app.model.entity;
 
-import app.model.NivelSenioridade;
-import app.model.Skill;
+import app.model.enums.NivelSenioridade;
+import app.model.enums.Skill;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,20 +21,22 @@ public abstract class ParticipantePrograma {
 
     @ElementCollection(targetClass = Skill.class) //Essa anotação permite mapear a lista de enums sem precisar criar uma entidade Skill, o Hibernate cria uma tabela auxiliar automaticamente
     @Enumerated(EnumType.STRING)
-    private List<Skill> skills;
+    private List<Skill> skills = new ArrayList<>();
 
     private Double valorHora; //Valor hora é o custo por hora do participante, usado para calcular o custo total do programa
+    protected Double horasDedicadas;
 
     public ParticipantePrograma() {}
 
-    public ParticipantePrograma(String nome, NivelSenioridade nivelSenioridade, List<Skill> skills, Double valorHora) {
+    public ParticipantePrograma(String nome, NivelSenioridade nivelSenioridade, List<Skill> skills, Double valorHora, Double horasDedicadas) {
         this.nome = nome;
         this.nivelSenioridade = nivelSenioridade;
         this.skills = skills;
         this.valorHora = valorHora;
+        this.horasDedicadas = horasDedicadas;
     }
 
-    public abstract Double calcularCustoOportunidadeMensal(); //AC1: Calcula o valor financeiro das horas investidas no programa com base no nível do funcionário.
+    public abstract Double calcularCustoOportunidadeMensal();
 
     public Long getId() {
         return id;
@@ -63,8 +66,8 @@ public abstract class ParticipantePrograma {
         return skills;
     }
 
-    public void setSkills(List<Skill> skills) {
-        this.skills = skills;
+    public void adicionarSkill(Skill skill){
+        this.skills.add(skill);
     }
 
     public Double getValorHora() {
@@ -75,4 +78,22 @@ public abstract class ParticipantePrograma {
         this.valorHora = valorHora;
     }
 
+    public Double getHorasDedicadas() {
+        return horasDedicadas;
+    }
+
+    public void setHorasDedicadas(Double horasDedicadas) {
+        this.horasDedicadas = horasDedicadas;
+    }
+
+    @Override
+    public String toString() {
+        return "ParticipantePrograma{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", nivelSenioridade=" + nivelSenioridade +
+                ", skills=" + skills +
+                ", valorHora=" + valorHora +
+                '}';
+    }
 }

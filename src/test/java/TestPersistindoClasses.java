@@ -1,5 +1,3 @@
-package app;
-
 import app.dao.Persistence;
 import app.model.entity.Mentor;
 import app.model.entity.ParticipantePrograma;
