@@ -3,9 +3,18 @@ package app.dao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static jakarta.persistence.Persistence.createEntityManagerFactory;
+
 public class Persistence {
-    EntityManagerFactory emf = jakarta.persistence.Persistence.createEntityManagerFactory("entityManager");
-    EntityManager em = emf.createEntityManager();
+    private EntityManagerFactory emf = createEntityManagerFactory("entityManager");
+    private EntityManager em = emf.createEntityManager();
+
+    public Persistence() {
+
+    }
 
     public void persist(Object entidade){
         em.getTransaction().begin();
