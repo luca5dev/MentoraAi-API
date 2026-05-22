@@ -1,7 +1,7 @@
 package app.model.entity;
 
-import app.model.NivelSenioridade;
-import app.model.Skill;
+import app.model.enums.NivelSenioridade;
+import app.model.enums.Skill;
 import jakarta.persistence.Entity;
 
 import java.util.List;

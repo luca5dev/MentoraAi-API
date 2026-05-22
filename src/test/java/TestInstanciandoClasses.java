@@ -24,7 +24,7 @@ public class TestInstanciandoClasses {
         Skill skill2= buscaSkillUseCase.buscaSkill(2);
         skillsParticipante.addAll(Arrays.asList(skill, skill2));
 
-        ParticipantePrograma p = new Mentor("Marcos", nivel, skillsParticipante, 20.00, 20, 2);
+        ParticipantePrograma p = new Mentor("Marcos", nivel, skillsParticipante, 20.0, 2.0);
 
         p.toString();
     }
