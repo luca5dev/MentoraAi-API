@@ -1,7 +1,9 @@
 package app.model.entity;
 
+import app.model.enums.Skill;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,14 +21,16 @@ public class TrilhaMentoria {
 
     @OneToMany
     private List<Mentorado> mentorados; //Uma trilha possui vários mentorados
+    private List<Skill> skillsDaTrilha;
 
-    private TrilhaMentoria() {}
+    public TrilhaMentoria() {}
 
-    private TrilhaMentoria(String nomeDaTrilha, Integer duracaoMeses, Mentor mentor, List<Mentorado> mentorados) {
+    public TrilhaMentoria(String nomeDaTrilha, Integer duracaoMeses, Mentor mentor, List<Mentorado> mentorados, List<Skill> skillsDaTrilha) {
         this.nomeDaTrilha = nomeDaTrilha;
         this.duracaoMeses = duracaoMeses;
         this.mentor = mentor;
         this.mentorados = mentorados;
+        this.skillsDaTrilha = skillsDaTrilha;
     }
 
     public Long getId() {
@@ -63,5 +67,13 @@ public class TrilhaMentoria {
 
     public void setMentorados(List<Mentorado> mentorados) {
         this.mentorados = mentorados;
+    }
+
+    public List<Skill> getSkillsDaTrilha() {
+        return skillsDaTrilha;
+    }
+
+    public void setSkillsDaTrilha(List<Skill> skillsDaTrilha) {
+        this.skillsDaTrilha = skillsDaTrilha;
     }
 }
