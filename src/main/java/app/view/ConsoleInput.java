@@ -2,9 +2,10 @@ package app.view;
 
 import java.util.Scanner;
 
+//Classe de leitura de texto
 public class ConsoleInput {
-    public static final Scanner sc = new Scanner(System.in);
 
+    public static final Scanner sc = new Scanner(System.in);
 
     public static int lerNumero(){
         int opcao = sc.nextInt();
@@ -16,7 +17,5 @@ public class ConsoleInput {
         return sc.nextLine();
     }
 
-    public static String limpaBuffer(){
-        return sc.nextLine();
-    }
+
 }

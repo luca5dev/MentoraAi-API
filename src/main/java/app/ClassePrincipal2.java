@@ -1,6 +1,6 @@
 package app;
 
-import app.controller.menuController.MenuPrincipalController;
+import app.controller.MenuPrincipalController;
 
 import java.util.Scanner;
 
