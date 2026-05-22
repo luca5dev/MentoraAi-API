@@ -1,5 +1,6 @@
 package app.model.entity;
 
+import app.model.enums.Skill;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -17,15 +18,23 @@ public class TrilhaMentoria {
     @ManyToOne
     private Mentor mentor; //Muitas trilhas podem ter o mesmo mentor
 
+
+    @ElementCollection(targetClass = Skill.class)
+    @Enumerated(EnumType.STRING)
+    private List<Skill> skills;
+
+
     @OneToMany
     private List<Mentorado> mentorados; //Uma trilha possui vários mentorados
 
     private TrilhaMentoria() {}
 
-    private TrilhaMentoria(String nomeDaTrilha, Integer duracaoMeses, Mentor mentor, List<Mentorado> mentorados) {
+
+    public TrilhaMentoria(String nomeDaTrilha, Integer duracaoMeses, Mentor mentor, List<Skill> skills, List<Mentorado> mentorados) {
         this.nomeDaTrilha = nomeDaTrilha;
         this.duracaoMeses = duracaoMeses;
         this.mentor = mentor;
+        this.skills = skills;
         this.mentorados = mentorados;
     }
 
@@ -63,5 +72,25 @@ public class TrilhaMentoria {
 
     public void setMentorados(List<Mentorado> mentorados) {
         this.mentorados = mentorados;
+    }
+
+    public void adicionarSkills(Skill skill){
+        this.skills.add(skill);
+    }
+
+    public void adicionarMentorado(Mentorado mentorado){
+        this.mentorados.add(mentorado);
+    }
+
+    @Override
+    public String toString() {
+        return "TrilhaMentoria{" +
+                "id=" + id +
+                ", nomeDaTrilha='" + nomeDaTrilha + '\'' +
+                ", duracaoMeses=" + duracaoMeses +
+                ", mentor=" + mentor +
+                ", skills=" + skills +
+                ", mentorados=" + mentorados +
+                '}';
     }
 }

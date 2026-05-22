@@ -1,6 +1,6 @@
 package app.view;
 
-import app.controller.menuController.MenuPrincipalController;
+
 import app.model.dto.UsuarioCadastroDTO;
 import app.model.enums.NivelSenioridade;
 import app.model.enums.Skill;
@@ -18,6 +18,9 @@ public class CadastroParticipante {
         System.out.println("Nivel de Senioridade (1- Junior 2- Pleno 3- Senior 4- Especialista): ");
         dto.setNivelSenioridade(NivelSenioridade.buscaId(ConsoleInput.lerNumero()));
 
+        //Criar uma condicional
+        //Se for Mentor, dependendo da Senioridade, perguntar o valor da hora.
+        //Se for mentorado, pergunta quantas skills ele deseja aprender.
 
         System.out.println("Skills: ");
         System.out.print("1- Java 2- Spring 3- SQL\n");

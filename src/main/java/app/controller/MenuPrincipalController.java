@@ -1,11 +1,8 @@
-package app.controller.menuController;
+package app.controller;
 
 import app.model.factory.EntityFactory;
 import app.view.ConsoleInput;
-import app.view.CadastroParticipante;
 import app.view.menus.MenuView;
-
-import java.util.Scanner;
 
 public class MenuPrincipalController {
     private MenuView menu = new MenuView();
@@ -19,10 +16,13 @@ public class MenuPrincipalController {
 
             switch (opc) {
                 case 1:
-                    EntityFactory.novoCadastro();
+                    EntityFactory.cadastrarParticipante();
                     break;
 
-                case 2:
+                case 2:EntityFactory.cadastrarTrilha();
+                        break;
+
+                case 3:
                     System.out.println("Finalizando programa");
                     rodando = false;
                     break;
