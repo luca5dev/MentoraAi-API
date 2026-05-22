@@ -24,17 +24,19 @@ public abstract class ParticipantePrograma {
     private List<Skill> skills = new ArrayList<>();
 
     private Double valorHora; //Valor hora é o custo por hora do participante, usado para calcular o custo total do programa
+    protected Double horasDedicadas;
 
     public ParticipantePrograma() {}
 
-    public ParticipantePrograma(String nome, NivelSenioridade nivelSenioridade, List<Skill> skills, Double valorHora) {
+    public ParticipantePrograma(String nome, NivelSenioridade nivelSenioridade, List<Skill> skills, Double valorHora, Double horasDedicadas) {
         this.nome = nome;
         this.nivelSenioridade = nivelSenioridade;
         this.skills = skills;
         this.valorHora = valorHora;
+        this.horasDedicadas = horasDedicadas;
     }
 
-    public abstract Double calcularCustoOportunidadeMensal(); //AC1: Calcula o valor financeiro das horas investidas no programa com base no nível do funcionário.
+    public abstract Double calcularCustoOportunidadeMensal();
 
     public Long getId() {
         return id;
@@ -74,6 +76,14 @@ public abstract class ParticipantePrograma {
 
     public void setValorHora(Double valorHora) {
         this.valorHora = valorHora;
+    }
+
+    public Double getHorasDedicadas() {
+        return horasDedicadas;
+    }
+
+    public void setHorasDedicadas(Double horasDedicadas) {
+        this.horasDedicadas = horasDedicadas;
     }
 
     @Override
