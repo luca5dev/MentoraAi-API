@@ -12,6 +12,7 @@ public class UsuarioCadastroDTO {
     private String nome;
     private NivelSenioridade nivelSenioridade;
     private List<Skill> skills = new ArrayList<>();
+    private List<Skill> skillsDesejadas = new ArrayList<>();
     private Double valorHora;
     private Integer cargaHorariaMaxima; //Vamos usar esse limite para validar a regra de negócio de trava de carga horária
     private Integer maximoMentorados; //Vamos usar esse limite para fixar um número realista de mentorados por mentor
@@ -57,6 +58,14 @@ public class UsuarioCadastroDTO {
 
     public void adicionarSkill(Skill skill){
         this.skills.add(skill);
+    }
+
+    public void adicionarSkillDesejada(Skill skill){
+        this.skillsDesejadas.add(skill);
+    }
+
+    public List<Skill> getSkillsDesejadas() {
+        return skillsDesejadas;
     }
 
     public Double getValorHora() {

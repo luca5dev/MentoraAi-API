@@ -3,7 +3,6 @@ package app.model.dto;
 import app.model.entity.Mentor;
 import app.model.entity.Mentorado;
 import app.model.enums.Skill;
-import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +13,7 @@ public class TrilhaMentoriaDTO {
 
     private String nome;
 
-    private Integer duracaoMeses;
+    private Integer duracaoHoras;
 
     private List<Skill> skills = new ArrayList<>();
 
@@ -28,7 +27,7 @@ public class TrilhaMentoriaDTO {
 
     public TrilhaMentoriaDTO(String nome, Integer duracaoMeses, List<Skill> skills, Mentor mentor, List<Mentorado> mentorados) {
         this.nome = nome;
-        this.duracaoMeses = duracaoMeses;
+        this.duracaoHoras = duracaoMeses;
         this.skills = skills;
         this.mentor = mentor;
         this.mentorados = mentorados;
@@ -50,12 +49,12 @@ public class TrilhaMentoriaDTO {
         this.nome = nome;
     }
 
-    public Integer getDuracaoMeses() {
-        return duracaoMeses;
+    public Integer getDuracaoHoras() {
+        return duracaoHoras;
     }
 
-    public void setDuracaoMeses(Integer duracaoMeses) {
-        this.duracaoMeses = duracaoMeses;
+    public void setDuracaoHoras(Integer duracaoHoras) {
+        this.duracaoHoras = duracaoHoras;
     }
 
     public Mentor getMentor() {

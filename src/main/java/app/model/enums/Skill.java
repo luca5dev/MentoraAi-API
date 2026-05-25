@@ -23,15 +23,4 @@ public enum Skill {
     public int getId() {
         return id;
     }
-
-    public static Skill buscaSkill(int id){
-        for (Skill skill: Skill.values()){
-            if (skill.getId() == id){
-                return skill;
-            }
-        }
-        throw new IllegalArgumentException("Id inválido");
-    }
-
-
 }
