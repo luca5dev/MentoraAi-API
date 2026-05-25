@@ -9,10 +9,6 @@ import app.util.ConsoleInput;
 public class CadastroParticipante {
 
     public static UsuarioCadastroDTO cadastrarParticipante() {
-        SkillUseCase skill = new SkillUseCase();
-        boolean selecionando = true;
-        boolean rodando = true;
-
             UsuarioCadastroDTO dto = new UsuarioCadastroDTO();
             System.out.println("1- Mentor/2- Mentorado");
             dto.setOpcao(ConsoleInput.lerNumero());
