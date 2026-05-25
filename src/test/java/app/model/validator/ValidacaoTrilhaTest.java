@@ -51,8 +51,10 @@ public class ValidacaoTrilhaTest {
     void deveCriarUmaTrilhaComDadosValidos() {
         TrilhaMentoria trilha = new TrilhaMentoria("Trilha Java com Angular", 2,
                 new Mentor("Osvaldo", NivelSenioridade.SENIOR, List.of(Skill.JAVA, Skill.ANGULAR), 36.0, 20.0),
-                List.of(new Mentorado("Ana", NivelSenioridade.JUNIOR, List.of(Skill.HTML, Skill.JAVA),15.0, 5.0, List.of(Skill.JAVA, Skill.ANGULAR))),
-                List.of());
+                List.of(new Mentorado("Davi", NivelSenioridade.JUNIOR, List.of(Skill.HTML, Skill.JAVA),15.0, 5.0, List.of(Skill.JAVA, Skill.ANGULAR)),
+                        new Mentorado("Ana", NivelSenioridade.PLENO, List.of(Skill.JAVA, Skill.ANGULAR, Skill.GIT, Skill.AWS), 20.0, 6.0,List.of(Skill.JAVA, Skill.SPRING, Skill.POSTGRESQL)),
+                        new Mentorado("Carla", NivelSenioridade.JUNIOR, List.of(Skill.HTML, Skill.CSS), 15.0, 5.0, List.of(Skill.JAVA, Skill.ANGULAR))),
+                List.of(Skill.JAVA, Skill.ANGULAR));
     }
 
     @Test
