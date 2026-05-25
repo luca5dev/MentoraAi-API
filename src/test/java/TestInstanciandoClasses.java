@@ -2,8 +2,8 @@ import app.model.entity.Mentor;
 import app.model.entity.ParticipantePrograma;
 import app.model.enums.NivelSenioridade;
 import app.model.enums.Skill;
-import app.service.useCase.BuscaSenioridadeUseCase;
-import app.service.useCase.BuscaSkillUseCase;
+import app.service.useCase.SenioridadeUseCase;
+import app.service.useCase.SkillUseCase;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -16,8 +16,8 @@ public class TestInstanciandoClasses {
     @Test
     public void InstanciandoClasse() {
         List<Skill> skillsParticipante = new ArrayList<>();
-        BuscaSenioridadeUseCase buscaSenioridadeUseCase = new BuscaSenioridadeUseCase();
-        BuscaSkillUseCase buscaSkillUseCase = new BuscaSkillUseCase();
+        SenioridadeUseCase buscaSenioridadeUseCase = new SenioridadeUseCase();
+        SkillUseCase buscaSkillUseCase = new SkillUseCase();
 
         NivelSenioridade nivel = buscaSenioridadeUseCase.buscaSenioridade(3);
         Skill skill =  buscaSkillUseCase.buscaSkill(1);

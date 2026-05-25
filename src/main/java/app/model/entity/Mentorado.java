@@ -26,7 +26,7 @@ public class Mentorado extends ParticipantePrograma {
                      List<Skill> skillsDesejadas) {
         super(nome, nivelSenioridade, skills, valorHora, horasDedicadas);
 
-        this.horasDedicadas = 5.0;
+        this.horasDedicadas = horasDedicadas;
         this.skillsDesejadas = skillsDesejadas;
     }
 
@@ -39,7 +39,18 @@ public class Mentorado extends ParticipantePrograma {
         return skillsDesejadas;
     }
 
+    public void adicionarSkillDesejada(Skill skill){
+        this.skillsDesejadas.add(skill);
+    }
+
     public void setSkillsDesejadas(List<Skill> skillsDesejadas) {
         this.skillsDesejadas = skillsDesejadas;
+    }
+
+    @Override
+    public String toString() {
+        return "Mentorado{" +
+                "skillsDesejadas=" + skillsDesejadas +
+                '}';
     }
 }

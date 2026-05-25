@@ -3,32 +3,30 @@ package app.view;
 
 import app.model.dto.UsuarioCadastroDTO;
 import app.model.enums.NivelSenioridade;
-import app.model.enums.Skill;
+import app.service.useCase.SkillUseCase;
+import app.util.ConsoleInput;
 
 public class CadastroParticipante {
 
     public static UsuarioCadastroDTO cadastrarParticipante() {
+        SkillUseCase skill = new SkillUseCase();
+        boolean selecionando = true;
+        boolean rodando = true;
 
-        UsuarioCadastroDTO dto = new UsuarioCadastroDTO();
-        System.out.println("1- Mentor/2- Mentorado");
-        dto.setOpcao(ConsoleInput.lerNumero());
+            UsuarioCadastroDTO dto = new UsuarioCadastroDTO();
+            System.out.println("1- Mentor/2- Mentorado");
+            dto.setOpcao(ConsoleInput.lerNumero());
 
-        System.out.println("Nome: ");
-        dto.setNome(ConsoleInput.lerTexto());
-        System.out.println("Nivel de Senioridade (1- Junior 2- Pleno 3- Senior 4- Especialista): ");
-        dto.setNivelSenioridade(NivelSenioridade.buscaId(ConsoleInput.lerNumero()));
+            System.out.println("Nome: ");
+            dto.setNome(ConsoleInput.lerTexto());
 
-        //Criar uma condicional
-        //Se for Mentor, dependendo da Senioridade, perguntar o valor da hora.
-        //Se for mentorado, pergunta quantas skills ele deseja aprender.
+            System.out.println("Nivel de Senioridade (1- Junior 2- Pleno 3- Senior 4- Especialista): ");
+            dto.setNivelSenioridade(NivelSenioridade.buscaId(ConsoleInput.lerNumero()));
 
-        System.out.println("Skills: ");
-        System.out.print("1- Java 2- Spring 3- SQL\n");
-        System.out.print("4- Git 5- Docker 6- AWS\n");
-        System.out.print("7- Angular 8- React 9- Postgresql\n");
-        System.out.print("10- HTML 11- CSS\n");
-        dto.adicionarSkill(Skill.buscaSkill(ConsoleInput.lerNumero()));
+            System.out.println("Qual o valor do pagamento em horas?");
+            dto.setValorHora(ConsoleInput.lerValor());
 
-        return dto;
+            return dto;
     }
+
 }

@@ -1,5 +1,6 @@
 package app.model.factory;
 
+import app.dao.ParticipanteDAO;
 import app.model.dto.TrilhaMentoriaDTO;
 import app.model.dto.UsuarioCadastroDTO;
 import app.model.entity.Mentor;
@@ -10,39 +11,44 @@ import app.model.enums.Skill;
 import app.view.CadastroParticipante;
 import app.view.CadastroTrilha;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class EntityFactory {
-    public static void cadastrarParticipante(){
+    public static void cadastrarParticipante(ParticipanteDAO jpa) {
+        boolean cadastro = true;
+        AdicionarSkills addSkills = new AdicionarSkills();
         UsuarioCadastroDTO dto = CadastroParticipante.cadastrarParticipante();
-        List<Skill> skills = dto.getSkills().stream().collect(Collectors.toList());
-
         ParticipantePrograma p = null;
 
-        switch (dto.getOpcao()){
-            case 1: p = new Mentor(
-                    dto.getNome(), dto.getNivelSenioridade(), skills,0.0,0,0 );
-            System.out.println("Mentor cadastrado");
-            break;
+        switch (dto.getOpcao()) {
+            case 1:
+                addSkills.skillBase(dto);
+                p = new Mentor(dto.getNome(), dto.getNivelSenioridade(), dto.getSkills(), dto.getValorHora(), 0.0);
+                jpa.persist(p);
+                System.out.println("Mentor cadastrado com sucesso!");
+                break;
 
-            case 2: p = new Mentorado(dto.getNome(), dto.getNivelSenioridade(), skills,0.0,0,skills);
-            break;
+            case 2:
+                addSkills.skillBase(dto);
+                addSkills.skillsParaMentorados(dto);
+                p = new Mentorado(dto.getNome(), dto.getNivelSenioridade(), dto.getSkills(), dto.getValorHora(), 0.0, dto.getSkillsDesejadas());
+                jpa.persist(p);
+                System.out.println("Mentorado cadastrado com sucesso!");
+                break;
 
             default:
                 System.out.println("Escolha uma opção válida");
         }
 
-        if (p!=null){
+        if (p != null) {
             System.out.println(p);
         } else {
-            System.out.println("Vazio");
+            System.out.println("Nenhum participante cadastrado");
         }
     }
 
-    public static void cadastrarTrilha(){
+    public static void cadastrarTrilha() {
         TrilhaMentoriaDTO dto = CadastroTrilha.cadastrarTrilha();
 
         List<Skill> skills = dto.getSkills().stream().collect(Collectors.toList());
@@ -63,4 +69,5 @@ public class EntityFactory {
         //Impressão de teste :p
         System.out.println(novaTrilha);
     }
+
 }
