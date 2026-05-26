@@ -62,7 +62,7 @@ public class EntityFactory {
         //Se Mentor.getTrilhas > quantidade -> lançar
 
         //Adicionar os dados, mentor linkado e listas de SKill e mentorados
-        TrilhaMentoria novaTrilha = new TrilhaMentoria("Teste", 2, dto.getMentor(), skills, mentorados);
+        TrilhaMentoria novaTrilha = new TrilhaMentoria("Teste", 2, dto.getMentor(), dto.getMentorados(), dto.getSkills());
 
         System.out.println("Criado com sucesso");
 
