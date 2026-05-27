@@ -15,9 +15,6 @@ public class MentoraAiApplication {
         } catch (InputMismatchException e){
             System.out.println("Caractere invalido");
         }
-
         JPAUtil.fecharFactory();
-
-
     }
 }

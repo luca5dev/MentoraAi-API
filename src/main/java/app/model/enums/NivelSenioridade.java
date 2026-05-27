@@ -7,16 +7,14 @@ public enum NivelSenioridade {
     SENIOR(3),
     ESPECIALISTA(4);
 
-
     private final int id;
 
-   NivelSenioridade(int id){
+    NivelSenioridade(int id){
        this.id = id;
    }
 
     public int getId() {
         return id;
     }
-
 
 }

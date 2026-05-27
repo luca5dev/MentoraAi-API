@@ -6,7 +6,6 @@ import jakarta.persistence.Persistence;
 public class JPAUtil {
 
     private JPAUtil(){
-
     }
 
     public static EntityManagerFactory factory(){
