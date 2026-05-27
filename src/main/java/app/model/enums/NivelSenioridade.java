@@ -18,12 +18,5 @@ public enum NivelSenioridade {
         return id;
     }
 
-    public static NivelSenioridade buscaId(int id){
-       for (NivelSenioridade nivel : NivelSenioridade.values()){
-           if (nivel.getId() == id){
-               return nivel;
-           }
-       }
-       throw new IllegalArgumentException("Id inválido");
-    }
+
 }

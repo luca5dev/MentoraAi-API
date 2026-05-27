@@ -18,24 +18,21 @@ public class TrilhaMentoria {
     @ManyToOne
     private Mentor mentor; //Muitas trilhas podem ter o mesmo mentor
 
-
-    @ElementCollection(targetClass = Skill.class)
-    @Enumerated(EnumType.STRING)
-    private List<Skill> skills;
-
-
     @OneToMany
     private List<Mentorado> mentorados; //Uma trilha possui vários mentorados
 
-    private TrilhaMentoria() {}
+    @ElementCollection(targetClass = Skill.class)
+    @Enumerated(EnumType.STRING)
+    private List<Skill> skillsDaTrilha;
 
+    public TrilhaMentoria() {}
 
-    public TrilhaMentoria(String nomeDaTrilha, Integer duracaoMeses, Mentor mentor, List<Skill> skills, List<Mentorado> mentorados) {
+    public TrilhaMentoria(String nomeDaTrilha, Integer duracaoMeses, Mentor mentor, List<Mentorado> mentorados, List<Skill> skillsDaTrilha) {
         this.nomeDaTrilha = nomeDaTrilha;
         this.duracaoMeses = duracaoMeses;
         this.mentor = mentor;
-        this.skills = skills;
         this.mentorados = mentorados;
+        this.skillsDaTrilha = skillsDaTrilha;
     }
 
     public Long getId() {
@@ -74,8 +71,16 @@ public class TrilhaMentoria {
         this.mentorados = mentorados;
     }
 
+    public List<Skill> getSkillsDaTrilha() {
+        return skillsDaTrilha;
+    }
+
+    public void setSkillsDaTrilha(List<Skill> skillsDaTrilha) {
+        this.skillsDaTrilha = skillsDaTrilha;
+    }
+
     public void adicionarSkills(Skill skill){
-        this.skills.add(skill);
+        this.skillsDaTrilha.add(skill);
     }
 
     public void adicionarMentorado(Mentorado mentorado){
@@ -89,7 +94,7 @@ public class TrilhaMentoria {
                 ", nomeDaTrilha='" + nomeDaTrilha + '\'' +
                 ", duracaoMeses=" + duracaoMeses +
                 ", mentor=" + mentor +
-                ", skills=" + skills +
+                ", skillsDaTrilha=" + skillsDaTrilha +
                 ", mentorados=" + mentorados +
                 '}';
     }

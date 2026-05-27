@@ -14,7 +14,7 @@ public class AdicionarSkills {
         boolean cadastro = true;
 
         while (cadastro == true){
-            skillUseCase.listarSkills();
+            System.out.println(skillUseCase.listarSkills());
             System.out.println("Qual deseja adicionar?");
             Skill skillSelecionada = skillUseCase.buscaSkill(ConsoleInput.lerNumero());
             dto.adicionarSkill(skillSelecionada);

@@ -77,9 +77,5 @@ public class TrilhaMentoriaDTO {
         mentorados.add(mentorado);
    }
 
-   public void addSkill(Skill skill){
-        this.skills.add(skill);
-   }
-
 
 }

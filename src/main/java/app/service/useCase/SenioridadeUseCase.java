@@ -7,6 +7,11 @@ public class SenioridadeUseCase implements SenioridadeService {
 
     @Override
     public NivelSenioridade buscaSenioridade(int id){
-      return NivelSenioridade.buscaId(id);
+        for (NivelSenioridade nivel : NivelSenioridade.values()){
+            if (nivel.getId() == id){
+                return nivel;
+            }
+        }
+        throw new IllegalArgumentException("Id inválido");
     }
 }

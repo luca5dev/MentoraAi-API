@@ -27,8 +27,10 @@ public class Mentor extends ParticipantePrograma {
 
     @Override
     public Double calcularCustoOportunidadeMensal() { //Calcula quanto vai custar o mentor por mês, considerando o valor hora e a carga horária máxima, mesmo que ele não atinja esse limite, o custo de oportunidade é calculado com base na carga horária máxima, porque é o tempo que ele está se dedicando ao programa
-        return getValorHora() * horasDedicadas;
+        return (getValorHora() * 8 * 30) / horasDedicadas;
     }
+
+    //return getValorHora() * horasDedicadas;
 
     public Integer getMaximoMentorados() {
         return maximoMentorados;

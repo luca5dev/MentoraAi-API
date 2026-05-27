@@ -1,8 +1,12 @@
 package app.service.useCase;
 
+import app.model.dto.TrilhaMentoriaDTO;
 import app.model.entity.ParticipantePrograma;
 import app.model.enums.Skill;
 import app.service.interfaces.SkillService;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class SkillUseCase implements SkillService {
 
@@ -17,18 +21,19 @@ public class SkillUseCase implements SkillService {
     }
 
     @Override
-    public void listarSkills(){
-            int i=0;
-            for (Skill skills : Skill.values()){
-                System.out.print(i+=1);
-                System.out.print(": " + skills.name() + " ");
-                System.out.println(" ");
-            }
+    public List<Skill> listarSkills(){
+
+        return List.of(Skill.values());
     }
 
     @Override
     public void AdicionarSkill(ParticipantePrograma participantePrograma, int id) {
         Skill skill = buscaSkill(id);
         participantePrograma.adicionarSkill(skill);
+    }
+
+    @Override
+    public void adicionarSkillTrilhaMentoria(TrilhaMentoriaDTO trilhaMentoriaDTO, Skill skill) {
+        trilhaMentoriaDTO.getSkills().add(skill);
     }
 }

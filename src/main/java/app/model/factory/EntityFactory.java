@@ -1,22 +1,22 @@
 package app.model.factory;
 
-import app.dao.ParticipanteDAO;
+import app.dao.ParticipanteImpl;
+import app.dao.TrilhaImpl;
+import app.exception.ListaVaziaException;
+import app.exception.MaximoMentoradosAtingidosException;
 import app.model.dto.TrilhaMentoriaDTO;
 import app.model.dto.UsuarioCadastroDTO;
 import app.model.entity.Mentor;
 import app.model.entity.Mentorado;
 import app.model.entity.ParticipantePrograma;
 import app.model.entity.TrilhaMentoria;
-import app.model.enums.Skill;
 import app.view.CadastroParticipante;
 import app.view.CadastroTrilha;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class EntityFactory {
-    public static void cadastrarParticipante(ParticipanteDAO jpa) {
-        boolean cadastro = true;
+
+    public static void cadastrarParticipante(ParticipanteImpl dao) {
         AdicionarSkills addSkills = new AdicionarSkills();
         UsuarioCadastroDTO dto = CadastroParticipante.cadastrarParticipante();
         ParticipantePrograma p = null;
@@ -25,49 +25,41 @@ public class EntityFactory {
             case 1:
                 addSkills.skillBase(dto);
                 p = new Mentor(dto.getNome(), dto.getNivelSenioridade(), dto.getSkills(), dto.getValorHora(), 0.0);
-                jpa.persist(p);
-                System.out.println("Mentor cadastrado com sucesso!");
+                dao.persist(p);
                 break;
 
             case 2:
                 addSkills.skillBase(dto);
                 addSkills.skillsParaMentorados(dto);
                 p = new Mentorado(dto.getNome(), dto.getNivelSenioridade(), dto.getSkills(), dto.getValorHora(), 0.0, dto.getSkillsDesejadas());
-                jpa.persist(p);
-                System.out.println("Mentorado cadastrado com sucesso!");
+                dao.persist(p);
                 break;
 
-            default:
-                System.out.println("Escolha uma opção válida");
+            default: System.out.println("Escolha uma opção válida");
         }
 
-        if (p != null) {
-            System.out.println(p);
-        } else {
-            System.out.println("Nenhum participante cadastrado");
+        if (p == null) {
+           throw new ListaVaziaException("Nenhum participante cadastrado");
         }
     }
 
-    public static void cadastrarTrilha() {
+    public static void cadastrarTrilha(ParticipanteImpl participanteDAO) {
         TrilhaMentoriaDTO dto = CadastroTrilha.cadastrarTrilha();
+        TrilhaImpl trilha = null;
 
-        List<Skill> skills = dto.getSkills().stream().collect(Collectors.toList());
-        List<Mentorado> mentorados = dto.getMentorados().stream().collect(Collectors.toList());
+        Mentor mentor = participanteDAO.buscarMentorId(dto.getIdMentor())
+                .orElseThrow(() -> new RuntimeException("Mentor não encontrado com o ID informado!"));
 
-        //buscarpeloId e linkar mentor com o id selecionado no cadastrarTrilha
-        Mentor mentor = new Mentor();
-        mentor.setId((long) dto.getIdMentor());
-        dto.setMentor(mentor);
+        if (mentor.getMaximoMentorados() > 4){
+            throw new MaximoMentoradosAtingidosException("O limite máximo de mentorados para esse mentor foi excedido.");
+        }
 
-        //Se Mentor.getTrilhas > quantidade -> lançar
+        TrilhaMentoria novaTrilha = new TrilhaMentoria("Teste", 2, mentor, dto.getMentorados(), dto.getSkills());
+        trilha.persist(novaTrilha);
+        // 4. Salva a nova trilha no banco de dados
+        // Nota: Você precisará de um TrilhaDAO ou usar o EntityManager correspondente para persistir a trilha
+        // exemplo: trilhaDAO.persist(novaTrilha);
 
-        //Adicionar os dados, mentor linkado e listas de SKill e mentorados
-        TrilhaMentoria novaTrilha = new TrilhaMentoria("Teste", 2, dto.getMentor(), skills, mentorados);
-
-        System.out.println("Criado com sucesso");
-
-        //Impressão de teste :p
-        System.out.println(novaTrilha);
+        System.out.println("Trilha de mentoria criada e vinculada com sucesso!");
     }
-
 }

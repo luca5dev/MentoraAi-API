@@ -3,7 +3,7 @@ import app.model.entity.ParticipantePrograma;
 import app.service.useCase.SkillUseCase;
 import org.junit.jupiter.api.Test;
 
-public class TestAdicionarLista {
+public class AdicionarListaTest {
     SkillUseCase skill = new SkillUseCase();
 
     @Test

@@ -1,4 +1,4 @@
-package app.view.menus;
+package app.view;
 
 
 public class MenuView {
@@ -19,5 +19,6 @@ public class MenuView {
         System.out.println("1- Listar Participantes");
         System.out.println("2- Listar Mentores");
         System.out.println("3- Listar Mentorados");
+        System.out.println("4- Listar Trilhas");
     }
 }
