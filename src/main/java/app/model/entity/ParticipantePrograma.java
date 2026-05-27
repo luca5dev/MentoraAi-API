@@ -66,9 +66,7 @@ public abstract class ParticipantePrograma {
         return skills;
     }
 
-    public void adicionarSkill(Skill skill){
-        this.skills.add(skill);
-    }
+    public void adicionarSkill(Skill skill){ if (!this.skills.contains(skill)) {this.skills.add(skill);} }
 
     public Double getValorHora() {
         return valorHora;
