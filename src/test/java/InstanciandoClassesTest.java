@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class TestInstanciandoClasses {
+public class InstanciandoClassesTest {
 
     @Test
     public void InstanciandoClasse() {

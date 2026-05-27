@@ -1,25 +1,27 @@
 package app.controller;
 
-import app.dao.ParticipanteDAO;
+import app.view.ConsultaView;
 
 public class MenuConsultas {
-    public static void consultar(ParticipanteDAO jpa, int opc) {
+    public static void consultar(int opcao) {
 
-        switch (opc) {
+        switch (opcao) {
             case 1:
-                jpa.listarParticipantes();
+               ConsultaView.consultarParticipantes();
                 break;
 
             case 2:
-                jpa.listarMentores();
+               ConsultaView.consultarMentores();
                 break;
 
             case 3:
-                jpa.listarMentorados();
+                ConsultaView.consultarMentorados();
                 break;
+
+            case 4:
+                ConsultaView.consultarTrilhas();
             default:
                 System.out.println("Opção inválida!");
         }
-
     }
 }

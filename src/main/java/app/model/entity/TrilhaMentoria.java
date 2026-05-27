@@ -25,9 +25,9 @@ public class TrilhaMentoria {
     @Enumerated(EnumType.STRING)
     private List<Skill> skillsDaTrilha;
 
-    private TrilhaMentoria() {}
+    public TrilhaMentoria() {}
 
-    private TrilhaMentoria(String nomeDaTrilha, Integer duracaoMeses, Mentor mentor, List<Mentorado> mentorados, List<Skill> skillsDaTrilha) {
+    public TrilhaMentoria(String nomeDaTrilha, Integer duracaoMeses, Mentor mentor, List<Mentorado> mentorados, List<Skill> skillsDaTrilha) {
         this.nomeDaTrilha = nomeDaTrilha;
         this.duracaoMeses = duracaoMeses;
         this.mentor = mentor;
