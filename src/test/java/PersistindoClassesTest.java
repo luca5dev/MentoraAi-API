@@ -1,4 +1,4 @@
-import app.dao.ParticipanteDAO;
+import app.dao.ParticipanteImpl;
 import app.model.entity.Mentor;
 import app.model.entity.ParticipantePrograma;
 import app.model.enums.NivelSenioridade;
@@ -6,12 +6,11 @@ import app.service.useCase.SenioridadeUseCase;
 import app.service.useCase.SkillUseCase;
 import org.junit.jupiter.api.Test;
 
-public class TestPersistindoClasses {
+public class PersistindoClassesTest {
 
     @Test
     public void persistirDados(){
         ParticipantePrograma p = new Mentor();
-        ParticipanteDAO jpa = new ParticipanteDAO();
         SenioridadeUseCase buscaSenioridadeUseCase = new SenioridadeUseCase();
         SkillUseCase skillUseCase = new SkillUseCase();
         p.setNome("Jorge");
@@ -21,6 +20,5 @@ public class TestPersistindoClasses {
         skillUseCase.AdicionarSkill(p, 3);
         skillUseCase.AdicionarSkill(p, 4);
 
-        jpa.persist(p);
     }
 }
