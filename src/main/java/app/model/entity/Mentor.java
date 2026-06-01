@@ -9,6 +9,11 @@ import java.util.List;
 @Entity
 public class Mentor extends ParticipantePrograma {
 
+    private static final double HORAS_MAXIMAS_MENTOR = 20.0; //horasDedicadas
+    private static final int MAXIMO_MENTORADOS = 4;
+    private static final int HORAS_DIA = 8;
+    private static final int DIAS_MES = 30;
+
     private Integer maximoMentorados;
 
     public Mentor() {}
@@ -16,21 +21,20 @@ public class Mentor extends ParticipantePrograma {
     public Mentor(String nome,
                   NivelSenioridade nivelSenioridade,
                   List<Skill> skills,
-                  Double valorHora,
-                  Double horasDedicadas) {
+                  Double valorHora) {
 
-        super(nome, nivelSenioridade, skills, valorHora, horasDedicadas);
-
-        this.horasDedicadas = 20.0;
-        this.maximoMentorados = 4;
+        super(nome, nivelSenioridade, skills, valorHora, HORAS_MAXIMAS_MENTOR);
+        this.maximoMentorados = MAXIMO_MENTORADOS;
     }
 
+    /**
+     * Calcula o custo de oportunidade mensal do mentor.
+     * Considera o valor/hora e a carga horária máxima dedicada ao programa.
+     */
     @Override
-    public Double calcularCustoOportunidadeMensal() { //Calcula quanto vai custar o mentor por mês, considerando o valor hora e a carga horária máxima, mesmo que ele não atinja esse limite, o custo de oportunidade é calculado com base na carga horária máxima, porque é o tempo que ele está se dedicando ao programa
-        return (getValorHora() * 8 * 30) / horasDedicadas;
+    public Double calcularCustoOportunidadeMensal() {
+        return (getValorHora() * HORAS_DIA * DIAS_MES) / getHorasDedicadas();
     }
-
-    //return getValorHora() * horasDedicadas;
 
     public Integer getMaximoMentorados() {
         return maximoMentorados;

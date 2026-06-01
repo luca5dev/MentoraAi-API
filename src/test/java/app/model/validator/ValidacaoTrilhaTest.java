@@ -22,7 +22,7 @@ public class ValidacaoTrilhaTest {
     void deveCriarMentorComDadosValidos() {
         Mentor mentor = new Mentor("João", NivelSenioridade.ESPECIALISTA,
                 List.of(Skill.JAVA, Skill.ANGULAR, Skill.AWS, Skill.GIT),
-        30.0, 20.0);
+        30.0);
 
         assertEquals("João", mentor.getNome());
         assertEquals(NivelSenioridade.ESPECIALISTA, mentor.getNivelSenioridade());
@@ -52,9 +52,9 @@ public class ValidacaoTrilhaTest {
     }
 
     @Test
-    void deveCriarUmaTrilhaComDadosValidos() { //
+    void deveCriarUmaTrilhaComDadosValidos() {
         TrilhaMentoria trilha = new TrilhaMentoria("Trilha Java com Angular", 2,
-                new Mentor("Osvaldo", NivelSenioridade.SENIOR, List.of(Skill.JAVA, Skill.ANGULAR), 36.0, 20.0),
+                new Mentor("Osvaldo", NivelSenioridade.SENIOR, List.of(Skill.JAVA, Skill.ANGULAR), 36.0 ),
                 List.of(new Mentorado("Davi", NivelSenioridade.JUNIOR, List.of(Skill.HTML, Skill.JAVA),15.0, 5.0, List.of(Skill.JAVA, Skill.ANGULAR)),
                         new Mentorado("Ana", NivelSenioridade.PLENO, List.of(Skill.JAVA, Skill.ANGULAR, Skill.GIT, Skill.AWS), 10.0, 6.0,List.of(Skill.JAVA, Skill.ANGULAR))),
                 List.of(Skill.JAVA, Skill.ANGULAR));
@@ -100,7 +100,7 @@ public class ValidacaoTrilhaTest {
     void deveCriarTrilhaCompletaComSucessoPassandoEmTodasValidacoes() {
         ValidacaoTrilha validacaoTrilha = new ValidacaoTrilha();
         TrilhaMentoria trilha = new TrilhaMentoria("Trilha Java com Angular", 2,
-                new Mentor("Osvaldo", NivelSenioridade.SENIOR, List.of(Skill.JAVA, Skill.ANGULAR), 36.0, 0.0),
+                new Mentor("Osvaldo", NivelSenioridade.SENIOR, List.of(Skill.JAVA, Skill.ANGULAR), 36.0),
                 List.of(new Mentorado("Davi", NivelSenioridade.JUNIOR, List.of(Skill.HTML, Skill.JAVA),15.0, 5.0, List.of(Skill.JAVA, Skill.ANGULAR)),
                         new Mentorado("Ana", NivelSenioridade.PLENO, List.of(Skill.JAVA, Skill.ANGULAR, Skill.GIT, Skill.AWS), 10.0, 6.0,List.of(Skill.JAVA, Skill.ANGULAR)),
                         new Mentorado("Carla", NivelSenioridade.JUNIOR, List.of(Skill.HTML, Skill.CSS), 15.0, 5.0, List.of(Skill.JAVA, Skill.ANGULAR))),
@@ -117,7 +117,7 @@ public class ValidacaoTrilhaTest {
     void deveLancarCargaHorariaExcedidaException() {
         ValidacaoTrilha validacaoTrilha = new ValidacaoTrilha();
         TrilhaMentoria trilha = new TrilhaMentoria("Trilha Java com Angular", 2,
-                new Mentor("Osvaldo", NivelSenioridade.SENIOR, List.of(Skill.JAVA, Skill.ANGULAR), 36.0, 20.0),
+                new Mentor("Osvaldo", NivelSenioridade.SENIOR, List.of(Skill.JAVA, Skill.ANGULAR), 36.0),
                 List.of(new Mentorado("Davi", NivelSenioridade.JUNIOR, List.of(Skill.HTML, Skill.JAVA),15.0, 10.0, List.of(Skill.JAVA, Skill.ANGULAR)),
                         new Mentorado("Ana", NivelSenioridade.PLENO, List.of(Skill.JAVA, Skill.ANGULAR, Skill.GIT, Skill.AWS), 10.0, 6.0,List.of(Skill.JAVA, Skill.ANGULAR)),
                         new Mentorado("Carla", NivelSenioridade.JUNIOR, List.of(Skill.HTML, Skill.CSS), 15.0, 5.0, List.of(Skill.JAVA, Skill.ANGULAR))),
@@ -131,7 +131,7 @@ public class ValidacaoTrilhaTest {
     void deveLancarSkillIncompativelException() {
         ValidacaoTrilha validacaoTrilha = new ValidacaoTrilha();
         TrilhaMentoria trilha = new TrilhaMentoria("Trilha Java com Angular", 2,
-                new Mentor("Osvaldo", NivelSenioridade.SENIOR, List.of(Skill.ANGULAR), 36.0, 20.0),
+                new Mentor("Osvaldo", NivelSenioridade.SENIOR, List.of(Skill.ANGULAR), 36.0),
                 List.of(new Mentorado("Davi", NivelSenioridade.JUNIOR, List.of(Skill.HTML, Skill.JAVA),15.0, 5.0, List.of(Skill.JAVA, Skill.ANGULAR)),
                         new Mentorado("Ana", NivelSenioridade.PLENO, List.of(Skill.JAVA, Skill.ANGULAR, Skill.GIT, Skill.AWS), 10.0, 6.0,List.of(Skill.JAVA, Skill.ANGULAR)),
                         new Mentorado("Carla", NivelSenioridade.JUNIOR, List.of(Skill.HTML, Skill.CSS), 15.0, 5.0, List.of(Skill.JAVA, Skill.ANGULAR))),
@@ -144,7 +144,7 @@ public class ValidacaoTrilhaTest {
     void deveLancarNivelDesproporcionalException() { //Quando o nível do mentor for igual ou menor que do mentorado
         ValidacaoTrilha validacaoTrilha = new ValidacaoTrilha();
         TrilhaMentoria trilha = new TrilhaMentoria("Trilha Java com Angular", 2,
-                new Mentor("Osvaldo", NivelSenioridade.JUNIOR, List.of(Skill.JAVA, Skill.ANGULAR), 36.0, 20.0),
+                new Mentor("Osvaldo", NivelSenioridade.JUNIOR, List.of(Skill.JAVA, Skill.ANGULAR), 36.0),
                 List.of(new Mentorado("Davi", NivelSenioridade.JUNIOR, List.of(Skill.HTML, Skill.JAVA),15.0, 5.0, List.of(Skill.JAVA, Skill.ANGULAR)),
                         new Mentorado("Ana", NivelSenioridade.PLENO, List.of(Skill.JAVA, Skill.ANGULAR, Skill.GIT, Skill.AWS), 10.0, 6.0,List.of(Skill.JAVA, Skill.ANGULAR)),
                         new Mentorado("Carla", NivelSenioridade.JUNIOR, List.of(Skill.HTML, Skill.CSS), 15.0, 5.0, List.of(Skill.JAVA, Skill.ANGULAR))),

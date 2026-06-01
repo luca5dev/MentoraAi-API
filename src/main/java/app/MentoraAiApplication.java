@@ -2,19 +2,33 @@ package app;
 
 import app.config.JPAUtil;
 import app.controller.MenuPrincipalController;
+import app.dao.ParticipanteImpl;
+import app.dao.TrilhaImpl;
+import app.dao.interfaces.ParticipanteDAO;
+import app.dao.interfaces.TrilhaDAO;
+import app.service.interfaces.ParticipanteService;
+import app.service.interfaces.TrilhaService;
+import app.service.useCase.ParticipanteUseCase;
+import app.service.useCase.TrilhaUseCase;
 
 import java.util.InputMismatchException;
 
 public class MentoraAiApplication {
+
     public static void main(String[] args) {
-        MenuPrincipalController menu = new MenuPrincipalController();
 
+        ParticipanteDAO participanteDAO = new ParticipanteImpl();
+        TrilhaDAO trilhaDAO = new TrilhaImpl();
 
-        try{
-            menu.iniciaPrograma();
-        } catch (InputMismatchException e){
-            System.out.println("Caractere invalido");
+        ParticipanteService participanteService = new ParticipanteUseCase(participanteDAO);
+        TrilhaService trilhaService = new TrilhaUseCase(participanteDAO, trilhaDAO);
+
+        MenuPrincipalController controller = new MenuPrincipalController(participanteService, trilhaService);
+
+        try {
+            controller.iniciaPrograma();
+        } finally {
+            JPAUtil.fecharFactory();
         }
-        JPAUtil.fecharFactory();
     }
 }

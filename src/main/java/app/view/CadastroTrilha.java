@@ -23,7 +23,7 @@ public class CadastroTrilha {
 
 
             System.out.print("Duração em horas: ");
-            dto.setDuracaoHoras(ConsoleInput.lerNumero());
+            dto.setDuracaoHoras(ConsoleInput.lerNumeroPositivo());
 
             //falta criar metodo pra adicionar skills na lista
             // (limte: 3 Skills por trilha)
@@ -43,7 +43,7 @@ public class CadastroTrilha {
                 }
             }
         } catch (ListaVaziaException e){
-            System.out.println("Não é possível criar a trilha: " + e.getMessage());
+            System.out.println("Não foi possível criar a trilha: " + e.getMessage());
         } catch (InputMismatchException e){
             System.out.println("Caractere inválido!");
         }

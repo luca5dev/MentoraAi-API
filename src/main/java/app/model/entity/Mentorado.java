@@ -1,5 +1,7 @@
 package app.model.entity;
 
+import app.exception.CampoVazioException;
+import app.exception.SkillDuplicadaException;
 import app.model.enums.NivelSenioridade;
 import app.model.enums.Skill;
 import jakarta.persistence.ElementCollection;
@@ -25,26 +27,23 @@ public class Mentorado extends ParticipantePrograma {
                      Double horasDedicadas,
                      List<Skill> skillsDesejadas) {
         super(nome, nivelSenioridade, skills, valorHora, horasDedicadas);
-
-        this.horasDedicadas = horasDedicadas;
         this.skillsDesejadas = skillsDesejadas;
     }
 
     @Override
     public Double calcularCustoOportunidadeMensal() { //Aqui representa o custo de oportunidade para a empresa. Valor da hora do funcionário * horas que ele passará em treinamento
-        return getValorHora() * horasDedicadas;
+        return getValorHora() * getHorasDedicadas();
     }
 
     public List<Skill> getSkillsDesejadas() {
         return skillsDesejadas;
     }
 
-    public void adicionarSkillDesejada(Skill skill){
+    public void adicionarSkillDesejada(Skill skill) {
+        if (this.skillsDesejadas.contains(skill)) {
+            throw new SkillDuplicadaException("Skill já adicionada.");
+        }
         this.skillsDesejadas.add(skill);
-    }
-
-    public void setSkillsDesejadas(List<Skill> skillsDesejadas) {
-        this.skillsDesejadas = skillsDesejadas;
     }
 
     @Override

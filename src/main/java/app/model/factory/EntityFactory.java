@@ -23,8 +23,7 @@ public class EntityFactory {
                 dto.getNome(),
                 dto.getNivelSenioridade(),
                 dto.getSkills(),
-                dto.getValorHora(),
-                0.0
+                dto.getValorHora()
         );
     }
     public static Mentorado criarMentorado(UsuarioCadastroDTO dto) {

@@ -28,7 +28,7 @@ public class AdicionarSkills {
 
         while (cadastro == true){
             skillUseCase.listarSkills();
-            System.out.println("Qual o mentorado deseja aprender?");
+            System.out.print("Qual Skill o mentorado deseja aprender?");
             Skill skillSelecionada = skillUseCase.buscaSkill(ConsoleInput.lerNumero());
             dto.adicionarSkillDesejada(skillSelecionada);
             cadastro = ConfirmarContinuar.confirmar();

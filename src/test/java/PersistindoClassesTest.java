@@ -1,4 +1,3 @@
-import app.dao.ParticipanteImpl;
 import app.model.entity.Mentor;
 import app.model.entity.ParticipantePrograma;
 import app.model.enums.NivelSenioridade;
@@ -16,9 +15,9 @@ public class PersistindoClassesTest {
         p.setNome("Jorge");
         NivelSenioridade nivel = buscaSenioridadeUseCase.buscaSenioridade(2);
         p.setNivelSenioridade(nivel);
-        skillUseCase.AdicionarSkill(p, 2);
-        skillUseCase.AdicionarSkill(p, 3);
-        skillUseCase.AdicionarSkill(p, 4);
+        skillUseCase.adicionarSkill(p, 2);
+        skillUseCase.adicionarSkill(p, 3);
+        skillUseCase.adicionarSkill(p, 4);
 
     }
 }

@@ -12,7 +12,7 @@ public interface SkillService {
 
     List<Skill> listarSkills();
 
-    void AdicionarSkill(ParticipantePrograma participantePrograma, int id);
+    void adicionarSkill(ParticipantePrograma participantePrograma, int id);
 
     void adicionarSkillTrilhaMentoria(TrilhaMentoriaDTO trilhaMentoriaDTO, Skill skill);
 }

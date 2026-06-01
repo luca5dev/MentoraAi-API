@@ -1,5 +1,7 @@
 package app.model.entity;
 
+import app.exception.CampoVazioException;
+import app.exception.SkillDuplicadaException;
 import app.model.enums.NivelSenioridade;
 import app.model.enums.Skill;
 import jakarta.persistence.*;
@@ -19,19 +21,29 @@ public abstract class ParticipantePrograma {
     @Enumerated(EnumType.STRING)
     private NivelSenioridade nivelSenioridade;
 
-    @ElementCollection(targetClass = Skill.class) //Essa anotação permite mapear a lista de enums sem precisar criar uma entidade Skill, o Hibernate cria uma tabela auxiliar automaticamente
+    /*
+     * Essa anotação permite mapear a lista de enums
+     * sem precisar criar uma entidade Skill,
+     * o Hibernate cria uma tabela auxiliar automaticamente
+     */
+    @ElementCollection(targetClass = Skill.class)
     @Enumerated(EnumType.STRING)
     private List<Skill> skills = new ArrayList<>();
 
     private Double valorHora; //Valor hora é o custo por hora do participante, usado para calcular o custo total do programa
-    protected Double horasDedicadas;
+    private Double horasDedicadas;
 
     public ParticipantePrograma() {}
 
     public ParticipantePrograma(String nome, NivelSenioridade nivelSenioridade, List<Skill> skills, Double valorHora, Double horasDedicadas) {
         this.nome = nome;
         this.nivelSenioridade = nivelSenioridade;
-        this.skills = skills;
+        this.skills = new ArrayList<>();
+        if (skills != null) {
+            for (Skill skill : skills) {
+                adicionarSkill(skill);
+            }
+        }
         this.valorHora = valorHora;
         this.horasDedicadas = horasDedicadas;
     }
@@ -66,13 +78,25 @@ public abstract class ParticipantePrograma {
         return skills;
     }
 
-    public void adicionarSkill(Skill skill){ if (!this.skills.contains(skill)) {this.skills.add(skill);} }
+    public void adicionarSkill(Skill skill) {
+        if (skill == null) {
+            throw new CampoVazioException("Skill não pode ser nula.");
+        }
+
+        if (this.skills.contains(skill)) {
+            throw new SkillDuplicadaException("Skill já adicionada.");
+        }
+        this.skills.add(skill);
+    }
 
     public Double getValorHora() {
         return valorHora;
     }
 
     public void setValorHora(Double valorHora) {
+        if (valorHora == null || valorHora <= 0) {
+            throw new CampoVazioException("Valor hora deve ser positivo.");
+        }
         this.valorHora = valorHora;
     }
 
@@ -81,6 +105,9 @@ public abstract class ParticipantePrograma {
     }
 
     public void setHorasDedicadas(Double horasDedicadas) {
+        if (horasDedicadas == null || horasDedicadas <= 0) {
+            throw new CampoVazioException("Horas dedicadas deve ser positivo.");
+        }
         this.horasDedicadas = horasDedicadas;
     }
 

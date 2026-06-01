@@ -2,6 +2,7 @@ package app.service.useCase;
 
 import app.dao.interfaces.ParticipanteDAO;
 import app.dao.TrilhaImpl;
+import app.dao.interfaces.TrilhaDAO;
 import app.exception.MaximoMentoradosAtingidosException;
 import app.model.dto.TrilhaMentoriaDTO;
 import app.model.entity.Mentor;
@@ -13,11 +14,11 @@ import app.service.interfaces.TrilhaService;
 public class TrilhaUseCase implements TrilhaService {
 
     private final ParticipanteDAO participanteDAO;
-    private final TrilhaImpl trilhaDao;
+    private final TrilhaDAO trilhaDAO;
 
-    public TrilhaUseCase(ParticipanteDAO participanteDAO, TrilhaImpl trilhaDao) {
+    public TrilhaUseCase(ParticipanteDAO participanteDAO, TrilhaDAO trilhaDAO) {
         this.participanteDAO = participanteDAO;
-        this.trilhaDao = trilhaDao;
+        this.trilhaDAO = trilhaDAO;
     }
 
     @Override
@@ -36,6 +37,6 @@ public class TrilhaUseCase implements TrilhaService {
         validator.validarSenioridade(trilhaMentoria);
         validator.validarSkills(trilhaMentoria);
 
-        trilhaDao.persist(trilhaMentoria);
+        trilhaDAO.persist(trilhaMentoria);
     }
 }

@@ -11,7 +11,7 @@ import java.util.List;
 public class SkillUseCase implements SkillService {
 
     @Override
-    public Skill buscaSkill(int id){
+    public Skill buscaSkill(int id) {
         for (Skill skill: Skill.values()){
             if (skill.getId() == id){
                 return skill;
@@ -21,13 +21,12 @@ public class SkillUseCase implements SkillService {
     }
 
     @Override
-    public List<Skill> listarSkills(){
-
+    public List<Skill> listarSkills() {
         return List.of(Skill.values());
     }
 
     @Override
-    public void AdicionarSkill(ParticipantePrograma participantePrograma, int id) {
+    public void adicionarSkill(ParticipantePrograma participantePrograma, int id) {
         Skill skill = buscaSkill(id);
         participantePrograma.adicionarSkill(skill);
     }
