@@ -6,11 +6,11 @@ public class ConfirmarContinuar {
         char opcao;
 
         do {
-            System.out.println("Deseja continuar? y/n: ");
+            System.out.println("Deseja continuar? S/N: ");
             opcao = ConsoleInput.lerOpcao();
             opcao = Character.toUpperCase(opcao);
             switch (opcao) {
-                case 'Y':
+                case 'S':
                     return true;
                 case 'N':
                     return false;

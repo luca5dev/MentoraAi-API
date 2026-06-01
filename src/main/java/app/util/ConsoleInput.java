@@ -18,6 +18,17 @@ public class ConsoleInput {
         throw new UnsupportedOperationException("Classe utilitária não pode ser instanciada");
     }
 
+    public static long lerId() {
+        try {
+            long id = sc.nextLong();
+            limpaBuffer();
+            return id;
+        } catch (InputMismatchException e) {
+            limpaBuffer();
+            throw new EntradaInvalidaException("Entrada inválida. Por favor, insira um número inteiro para o ID.");
+        }
+    }
+
     public static int lerNumero() {
         try {
 

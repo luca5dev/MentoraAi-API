@@ -46,7 +46,7 @@ public class MenuPrincipalController {
 
     private void cadastrarTrilha() {
         try {
-            participanteService.listarMentores();
+            participanteService.listarMentoresEmMemoria();
             TrilhaMentoriaDTO dto = CadastroTrilha.cadastrarTrilha();
             trilhaService.cadastrar(dto);
         } catch (ListaVaziaException | LimiteSkillsUltrapassadoException | CampoVazioException e) {

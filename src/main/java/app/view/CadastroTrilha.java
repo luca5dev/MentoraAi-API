@@ -15,8 +15,8 @@ public class CadastroTrilha {
 
         try {
             ConsultaView.consultarMentores();
-            System.out.println("Mentor: ");
-            dto.setIdMentor(ConsoleInput.lerNumero());
+            System.out.print("Mentor: ");
+            dto.setIdMentor(ConsoleInput.lerId());
 
             System.out.print("Digite o nome da trilha: ");
             dto.setNome(ConsoleInput.lerTexto());

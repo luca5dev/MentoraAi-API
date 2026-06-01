@@ -5,10 +5,23 @@ import app.dao.TrilhaImpl;
 import app.model.entity.Mentor;
 import app.model.entity.ParticipantePrograma;
 import app.model.entity.TrilhaMentoria;
+import app.service.interfaces.ParticipanteService;
+import app.service.interfaces.TrilhaService;
 
 import java.util.List;
 
 public class ConsultaView {
+
+    private final ParticipanteService participanteService;
+    private final TrilhaService trilhaService;
+
+    public ConsultaView(ParticipanteService participanteService, TrilhaService trilhaService) {
+        this.participanteService = participanteService;
+        this.trilhaService = trilhaService;
+    }
+
+    publ
+
     public static void consultarParticipantes() {
         List<ParticipantePrograma> participantes = new ParticipanteImpl().listarParticipantes();
 

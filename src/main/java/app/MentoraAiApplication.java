@@ -21,7 +21,7 @@ public class MentoraAiApplication {
         TrilhaDAO trilhaDAO = new TrilhaImpl();
 
         ParticipanteService participanteService = new ParticipanteUseCase(participanteDAO);
-        TrilhaService trilhaService = new TrilhaUseCase(participanteDAO, trilhaDAO);
+        TrilhaService trilhaService = new TrilhaUseCase(participanteService, trilhaDAO);
 
         MenuPrincipalController controller = new MenuPrincipalController(participanteService, trilhaService);
 

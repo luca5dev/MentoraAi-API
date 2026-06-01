@@ -9,7 +9,7 @@ import java.util.List;
 
 public class TrilhaMentoriaDTO {
 
-    private int idMentor;
+    private Long idMentor;
 
     private String nome;
 
@@ -19,25 +19,25 @@ public class TrilhaMentoriaDTO {
 
     private Mentor mentor;
 
-    private List<Mentorado> mentorados = new ArrayList<>();
+    private List<Long> idsMentorados = new ArrayList<>();
 
     public TrilhaMentoriaDTO() {
     }
 
 
-    public TrilhaMentoriaDTO(String nome, Integer duracaoMeses, List<Skill> skills, Mentor mentor, List<Mentorado> mentorados) {
+    public TrilhaMentoriaDTO(String nome, Integer duracaoMeses, List<Skill> skills, Mentor mentor, List<Long> idsMentorados) {
         this.nome = nome;
         this.duracaoHoras = duracaoMeses;
         this.skills = skills;
         this.mentor = mentor;
-        this.mentorados = mentorados;
+        this.idsMentorados = idsMentorados;
     }
 
-    public int getIdMentor() {
+    public Long getIdMentor() {
         return idMentor;
     }
 
-    public void setIdMentor(int idMentor) {
+    public void setIdMentor(Long idMentor) {
         this.idMentor = idMentor;
     }
 
@@ -65,16 +65,16 @@ public class TrilhaMentoriaDTO {
         this.mentor = mentor;
     }
 
-    public List<Mentorado> getMentorados() {
-        return mentorados;
+    public List<Long> getIdsMentorados() {
+        return idsMentorados;
     }
 
     public List<Skill> getSkills() {
         return skills;
     }
 
-    public void addMentorado(Mentorado mentorado){
-        mentorados.add(mentorado);
+    public void addIdMentorado(Long idMentorado){
+        this.idsMentorados.add(idMentorado);
    }
 
 

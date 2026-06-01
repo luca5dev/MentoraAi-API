@@ -1,18 +1,13 @@
 package app.model.factory;
 
-import app.dao.ParticipanteImpl;
-import app.dao.TrilhaImpl;
-import app.exception.ListaVaziaException;
-import app.exception.MaximoMentoradosAtingidosException;
 import app.model.dto.TrilhaMentoriaDTO;
 import app.model.dto.UsuarioCadastroDTO;
 import app.model.entity.Mentor;
 import app.model.entity.Mentorado;
 import app.model.entity.ParticipantePrograma;
 import app.model.entity.TrilhaMentoria;
-import app.view.CadastroParticipante;
-import app.view.CadastroTrilha;
 
+import java.util.List;
 
 public class EntityFactory {
 
@@ -44,13 +39,13 @@ public class EntityFactory {
         }
     }
 
-    public static TrilhaMentoria criarTrilha(TrilhaMentoriaDTO dto, Mentor mentor) {
+    public static TrilhaMentoria criarTrilha(TrilhaMentoriaDTO dto, Mentor mentor, List<Mentorado> mentorados) {
         return new TrilhaMentoria(
                 dto.getNome(),
                 dto.getDuracaoHoras(),
                 mentor,
-                dto.getMentorados(), //Tirei List<Mentorado> mentorados da assinatura do metodo porque esses dados já estão no dto e ficaria redundante.
-                dto.getSkills()      //Mesma coisa aqui, as skills já estão no dto.
+                mentorados,
+                dto.getSkills() //Tirei da assinatura do metodo porque esses dados já estão no dto e ficaria redundante.
         );
     }
 }

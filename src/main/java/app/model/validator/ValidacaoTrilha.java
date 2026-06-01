@@ -18,7 +18,7 @@ public class ValidacaoTrilha {
                 .mapToDouble(Mentorado::getHorasDedicadas)
                 .sum();
 
-        if (totalHoras > 20.0) {
+        if (totalHoras > mentor.getHorasDedicadas()) {
             throw new CargaHorariaExcedidaException ("Carga horária do mentor excedida!");
         }
     }

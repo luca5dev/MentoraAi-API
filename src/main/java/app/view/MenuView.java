@@ -3,22 +3,29 @@ package app.view;
 
 public class MenuView {
     public void exibirOpcoes() {
-        System.out.println("----------------");
-        System.out.println("Menu Principal");
-        System.out.println("----------------");
-        System.out.println("1- Cadastrar Participante");
-        System.out.println("2- Cadastrar trilha de mentoria");
-        System.out.println("3- Consultas");
-        System.out.println("4- Sair");
+        System.out.println("""
+                \n----------------------
+                Menu Principal
+                ----------------------
+                1- Cadastrar Participante
+                2- Cadastrar Trilha
+                3- Consultas
+                4- Sair
+                """);
+        System.out.print("Opção: ");
     }
 
     public void consultas(){
-        System.out.println("----------------");
-        System.out.println("Consultas");
-        System.out.println("----------------");
-        System.out.println("1- Listar Participantes");
-        System.out.println("2- Listar Mentores");
-        System.out.println("3- Listar Mentorados");
-        System.out.println("4- Listar Trilhas");
+        System.out.println("""
+                \n----------------
+                Consultas
+                ----------------
+                
+                1- Listar Participantes
+                2- Listar Mentores
+                3- Listar Mentorados
+                4- Listar Trilhas
+                """);
+        System.out.print("Opção: ");
     }
 }
