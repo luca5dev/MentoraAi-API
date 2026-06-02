@@ -1,8 +1,6 @@
 package app.controller;
 
-import app.exception.CampoVazioException;
-import app.exception.LimiteSkillsUltrapassadoException;
-import app.exception.ListaVaziaException;
+import app.exception.*;
 import app.model.dto.TrilhaMentoriaDTO;
 import app.model.dto.UsuarioCadastroDTO;
 import app.service.interfaces.ParticipanteService;
@@ -10,6 +8,7 @@ import app.service.interfaces.TrilhaService;
 import app.util.ConsoleInput;
 import app.view.CadastroParticipante;
 import app.view.CadastroTrilha;
+import app.view.ConsultaView;
 import app.view.MenuView;
 
 public class MenuPrincipalController {
@@ -19,10 +18,16 @@ public class MenuPrincipalController {
 
     private final ParticipanteService participanteService;
     private final TrilhaService trilhaService;
+    private final ConsultaView consultaView;
+    private final MenuConsultas menuConsultas;
+    private final CadastroTrilha cadastroTrilha;
 
-    public MenuPrincipalController(ParticipanteService participanteService, TrilhaService trilhaService) {
+    public MenuPrincipalController(ParticipanteService participanteService, TrilhaService trilhaService, ConsultaView consultaView) {
         this.participanteService = participanteService;
         this.trilhaService = trilhaService;
+        this.consultaView = consultaView;
+        this.menuConsultas = new MenuConsultas(consultaView);
+        this.cadastroTrilha = new CadastroTrilha(consultaView);
     }
 
     private int lerOpcaoMenu() {
@@ -46,20 +51,21 @@ public class MenuPrincipalController {
 
     private void cadastrarTrilha() {
         try {
-            participanteService.listarMentoresEmMemoria();
-            TrilhaMentoriaDTO dto = CadastroTrilha.cadastrarTrilha();
+            consultaView.consultarMentoresEmMemoria();
+            TrilhaMentoriaDTO dto = cadastroTrilha.cadastrarTrilha();
             trilhaService.cadastrar(dto);
-        } catch (ListaVaziaException | LimiteSkillsUltrapassadoException | CampoVazioException e) {
+        } catch (ListaVaziaException | LimiteSkillsUltrapassadoException | CampoVazioException
+                 | CargaHorariaExcedidaException | SkillIncompativelException | NivelDesproporcionalException
+                | MaximoMentoradosAtingidosException e) {
             System.out.println(e.getMessage());
         }
     }
 
     private void consultar() {
         menu.consultas();
-
+        int opcao = lerOpcaoMenu();
         try {
-            int opcao = lerOpcaoMenu();
-            MenuConsultas.consultar(opcao);
+            menuConsultas.consultar(opcao);
         } catch (CampoVazioException e) {
             System.out.println(e.getMessage());
         }

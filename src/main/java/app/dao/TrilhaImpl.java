@@ -4,31 +4,31 @@ import app.config.JPAUtil;
 import app.dao.interfaces.TrilhaDAO;
 import app.model.entity.TrilhaMentoria;
 import jakarta.persistence.EntityManager;
-import org.hibernate.exception.ConstraintViolationException;
-
 import java.util.List;
 import java.util.Optional;
 
 public class TrilhaImpl implements TrilhaDAO {
 
     @Override
-    public void persist(TrilhaMentoria trilhaMentoria) {
+    public boolean persist(TrilhaMentoria trilhaMentoria) {
         EntityManager em = JPAUtil.factory().createEntityManager();
         try {
             em.getTransaction().begin();
             em.persist(trilhaMentoria);
             em.getTransaction().commit();
-        } catch (ConstraintViolationException e){
+            return true;
+        } catch (RuntimeException e) {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
-            System.out.println("Erro na persistência: " + e.getMessage() + ". Nenhuma alteração foi feita!");
+            Throwable causa = e.getCause() != null ? e.getCause() : e;
+            System.out.println("Erro ao persistir a trilha: " + causa.getMessage());
+            return false;
         } finally {
-            if (em!=null&& em.isOpen()){
+            if (em.isOpen()) {
                 em.close();
             }
         }
-
     }
 
     @Override
@@ -38,13 +38,14 @@ public class TrilhaImpl implements TrilhaDAO {
             em.getTransaction().begin();
             em.merge(trilhaMentoria);
             em.getTransaction().commit();
-        } catch (ConstraintViolationException e){
+        } catch (RuntimeException e) {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
-            System.out.println("Erro na persistência: " + e.getMessage() + ". Nenhuma alteração foi feita!");
+            System.out.println("Erro ao persistir a trilha: "
+                    + (e.getCause() != null ? e.getCause().getMessage() : e.getMessage()));
         } finally {
-            if (em!=null&& em.isOpen()){
+            if (em.isOpen()) {
                 em.close();
             }
         }

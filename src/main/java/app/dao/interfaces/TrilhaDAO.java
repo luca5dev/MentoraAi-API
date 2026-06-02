@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TrilhaDAO {
-    void persist(TrilhaMentoria trilhaMentoria);
+    boolean persist(TrilhaMentoria trilhaMentoria);
 
     void update(TrilhaMentoria trilhaMentoria);
 

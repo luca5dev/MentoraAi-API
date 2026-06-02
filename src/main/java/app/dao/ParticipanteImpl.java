@@ -6,15 +6,11 @@ import app.model.entity.Mentorado;
 import app.model.entity.ParticipantePrograma;
 import app.dao.interfaces.ParticipanteDAO;
 import jakarta.persistence.EntityManager;
-import org.hibernate.exception.ConstraintViolationException;
 
 import java.util.List;
 import java.util.Optional;
 
-import static jakarta.persistence.Persistence.createEntityManagerFactory;
-
 public class ParticipanteImpl implements ParticipanteDAO {
-
 
     @Override
     public void persist(ParticipantePrograma participantePrograma) {
@@ -23,13 +19,14 @@ public class ParticipanteImpl implements ParticipanteDAO {
             em.getTransaction().begin();
             em.persist(participantePrograma);
             em.getTransaction().commit();
-        } catch (ConstraintViolationException e) {
+        } catch (RuntimeException e) {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
-            System.out.println("Erro na persistência" + e.getMessage() + ". Nenhuma alteração foi feita!");
+            System.out.println("Erro ao persistir o participante: "
+                    + (e.getCause() != null ? e.getCause().getMessage() : e.getMessage()));
         } finally {
-            if (em != null && em.isOpen()) {
+            if (em.isOpen()) {
                 em.close();
             }
         }
@@ -42,13 +39,14 @@ public class ParticipanteImpl implements ParticipanteDAO {
             em.getTransaction().begin();
             em.merge(participantePrograma);
             em.getTransaction().commit();
-        } catch (ConstraintViolationException e) {
+        } catch (RuntimeException e) {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
-            System.out.println("Erro na atualização: " + e.getMessage() + ". Nenhuma alteração foi feita!");
+            System.out.println("Erro ao persistir o participante: "
+                    + (e.getCause() != null ? e.getCause().getMessage() : e.getMessage()));
         } finally {
-            if (em != null && em.isOpen()) {
+            if (em.isOpen()) {
                 em.close();
             }
         }
@@ -116,5 +114,4 @@ public class ParticipanteImpl implements ParticipanteDAO {
             }
         }
     }
-
 }

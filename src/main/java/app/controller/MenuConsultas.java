@@ -3,23 +3,27 @@ package app.controller;
 import app.view.ConsultaView;
 
 public class MenuConsultas {
-    public static void consultar(int opcao) {
 
+    private final ConsultaView consultaView;
+
+    public MenuConsultas(ConsultaView consultaView) {
+        this.consultaView = consultaView;
+    }
+
+    public void consultar(int opcao) {
         switch (opcao) {
             case 1:
-               ConsultaView.consultarParticipantes();
+               consultaView.consultarTodosParticipantesEmMemoria();
                 break;
-
             case 2:
-               ConsultaView.consultarMentores();
+               consultaView.consultarMentoresEmMemoria();
                 break;
-
             case 3:
-                ConsultaView.consultarMentorados();
+                consultaView.consultarMentoradosEmMemoria();
                 break;
-
             case 4:
-                ConsultaView.consultarTrilhas();
+                consultaView.consultarTrilhasPersistidas();
+                break;
             default:
                 System.out.println("Opção inválida!");
         }

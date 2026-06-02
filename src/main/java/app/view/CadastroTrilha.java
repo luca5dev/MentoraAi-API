@@ -9,13 +9,19 @@ import app.util.ConsoleInput;
 import java.util.InputMismatchException;
 
 public class CadastroTrilha {
-    public static TrilhaMentoriaDTO cadastrarTrilha() {
-        SkillUseCase skillUseCase = new SkillUseCase();
-        TrilhaMentoriaDTO dto = new TrilhaMentoriaDTO();
 
+    private final ConsultaView consultaView;
+    private final SkillUseCase skillUseCase = new SkillUseCase();
+
+    public CadastroTrilha(ConsultaView consultaView) {
+        this.consultaView = consultaView;
+    }
+
+    public TrilhaMentoriaDTO cadastrarTrilha() {
+        TrilhaMentoriaDTO dto = new TrilhaMentoriaDTO();
         try {
-            ConsultaView.consultarMentores();
-            System.out.print("Mentor: ");
+            consultaView.consultarMentoresEmMemoria();
+            System.out.print("ID do mentor: ");
             dto.setIdMentor(ConsoleInput.lerId());
 
             System.out.print("Digite o nome da trilha: ");

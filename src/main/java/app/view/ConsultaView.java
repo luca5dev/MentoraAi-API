@@ -1,9 +1,10 @@
 package app.view;
 
+import app.controller.MenuConsultas;
 import app.dao.ParticipanteImpl;
 import app.dao.TrilhaImpl;
 import app.model.entity.Mentor;
-import app.model.entity.ParticipantePrograma;
+import app.model.entity.Mentorado;
 import app.model.entity.TrilhaMentoria;
 import app.service.interfaces.ParticipanteService;
 import app.service.interfaces.TrilhaService;
@@ -20,65 +21,70 @@ public class ConsultaView {
         this.trilhaService = trilhaService;
     }
 
-    publ
-
-    public static void consultarParticipantes() {
-        List<ParticipantePrograma> participantes = new ParticipanteImpl().listarParticipantes();
-
-        if (participantes.isEmpty()) {
-            System.out.println("Nenhum participante cadastrado no banco de dados!");
-            return;
-        }
-
-        System.out.println("\n--- LISTA DE PARTICIPANTES ---");
-        for (ParticipantePrograma p : participantes) {
-            System.out.println("ID: " + p.getId() + " | Nome: " + p.getNome() + " | Senioridade: " + p.getNivelSenioridade());
-        }
-        System.out.println("-------------------------------\n");
-    }
-
-    public static void consultarMentores() {
-        List<Mentor> mentores = new ParticipanteImpl().listarMentores();
-
+    public void consultarMentoresEmMemoria() {
+        List<Mentor> mentores = participanteService.listarMentoresEmMemoria();
         if (mentores.isEmpty()) {
-            System.out.println("Nenhum participante cadastrado no banco de dados!");
+            System.out.println("Nenhum mentor cadastrado nesta sessão");
             return;
         }
-
-        System.out.println("\n--- LISTA DE MENTORES ---");
-        for (Mentor m : mentores) {
-            System.out.println("ID: " + m.getId() + " | Nome: " + m.getNome() + " | Senioridade: " + m.getNivelSenioridade());
-        }
-        System.out.println("-------------------------------\n");
+        System.out.println("\n--- Mentores em memória (sessão atual) ---");
+        mentores.forEach(mentor -> System.out.println(
+                "ID temporário: " + mentor.getId()
+                + " | Nome: " + mentor.getNome()
+                + " | Senioridade: " + mentor.getNivelSenioridade()
+                + " | Skills: " + mentor.getSkills()
+                + " | Valor/hora: R$" + mentor.getValorHora()
+        ));
+        System.out.println("-------------------------------------------\n");
     }
 
-    public static void consultarMentorados() {
-        List<Mentor> mentorados = new ParticipanteImpl().listarMentores();
-
+    public void consultarMentoradosEmMemoria() {
+        List<Mentorado> mentorados = participanteService.listarMentoradosEmMemoria();
         if (mentorados.isEmpty()) {
-            System.out.println("Nenhum participante cadastrado no banco de dados!");
+            System.out.println("\nNenhum mentorado cadastrado nesta sessão.\n");
             return;
         }
-
-        System.out.println("\n--- LISTA DE MENTORADOS ---");
-        for (Mentor m : mentorados) {
-            System.out.println("ID: " + m.getId() + " | Nome: " + m.getNome() + " | Senioridade: " + m.getNivelSenioridade());
-        }
-        System.out.println("-------------------------------\n");
+        System.out.println("\n--- Mentorados em memória (sessão atual) ---");
+        mentorados.forEach(mentorado -> System.out.println(
+                "ID temporário: " + mentorado.getId()
+                + " | Nome: " + mentorado.getNome()
+                + " | Senioridade: " + mentorado.getNivelSenioridade()
+                + " | Skills: " +  mentorado.getSkills()
+                + " | Valor/hora: R$" + mentorado.getValorHora()
+                + " | Skills desejadas: " + mentorado.getSkillsDesejadas()
+        ));
+        System.out.println("----------------------------------------\n");
     }
 
-    public static void consultarTrilhas() {
-        List<TrilhaMentoria> trilhas = new TrilhaImpl().listarTrilhas();
+    public void consultarTodosParticipantesEmMemoria() {
+        consultarMentoresEmMemoria();
+        consultarMentoradosEmMemoria();
+    }
 
+    public void consultarTrilhasPersistidas() {
+        List<TrilhaMentoria> trilhas = trilhaService.listarTrilhasPersistidas();
         if (trilhas.isEmpty()) {
-            System.out.println("Nenhuma trilha criada!");
+            System.out.println("\nNenhuma trilha cadastrada no banco de dados.\n");
             return;
         }
+        System.out.println("\n--- Trilhas cadastradas ---");
+        trilhas.forEach(trilha -> {
+                    System.out.println("ID: " + trilha.getId()
+                            + " | Nome: " + trilha.getNomeDaTrilha()
+                            + " | Duração: " + trilha.getDuracaoMeses() + " meses"
+                            + " | Skills da trilha: " + trilha.getSkillsDaTrilha());
 
-        System.out.println("\n--- LISTA DE TRILHAS ---");
-        for (TrilhaMentoria t : trilhas) {
-            System.out.println("ID: " + t.getId() + " | Nome: " + t.getNomeDaTrilha() + " | Mentor: " + t.getMentor() + " | Skill da trilha: " + t.getSkillsDaTrilha());
-        }
-        System.out.println("-------------------------------\n");
+                    Mentor mentor = trilha.getMentor();
+                    if (mentor != null) {
+                        System.out.println("    Mentor: " + mentor.getNome()
+                                + " (" + mentor.getNivelSenioridade() + ")");
+                    }
+                    System.out.println("    Mentorados (" + trilha.getMentorados().size() + "):");
+                    trilha.getMentorados().forEach(mentorado -> System.out.println(
+                            "   - " + mentorado.getNome() + " (" + mentorado.getNivelSenioridade() + ")"
+                    ));
+                    System.out.println();
+                });
+        System.out.println("--------------------------------------\n");
     }
 }

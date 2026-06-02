@@ -1,14 +1,9 @@
 package app.model.entity;
 
-import app.exception.CampoVazioException;
 import app.exception.SkillDuplicadaException;
 import app.model.enums.NivelSenioridade;
 import app.model.enums.Skill;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-
+import jakarta.persistence.*;
 import java.util.List;
 
 @Entity

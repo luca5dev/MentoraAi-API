@@ -3,6 +3,7 @@ package app.model.entity;
 import app.model.enums.Skill;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,15 +16,16 @@ public class TrilhaMentoria {
     private String nomeDaTrilha;
     private Integer duracaoMeses; //Duração do ciclo de mentoria, mencionado nas Premissas da US.
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Mentor mentor; //Muitas trilhas podem ter o mesmo mentor
 
-    @OneToMany
-    private List<Mentorado> mentorados; //Uma trilha possui vários mentorados
+    @OneToMany(cascade = CascadeType.ALL,  orphanRemoval = true)
+    @JoinColumn(name = "trilha_id")
+    private List<Mentorado> mentorados = new ArrayList<>();
 
     @ElementCollection(targetClass = Skill.class)
     @Enumerated(EnumType.STRING)
-    private List<Skill> skillsDaTrilha;
+    private List<Skill> skillsDaTrilha = new ArrayList<>();
 
     public TrilhaMentoria() {}
 

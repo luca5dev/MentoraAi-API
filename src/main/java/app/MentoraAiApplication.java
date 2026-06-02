@@ -10,8 +10,7 @@ import app.service.interfaces.ParticipanteService;
 import app.service.interfaces.TrilhaService;
 import app.service.useCase.ParticipanteUseCase;
 import app.service.useCase.TrilhaUseCase;
-
-import java.util.InputMismatchException;
+import app.view.ConsultaView;
 
 public class MentoraAiApplication {
 
@@ -22,10 +21,14 @@ public class MentoraAiApplication {
 
         ParticipanteService participanteService = new ParticipanteUseCase(participanteDAO);
         TrilhaService trilhaService = new TrilhaUseCase(participanteService, trilhaDAO);
+        ConsultaView consultaView = new ConsultaView(participanteService, trilhaService);
 
-        MenuPrincipalController controller = new MenuPrincipalController(participanteService, trilhaService);
+        MenuPrincipalController controller = new MenuPrincipalController(participanteService, trilhaService, consultaView);
 
         try {
+            //Inicia a demonstração solicitada no AC6 antes do menu interativo
+            new DemonstracaoAutomatica(trilhaService).executar();
+
             controller.iniciaPrograma();
         } finally {
             JPAUtil.fecharFactory();
