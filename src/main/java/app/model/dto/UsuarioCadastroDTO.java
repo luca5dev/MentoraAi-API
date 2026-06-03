@@ -14,18 +14,9 @@ public class UsuarioCadastroDTO {
     private List<Skill> skills = new ArrayList<>();
     private List<Skill> skillsDesejadas = new ArrayList<>();
     private Double valorHora;
-    private Integer cargaHorariaMaxima; //Vamos usar esse limite para validar a regra de negócio de trava de carga horária
-    private Integer maximoMentorados; //Vamos usar esse limite para fixar um número realista de mentorados por mentor
+    private Double horasDedicadas;
 
     public UsuarioCadastroDTO() {
-    }
-
-    public UsuarioCadastroDTO(String nome, NivelSenioridade nivelSenioridade, Double valorHora, Integer cargaHorariaMaxima, Integer maximoMentorados) {
-        this.nome = nome;
-        this.nivelSenioridade = nivelSenioridade;
-        this.valorHora = valorHora;
-        this.cargaHorariaMaxima = cargaHorariaMaxima;
-        this.maximoMentorados = maximoMentorados;
     }
 
     public int getOpcao() {
@@ -76,19 +67,11 @@ public class UsuarioCadastroDTO {
         this.valorHora = valorHora;
     }
 
-    public Integer getCargaHorariaMaxima() {
-        return cargaHorariaMaxima;
+    public Double getHorasDedicadas() {
+        return horasDedicadas;
     }
 
-    public void setCargaHorariaMaxima(Integer cargaHorariaMaxima) {
-        this.cargaHorariaMaxima = cargaHorariaMaxima;
-    }
-
-    public Integer getMaximoMentorados() {
-        return maximoMentorados;
-    }
-
-    public void setMaximoMentorados(Integer maximoMentorados) {
-        this.maximoMentorados = maximoMentorados;
+    public void setHorasDedicadas(Double horasDedicadas) {
+        this.horasDedicadas = horasDedicadas;
     }
 }

@@ -1,7 +1,6 @@
 package app.model.dto;
 
 import app.model.entity.Mentor;
-import app.model.entity.Mentorado;
 import app.model.enums.Skill;
 
 import java.util.ArrayList;
@@ -10,24 +9,17 @@ import java.util.List;
 public class TrilhaMentoriaDTO {
 
     private Long idMentor;
-
     private String nome;
-
-    private Integer duracaoHoras;
-
+    private Integer cicloEmMeses;
     private List<Skill> skills = new ArrayList<>();
-
     private Mentor mentor;
-
     private List<Long> idsMentorados = new ArrayList<>();
 
-    public TrilhaMentoriaDTO() {
-    }
+    public TrilhaMentoriaDTO() {}
 
-
-    public TrilhaMentoriaDTO(String nome, Integer duracaoMeses, List<Skill> skills, Mentor mentor, List<Long> idsMentorados) {
+    public TrilhaMentoriaDTO(String nome, Integer cicloEmMeses, List<Skill> skills, Mentor mentor, List<Long> idsMentorados) {
         this.nome = nome;
-        this.duracaoHoras = duracaoMeses;
+        this.cicloEmMeses = cicloEmMeses;
         this.skills = skills;
         this.mentor = mentor;
         this.idsMentorados = idsMentorados;
@@ -49,12 +41,12 @@ public class TrilhaMentoriaDTO {
         this.nome = nome;
     }
 
-    public Integer getDuracaoHoras() {
-        return duracaoHoras;
+    public Integer getCicloEmMeses() {
+        return cicloEmMeses;
     }
 
-    public void setDuracaoHoras(Integer duracaoHoras) {
-        this.duracaoHoras = duracaoHoras;
+    public void setCicloEmMeses(Integer cicloEmMeses) {
+        this.cicloEmMeses = cicloEmMeses;
     }
 
     public Mentor getMentor() {
@@ -76,6 +68,4 @@ public class TrilhaMentoriaDTO {
     public void addIdMentorado(Long idMentorado){
         this.idsMentorados.add(idMentorado);
    }
-
-
 }

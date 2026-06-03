@@ -42,7 +42,7 @@ public class MenuPrincipalController {
 
     private void cadastrarParticipante() {
         try {
-            UsuarioCadastroDTO dto = CadastroParticipante.cadastrarParticipante();
+            UsuarioCadastroDTO dto = CadastroParticipante.coletarDadosParticipante();
             participanteService.cadastrar(dto);
         } catch (CampoVazioException e) {
             System.out.println(e.getMessage());
@@ -51,7 +51,6 @@ public class MenuPrincipalController {
 
     private void cadastrarTrilha() {
         try {
-            consultaView.consultarMentoresEmMemoria();
             TrilhaMentoriaDTO dto = cadastroTrilha.cadastrarTrilha();
             trilhaService.cadastrar(dto);
         } catch (ListaVaziaException | LimiteSkillsUltrapassadoException | CampoVazioException

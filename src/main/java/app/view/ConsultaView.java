@@ -1,8 +1,5 @@
 package app.view;
 
-import app.controller.MenuConsultas;
-import app.dao.ParticipanteImpl;
-import app.dao.TrilhaImpl;
 import app.model.entity.Mentor;
 import app.model.entity.Mentorado;
 import app.model.entity.TrilhaMentoria;
@@ -71,7 +68,7 @@ public class ConsultaView {
         trilhas.forEach(trilha -> {
                     System.out.println("ID: " + trilha.getId()
                             + " | Nome: " + trilha.getNomeDaTrilha()
-                            + " | Duração: " + trilha.getDuracaoMeses() + " meses"
+                            + " | Duração: " + trilha.getCicloEmMeses() + " meses"
                             + " | Skills da trilha: " + trilha.getSkillsDaTrilha());
 
                     Mentor mentor = trilha.getMentor();

@@ -14,12 +14,12 @@ public class TrilhaMentoria {
     private Long id;
 
     private String nomeDaTrilha;
-    private Integer duracaoMeses; //Duração do ciclo de mentoria, mencionado nas Premissas da US.
+    private Integer cicloEmMeses; //Duração do ciclo de mentoria, mencionado nas Premissas da US.
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Mentor mentor; //Muitas trilhas podem ter o mesmo mentor
 
-    @OneToMany(cascade = CascadeType.ALL,  orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "trilha_id")
     private List<Mentorado> mentorados = new ArrayList<>();
 
@@ -29,9 +29,10 @@ public class TrilhaMentoria {
 
     public TrilhaMentoria() {}
 
-    public TrilhaMentoria(String nomeDaTrilha, Integer duracaoMeses, Mentor mentor, List<Mentorado> mentorados, List<Skill> skillsDaTrilha) {
+    public TrilhaMentoria(String nomeDaTrilha, Integer cicloEmMeses, Mentor mentor,
+                          List<Mentorado> mentorados, List<Skill> skillsDaTrilha) {
         this.nomeDaTrilha = nomeDaTrilha;
-        this.duracaoMeses = duracaoMeses;
+        this.cicloEmMeses = cicloEmMeses;
         this.mentor = mentor;
         this.mentorados = mentorados;
         this.skillsDaTrilha = skillsDaTrilha;
@@ -49,12 +50,12 @@ public class TrilhaMentoria {
         this.nomeDaTrilha = nomeDaTrilha;
     }
 
-    public Integer getDuracaoMeses() {
-        return duracaoMeses;
+    public Integer getCicloEmMeses() {
+        return cicloEmMeses;
     }
 
-    public void setDuracaoMeses(Integer duracaoMeses) {
-        this.duracaoMeses = duracaoMeses;
+    public void setCicloEmMeses(Integer cicloEmMeses) {
+        this.cicloEmMeses = cicloEmMeses;
     }
 
     public Mentor getMentor() {
@@ -89,12 +90,24 @@ public class TrilhaMentoria {
         this.mentorados.add(mentorado);
     }
 
+    public Double calcularCustoMensalTotal() {
+        double custoMentor = mentor.calcularCustoOportunidadeMensal();
+        double custoMentorados = mentorados.stream()
+                .mapToDouble(Mentorado::calcularCustoOportunidadeMensal)
+                .sum();
+        return custoMentor + custoMentorados;
+    }
+
+    public Double calcularCustoTotalDoCiclo() {
+        return calcularCustoMensalTotal() * cicloEmMeses;
+    }
+
     @Override
     public String toString() {
         return "TrilhaMentoria{" +
                 "id=" + id +
                 ", nomeDaTrilha='" + nomeDaTrilha + '\'' +
-                ", duracaoMeses=" + duracaoMeses +
+                ", cicloEmMeses=" + cicloEmMeses +
                 ", mentor=" + mentor +
                 ", skillsDaTrilha=" + skillsDaTrilha +
                 ", mentorados=" + mentorados +

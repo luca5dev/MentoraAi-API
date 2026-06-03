@@ -1,5 +1,6 @@
 package app.service.useCase;
 
+import app.exception.EntradaInvalidaException;
 import app.model.dto.TrilhaMentoriaDTO;
 import app.model.entity.ParticipantePrograma;
 import app.model.enums.Skill;
@@ -17,7 +18,7 @@ public class SkillUseCase implements SkillService {
                 return skill;
             }
         }
-        throw new IllegalArgumentException("Id inválido");
+        throw new EntradaInvalidaException("Id inválido");
     }
 
     @Override

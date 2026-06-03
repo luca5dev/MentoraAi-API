@@ -1,6 +1,7 @@
 package app;
 
 import app.exception.CargaHorariaExcedidaException;
+import app.exception.MaximoMentoradosAtingidosException;
 import app.exception.NivelDesproporcionalException;
 import app.exception.SkillIncompativelException;
 import app.model.entity.Mentor;
@@ -43,12 +44,16 @@ public class DemonstracaoAutomatica {
 
     //Cenário 1: AC2 - Trava de Carga Horária
     private void cenario1_cargaHorariaExcedida() {
-        System.out.println(">> Cenário 1: Carga horária excedida (limite 20h)");
+        System.out.println(">> Cenário 1: Carga horária excedida (limite 20h/mês)");
         Mentor mentor = novoMentor("Ana", NivelSenioridade.SENIOR, List.of(Skill.JAVA, Skill.SPRING));
-        Mentorado mentorado1 = novoMentorado("Bruno", NivelSenioridade.JUNIOR, 15.0, List.of(Skill.JAVA));
-        Mentorado mentorado2 = novoMentorado("Carla", NivelSenioridade.JUNIOR, 15.0, List.of(Skill.JAVA));
+        Mentorado mentorado1 = novoMentorado("Bruno", NivelSenioridade.JUNIOR, 5.0, List.of(Skill.JAVA));
+        Mentorado mentorado2 = novoMentorado("Carla", NivelSenioridade.JUNIOR, 5.0, List.of(Skill.JAVA));
+        Mentorado mentorado3 = novoMentorado("Daniel", NivelSenioridade.JUNIOR, 5.0, List.of(Skill.JAVA));
+        Mentorado mentorado4 = novoMentorado("Erica", NivelSenioridade.JUNIOR, 6.0, List.of(Skill.JAVA));
 
-        TrilhaMentoria trilha = new TrilhaMentoria("Trilha Sobrecarregada", 6, mentor, new ArrayList<>(List.of(mentorado1, mentorado2)),
+        TrilhaMentoria trilha = new TrilhaMentoria("Trilha Sobrecarregada",
+                3, mentor,
+                new ArrayList<>(List.of(mentorado1, mentorado2, mentorado3, mentorado4)),
                 new ArrayList<>(List.of(Skill.JAVA)));
         tentarValidar(trilha);
     }
@@ -57,11 +62,12 @@ public class DemonstracaoAutomatica {
     private void cenario2_skillsIncompativeis() {
         System.out.println(">> Cenário 2: Skills incompatíveis (mentor não tem 70% das skills desejadas)");
         Mentor mentor = novoMentor("Ana", NivelSenioridade.SENIOR, List.of(Skill.JAVA));
-        Mentorado mentorado1 = novoMentorado("Bruno", NivelSenioridade.JUNIOR, 10.0,
+        Mentorado mentorado1 = novoMentorado("Bruno", NivelSenioridade.JUNIOR, 5.0,
                 List.of(Skill.JAVA, Skill.ANGULAR, Skill.REACT, Skill.DOCKER));
 
         TrilhaMentoria trilha = new TrilhaMentoria(
-                "Trilha Skills", 6, mentor, new ArrayList<>(List.of(mentorado1)),
+                "Trilha Skills", 3, mentor,
+                new ArrayList<>(List.of(mentorado1)),
                 new ArrayList<>(List.of(Skill.JAVA, Skill.ANGULAR)));
         tentarValidar(trilha);
     }
@@ -70,10 +76,11 @@ public class DemonstracaoAutomatica {
     private void cenario3_nivelDesproporcional() {
         System.out.println(">> Cenário 3: Nível desproporcional (PLENO, mentorando PLENO)");
         Mentor mentor = novoMentor("Diego", NivelSenioridade.PLENO, List.of(Skill.JAVA, Skill.SPRING));
-        Mentorado mentorado1 = novoMentorado("Eva", NivelSenioridade.PLENO, 10.0, List.of(Skill.JAVA, Skill.SPRING));
+        Mentorado mentorado1 = novoMentorado("Eva", NivelSenioridade.PLENO, 5.0, List.of(Skill.JAVA, Skill.SPRING));
 
         TrilhaMentoria trilha = new TrilhaMentoria(
-                "Trilha Nível", 6, mentor, new ArrayList<>(List.of(mentorado1)),
+                "Trilha Nível", 3, mentor,
+                new ArrayList<>(List.of(mentorado1)),
                 new ArrayList<>(List.of(Skill.JAVA)));
         tentarValidar(trilha);
     }
@@ -84,19 +91,29 @@ public class DemonstracaoAutomatica {
         Mentor mentor = novoMentor("Fabio", NivelSenioridade.SENIOR,
                 List.of(Skill.JAVA, Skill.SPRING, Skill.SQL));
 
-        Mentorado mentorado1 = novoMentorado("Gabi", NivelSenioridade.JUNIOR, 10.0,
+        Mentorado mentorado1 = novoMentorado("Gabi", NivelSenioridade.JUNIOR, 5.0,
                 List.of(Skill.JAVA, Skill.SPRING));
 
+        Mentorado mentorado2 = novoMentorado("Helena", NivelSenioridade.JUNIOR, 5.0,
+                List.of(Skill.JAVA, Skill.SQL));
+
         TrilhaMentoria trilha = new TrilhaMentoria(
-                "Trilha Java Backend", 6, mentor, new ArrayList<>(List.of(mentorado1)),
-                new ArrayList<>(List.of(Skill.JAVA, Skill.SPRING)));
+                "Trilha Java Backend", 3, mentor,
+                new ArrayList<>(List.of(mentorado1, mentorado2)),
+                new ArrayList<>(List.of(Skill.JAVA, Skill.SPRING, Skill.SQL)));
 
         try {
             validador.validarCargaHoraria(trilha);
+            validador.validarQuantidadeMentorados(trilha);
             validador.validarSenioridade(trilha);
             validador.validarSkills(trilha);
 
             System.out.println("Validações passaram. Acionando JPA...");
+            System.out.println("Ciclo da trilha: " + trilha.getCicloEmMeses() + " meses");
+            System.out.println("Carga mensal total prevista: "
+            + trilha.getMentorados().stream().mapToDouble(Mentorado::getHorasDedicadas).sum() + "h");
+            System.out.println("Custo mensal total da trilha: R$" + trilha.calcularCustoMensalTotal());
+            System.out.println("Custo total do ciclo: R$" + trilha.calcularCustoTotalDoCiclo());
             trilhaService.persistirJaValidada(trilha);
         } catch (RuntimeException e) {
             System.out.println("Falha inesperada: " +  e.getMessage() + "\n");
@@ -106,10 +123,12 @@ public class DemonstracaoAutomatica {
     private void tentarValidar(TrilhaMentoria trilha) {
         try {
             validador.validarCargaHoraria(trilha);
+            validador.validarQuantidadeMentorados(trilha);
             validador.validarSenioridade(trilha);
             validador.validarSkills(trilha);
             System.out.println("    (Inesperado) Trilha passou nas validações.\n");
-        } catch (CargaHorariaExcedidaException | SkillIncompativelException | NivelDesproporcionalException e) {
+        } catch (CargaHorariaExcedidaException | SkillIncompativelException | NivelDesproporcionalException |
+                 MaximoMentoradosAtingidosException e) {
             System.out.println(" Exceção tratada: "
             + e.getClass().getSimpleName() + " -> " + e.getMessage() + "\n");
         }
@@ -119,10 +138,9 @@ public class DemonstracaoAutomatica {
         return new Mentor(nome, nivelSenioridade, new ArrayList<>(skills), 150.0);
     }
 
-    private Mentorado novoMentorado(String nome, NivelSenioridade nivelSenioridade, double horas,
+    private Mentorado novoMentorado(String nome, NivelSenioridade nivelSenioridade, double horasDedicadas,
                                     List<Skill> skillsDesejadas) {
-        Mentorado mentorado = new Mentorado(nome, nivelSenioridade, new ArrayList<>(), 80.0, horas,
-                new ArrayList<>(skillsDesejadas));
-        return mentorado;
+
+        return new Mentorado(nome, nivelSenioridade,new ArrayList<>(),80.0, horasDedicadas, new ArrayList<>(skillsDesejadas));
     }
 }

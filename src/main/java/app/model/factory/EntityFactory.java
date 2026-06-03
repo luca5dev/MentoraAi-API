@@ -27,7 +27,7 @@ public class EntityFactory {
                 dto.getNivelSenioridade(),
                 dto.getSkills(),
                 dto.getValorHora(),
-                0.0,
+                dto.getHorasDedicadas(),
                 dto.getSkillsDesejadas()
         );
     }
@@ -42,7 +42,7 @@ public class EntityFactory {
     public static TrilhaMentoria criarTrilha(TrilhaMentoriaDTO dto, Mentor mentor, List<Mentorado> mentorados) {
         return new TrilhaMentoria(
                 dto.getNome(),
-                dto.getDuracaoHoras(),
+                dto.getCicloEmMeses(),
                 mentor,
                 mentorados,
                 dto.getSkills() //Tirei da assinatura do metodo porque esses dados já estão no dto e ficaria redundante.

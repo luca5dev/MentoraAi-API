@@ -1,6 +1,8 @@
 package app.service.useCase;
 
 import app.dao.interfaces.ParticipanteDAO;
+import app.exception.EntradaInvalidaException;
+import app.exception.ParticipanteNaoEncontradoException;
 import app.model.dto.UsuarioCadastroDTO;
 import app.model.entity.Mentor;
 import app.model.entity.Mentorado;
@@ -30,6 +32,8 @@ public class ParticipanteUseCase implements ParticipanteService {
 
     @Override
     public void cadastrar(UsuarioCadastroDTO dto) {
+        validarTipoParticipante(dto);
+
         adicionarSkills.skillBase(dto);
 
         if (dto.getOpcao() == 2) {
@@ -37,14 +41,25 @@ public class ParticipanteUseCase implements ParticipanteService {
         }
 
         ParticipantePrograma participantePrograma = EntityFactory.criarParticipante(dto);
+
         if (participantePrograma instanceof Mentor mentor) {
             mentor.setId(sequenciaMentor++);
             mentoresEmMemoria.add(mentor);
             System.out.println("Mentor: " + mentor.getNome() + " cadastrado em memória (id temporário = " +  mentor.getId() + ").");
-        } else if (participantePrograma instanceof Mentorado mentorado) {
+            return;
+
+        }
+
+        if (participantePrograma instanceof Mentorado mentorado) {
             mentorado.setId(sequenciaMentorado++);
             mentoradosEmMemoria.add(mentorado);
             System.out.println("Mentorado: " + mentorado.getNome() + " cadastrado em memória (id temporário = " + mentorado.getId() + ").");
+        }
+    }
+
+    private void validarTipoParticipante(UsuarioCadastroDTO dto) {
+        if (dto.getOpcao() != 1 && dto.getOpcao() != 2) {
+            throw new EntradaInvalidaException("Opção inválida. Por favor, escolha 1 para Mentor ou 2 para Mentorado.");
         }
     }
 
@@ -61,7 +76,7 @@ public class ParticipanteUseCase implements ParticipanteService {
         return mentoresEmMemoria.stream()
                 .filter(mentor -> id.equals(mentor.getId()))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Mentor não encontrado em memória."));
+                .orElseThrow(() -> new ParticipanteNaoEncontradoException("Mentor não encontrado em memória."));
     }
 
     public List<Mentorado> buscarMentoradosPorIdsTemporarios(List<Long> ids) {

@@ -1,6 +1,7 @@
 package app.model.validator;
 
 import app.exception.CargaHorariaExcedidaException;
+import app.exception.MaximoMentoradosAtingidosException;
 import app.exception.NivelDesproporcionalException;
 import app.exception.SkillIncompativelException;
 import app.model.entity.Mentor;
@@ -19,7 +20,7 @@ public class ValidacaoTrilha {
                 .sum();
 
         if (totalHoras > mentor.getHorasDedicadas()) {
-            throw new CargaHorariaExcedidaException ("Carga horária do mentor excedida!");
+            throw new CargaHorariaExcedidaException ("A soma das horas dos mentorados ultrapassa a capacidade mensal do mentor.");
         }
     }
 
@@ -48,6 +49,14 @@ public class ValidacaoTrilha {
 
         if (invalido) {
             throw new NivelDesproporcionalException("O mentor deve ter senioridade superior a todos os mentorados.");
+        }
+    }
+
+    public void validarQuantidadeMentorados(TrilhaMentoria trilha) {
+        long quantidadeMentorados = trilha.getMentorados().stream().count();
+
+        if (quantidadeMentorados > trilha.getMentor().getMaximoMentorados()) {
+            throw new MaximoMentoradosAtingidosException("Máximo de mentorados atingido para este mentor.");
         }
     }
 }

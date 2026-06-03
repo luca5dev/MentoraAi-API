@@ -1,5 +1,6 @@
 package app.service.useCase;
 
+import app.exception.EntradaInvalidaException;
 import app.model.enums.NivelSenioridade;
 import app.service.interfaces.SenioridadeService;
 
@@ -12,6 +13,6 @@ public class SenioridadeUseCase implements SenioridadeService {
                 return nivel;
             }
         }
-        throw new IllegalArgumentException("Id inválido");
+        throw new EntradaInvalidaException("Id inválido");
     }
 }

@@ -1,7 +1,6 @@
 package app.service.useCase;
 
 import app.dao.interfaces.TrilhaDAO;
-import app.exception.MaximoMentoradosAtingidosException;
 import app.model.dto.TrilhaMentoriaDTO;
 import app.model.entity.Mentor;
 import app.model.entity.Mentorado;
@@ -28,14 +27,11 @@ public class TrilhaUseCase implements TrilhaService {
         Mentor mentor = participanteService.buscarMentorPorIdTemporario(dto.getIdMentor());
         List<Mentorado> mentorados = participanteService.buscarMentoradosPorIdsTemporarios(dto.getIdsMentorados());
 
-        if (mentorados.size() > 4) {
-            throw new MaximoMentoradosAtingidosException("Máximo de 4 mentorados atingido");
-        }
-
         TrilhaMentoria trilhaMentoria = EntityFactory.criarTrilha(dto, mentor, mentorados);
 
         ValidacaoTrilha validator = new ValidacaoTrilha();
         validator.validarCargaHoraria(trilhaMentoria);
+        validator.validarQuantidadeMentorados(trilhaMentoria);
         validator.validarSenioridade(trilhaMentoria);
         validator.validarSkills(trilhaMentoria);
 

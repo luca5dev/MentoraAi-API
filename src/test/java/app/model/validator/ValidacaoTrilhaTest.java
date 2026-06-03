@@ -8,7 +8,6 @@ import app.model.entity.Mentorado;
 import app.model.entity.TrilhaMentoria;
 import app.model.enums.NivelSenioridade;
 import app.model.enums.Skill;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -60,7 +59,7 @@ public class ValidacaoTrilhaTest {
                 List.of(Skill.JAVA, Skill.ANGULAR));
 
         assertEquals("Trilha Java com Angular", trilha.getNomeDaTrilha());
-        assertEquals(2, trilha.getDuracaoMeses(), 0.0001);
+        assertEquals(2, trilha.getCicloEmMeses(), 0.0001);
 
         assertEquals("Osvaldo", trilha.getMentor().getNome());
         assertEquals(NivelSenioridade.SENIOR, trilha.getMentor().getNivelSenioridade());
