@@ -13,6 +13,6 @@ public class SenioridadeUseCase implements SenioridadeService {
                 return nivel;
             }
         }
-        throw new EntradaInvalidaException("Id inválido");
+        throw new EntradaInvalidaException("\nOpção inválida. Tente novamente.\n");
     }
 }

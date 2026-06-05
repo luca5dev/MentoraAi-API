@@ -6,7 +6,6 @@ import app.model.entity.ParticipantePrograma;
 import app.model.enums.Skill;
 import app.service.interfaces.SkillService;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class SkillUseCase implements SkillService {

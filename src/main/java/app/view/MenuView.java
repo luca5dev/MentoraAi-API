@@ -20,7 +20,7 @@ public class MenuView {
                 \n----------------
                 Consultas
                 ----------------
-                
+
                 1- Listar Participantes
                 2- Listar Mentores
                 3- Listar Mentorados

@@ -34,8 +34,9 @@ public class MenuPrincipalController {
         while(true) {
             try {
                 return ConsoleInput.lerNumero();
-            } catch (CampoVazioException e) {
+            } catch (CampoVazioException | EntradaInvalidaException e) {
                 System.out.println(e.getMessage());
+                iniciaPrograma();
             }
         }
     }
@@ -44,8 +45,9 @@ public class MenuPrincipalController {
         try {
             UsuarioCadastroDTO dto = CadastroParticipante.coletarDadosParticipante();
             participanteService.cadastrar(dto);
-        } catch (CampoVazioException e) {
+        } catch (CampoVazioException | EntradaInvalidaException | SkillDuplicadaException e) {
             System.out.println(e.getMessage());
+            cadastrarParticipante();
         }
     }
 
@@ -96,7 +98,7 @@ public class MenuPrincipalController {
                     sair();
                     break;
                 default:
-                    System.out.println("Digite uma opção válida");
+                    System.out.println("\nDigite uma opção válida.");
             }
         }
     }

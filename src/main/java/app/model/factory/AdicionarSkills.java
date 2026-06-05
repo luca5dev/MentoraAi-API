@@ -1,5 +1,7 @@
 package app.model.factory;
 
+import app.exception.EntradaInvalidaException;
+import app.exception.SkillDuplicadaException;
 import app.model.dto.UsuarioCadastroDTO;
 import app.model.enums.Skill;
 import app.service.useCase.SkillUseCase;
@@ -10,28 +12,44 @@ public class AdicionarSkills {
 
     SkillUseCase skillUseCase = new SkillUseCase();
 
-    public UsuarioCadastroDTO skillBase(UsuarioCadastroDTO dto){
+    public UsuarioCadastroDTO skillBase(UsuarioCadastroDTO dto) {
         boolean cadastro = true;
 
-        while (cadastro == true){
-            System.out.println(skillUseCase.listarSkills());
-            System.out.println("Qual deseja adicionar?");
-            Skill skillSelecionada = skillUseCase.buscaSkill(ConsoleInput.lerNumero());
-            dto.adicionarSkill(skillSelecionada);
-            cadastro = ConfirmarContinuar.confirmar();
+        while (cadastro) {
+            try {
+                System.out.println();
+                skillUseCase.listarSkills().forEach(System.out::println);
+                System.out.print("Qual skill deseja adicionar? ");
+
+                int opcao = ConsoleInput.lerNumero();
+                Skill skillSelecionada = skillUseCase.buscaSkill(opcao);
+
+                dto.adicionarSkill(skillSelecionada);
+                cadastro = ConfirmarContinuar.confirmar();
+
+            } catch (EntradaInvalidaException e) {
+                System.out.println(e.getMessage());
+            }
         }
         return dto;
     }
 
-    public UsuarioCadastroDTO skillsParaMentorados(UsuarioCadastroDTO dto){
+    public UsuarioCadastroDTO skillsParaMentorados(UsuarioCadastroDTO dto) {
         boolean cadastro = true;
+        while (cadastro) {
+            try {
+                System.out.println();
+                skillUseCase.listarSkills().forEach(System.out::println);
+                System.out.print("Qual Skill o mentorado deseja aprender?");
 
-        while (cadastro == true){
-            skillUseCase.listarSkills();
-            System.out.print("Qual Skill o mentorado deseja aprender?");
-            Skill skillSelecionada = skillUseCase.buscaSkill(ConsoleInput.lerNumero());
-            dto.adicionarSkillDesejada(skillSelecionada);
-            cadastro = ConfirmarContinuar.confirmar();
+                int opcao = ConsoleInput.lerNumero();
+                Skill skillSelecionada = skillUseCase.buscaSkill(opcao);
+
+                dto.adicionarSkillDesejada(skillSelecionada);
+                cadastro = ConfirmarContinuar.confirmar();
+            } catch (EntradaInvalidaException | SkillDuplicadaException e) {
+                System.out.println(e.getMessage());
+            }
         }
         return dto;
     }

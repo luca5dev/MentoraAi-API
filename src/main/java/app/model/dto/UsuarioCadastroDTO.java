@@ -1,5 +1,6 @@
 package app.model.dto;
 
+import app.exception.SkillDuplicadaException;
 import app.model.enums.NivelSenioridade;
 import app.model.enums.Skill;
 
@@ -47,11 +48,17 @@ public class UsuarioCadastroDTO {
         return skills;
     }
 
-    public void adicionarSkill(Skill skill){
+    public void adicionarSkill(Skill skill) {
+        if (this.skills.contains(skill)) {
+            throw new SkillDuplicadaException("Skill já adicionada.");
+        }
         this.skills.add(skill);
     }
 
-    public void adicionarSkillDesejada(Skill skill){
+    public void adicionarSkillDesejada(Skill skill) {
+        if (this.skillsDesejadas.contains(skill)) {
+            throw new SkillDuplicadaException("Skill já adicionada.");
+        }
         this.skillsDesejadas.add(skill);
     }
 

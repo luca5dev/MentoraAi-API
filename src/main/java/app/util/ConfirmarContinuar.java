@@ -1,24 +1,26 @@
 package app.util;
 
+import app.exception.CampoVazioException;
+
 public class ConfirmarContinuar {
 
-    public static boolean confirmar(){
-        char opcao;
+    public static boolean confirmar() {
+        while (true) {
+            try {
+                System.out.print("Deseja continuar? (S/N): ");
+                char opcao = Character.toUpperCase(ConsoleInput.lerOpcao());
 
-        do {
-            System.out.println("Deseja continuar? S/N: ");
-            opcao = ConsoleInput.lerOpcao();
-            opcao = Character.toUpperCase(opcao);
-            switch (opcao) {
-                case 'S':
+                if (opcao == 'S') {
                     return true;
-                case 'N':
-                    return false;
-                default:
-                    System.out.println("Opção inválida");
-            }
-        } while (opcao != 'N');
-        return false;
-    }
+                }
 
+                if (opcao == 'N') {
+                    return false;
+                }
+                System.out.println("Opção inválida. Digite apenas S ou N.");
+            } catch (CampoVazioException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
 }

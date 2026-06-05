@@ -38,11 +38,11 @@ public class ConsoleInput {
 
         } catch (InputMismatchException e) {
             limpaBuffer();
-            throw new EntradaInvalidaException("Entrada inválida. Por favor, insira um número.");
+            throw new EntradaInvalidaException("\nEntrada inválida. Por favor, insira um valor numérico.\n");
         }
     }
 
-    public static int lerNumeroPositivo() { //Criei para evitar que seja atribuido zero ou horas negativas para a duração da trilha
+    public static int lerNumeroPositivo() {
         int numero = lerNumero();
 
         if (numero <= 0) {
@@ -53,13 +53,12 @@ public class ConsoleInput {
     }
 
     public static Double lerValor() {
-
         try {
             Double valor = sc.nextDouble();
             limpaBuffer();
 
             if (valor <= 0) {
-                throw new ValorDaHoraInvalidoException("O valor do pagamento em horas não pode ser menor ou igual a zero.");
+                throw new ValorDaHoraInvalidoException("O valor informado deve ser maior que zero.");
             }
             return valor;
 
@@ -70,13 +69,12 @@ public class ConsoleInput {
     }
 
     public static char lerOpcao() {
-
         try {
             String entrada = sc.next();
             limpaBuffer();
 
             if (entrada.length() != 1) {
-                throw new CampoVazioException("Digite apenas um caractere válido.");
+                throw new CampoVazioException("Digite um caractere válido.");
             }
 
             char opcao = entrada.charAt(0);
@@ -84,7 +82,6 @@ public class ConsoleInput {
             if (!Character.isLetter(opcao)) {
                 throw new CampoVazioException("Digite apenas letras.");
             }
-
             return opcao;
 
         } catch (NoSuchElementException | IllegalStateException e) {
@@ -94,14 +91,12 @@ public class ConsoleInput {
     }
 
     public static String lerTexto() {
-
         try {
             String entrada = sc.nextLine().trim();
 
             if (entrada.isEmpty()) {
-                throw new CampoVazioException("Este campo não pode estar vazio");
+                throw new CampoVazioException("\nEste campo não pode ser vazio.\n");
             }
-
             return entrada;
 
         } catch (NoSuchElementException | IllegalStateException e) {
