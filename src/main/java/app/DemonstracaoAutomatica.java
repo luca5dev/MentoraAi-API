@@ -140,7 +140,6 @@ public class DemonstracaoAutomatica {
 
     private Mentorado novoMentorado(String nome, NivelSenioridade nivelSenioridade, double horasDedicadas,
                                     List<Skill> skillsDesejadas) {
-
         return new Mentorado(nome, nivelSenioridade,new ArrayList<>(),80.0, horasDedicadas, new ArrayList<>(skillsDesejadas));
     }
 }

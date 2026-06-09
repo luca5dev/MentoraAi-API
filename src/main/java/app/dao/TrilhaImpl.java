@@ -55,8 +55,14 @@ public class TrilhaImpl implements TrilhaDAO {
     public List<TrilhaMentoria> listarTrilhas() {
         EntityManager em = JPAUtil.factory().createEntityManager();
         try {
-            return em.createQuery("SELECT s FROM TrilhaMentoria s ORDER BY s.id ASC", TrilhaMentoria.class)
-                    .getResultList();
+            List<TrilhaMentoria> trilhas = em.createQuery(
+                    "SELECT DISTINCT t FROM TrilhaMentoria t " +
+                            "LEFT JOIN FETCH t.mentor " +
+                            "LEFT JOIN FETCH t.mentorados " +
+                            "ORDER BY t.id ASC",
+                    TrilhaMentoria.class).getResultList();
+            trilhas.forEach(trilha -> trilha.getSkillsDaTrilha().size());
+            return trilhas;
         } finally {
             if (em != null && em.isOpen()) {
                 em.close();

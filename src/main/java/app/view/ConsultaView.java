@@ -73,12 +73,12 @@ public class ConsultaView {
 
                     Mentor mentor = trilha.getMentor();
                     if (mentor != null) {
-                        System.out.println("    Mentor: " + mentor.getNome()
+                        System.out.println("        Mentor: " + mentor.getNome()
                                 + " (" + mentor.getNivelSenioridade() + ")");
                     }
-                    System.out.println("    Mentorados (" + trilha.getMentorados().size() + "):");
+                    System.out.println("        Mentorados (" + trilha.getMentorados().size() + "):");
                     trilha.getMentorados().forEach(mentorado -> System.out.println(
-                            "   - " + mentorado.getNome() + " (" + mentorado.getNivelSenioridade() + ")"
+                            "       - " + mentorado.getNome() + " (" + mentorado.getNivelSenioridade() + ")"
                     ));
                     System.out.println();
                 });
