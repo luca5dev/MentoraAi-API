@@ -27,7 +27,7 @@ public class AdicionarSkills {
                 dto.adicionarSkill(skillSelecionada);
                 cadastro = ConfirmarContinuar.confirmar();
 
-            } catch (EntradaInvalidaException e) {
+            } catch (EntradaInvalidaException | SkillDuplicadaException e) {
                 System.out.println(e.getMessage());
             }
         }
@@ -40,7 +40,7 @@ public class AdicionarSkills {
             try {
                 System.out.println();
                 skillUseCase.listarSkills().forEach(System.out::println);
-                System.out.print("Qual Skill o mentorado deseja aprender?");
+                System.out.print("Qual Skill o mentorado deseja aprender? ");
 
                 int opcao = ConsoleInput.lerNumero();
                 Skill skillSelecionada = skillUseCase.buscaSkill(opcao);

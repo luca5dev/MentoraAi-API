@@ -1,6 +1,7 @@
 package app.service.useCase;
 
 import app.exception.EntradaInvalidaException;
+import app.exception.SkillDuplicadaException;
 import app.model.dto.TrilhaMentoriaDTO;
 import app.model.entity.ParticipantePrograma;
 import app.model.enums.Skill;
@@ -33,6 +34,9 @@ public class SkillUseCase implements SkillService {
 
     @Override
     public void adicionarSkillTrilhaMentoria(TrilhaMentoriaDTO trilhaMentoriaDTO, Skill skill) {
+        if (trilhaMentoriaDTO.getSkills().contains(skill)) {
+            throw new SkillDuplicadaException("Skill já adicionada à trilha");
+        }
         trilhaMentoriaDTO.getSkills().add(skill);
     }
 }
