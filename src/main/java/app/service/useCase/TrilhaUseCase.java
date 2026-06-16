@@ -12,6 +12,7 @@ import app.service.interfaces.ParticipanteService;
 import app.service.interfaces.TrilhaService;
 
 import java.util.List;
+import java.util.Optional;
 
 public class TrilhaUseCase implements TrilhaService {
 
@@ -97,5 +98,20 @@ public class TrilhaUseCase implements TrilhaService {
         boolean ok = trilhaDAO.persist(trilhaMentoria);
         if (ok) System.out.println("Trilha persistida com sucesso!");
         else System.out.println("A persistência falhou.");
+    }
+
+    @Override
+    public Optional<TrilhaMentoria> buscarTrilhaId(long id) {
+        return trilhaDAO.buscarTrilhaId(id);
+    }
+
+    @Override
+    public void editarTrilha(TrilhaMentoria trilhaMentoria) {
+        trilhaDAO.update(trilhaMentoria);
+    }
+
+    @Override
+    public boolean excluirTrilha(long id) {
+        return trilhaDAO.remover(id);
     }
 }

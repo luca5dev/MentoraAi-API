@@ -2,6 +2,7 @@ package app.model.entity;
 
 import app.model.enums.Skill;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +17,8 @@ public class TrilhaMentoria {
     private String nomeDaTrilha;
     private Integer cicloEmMeses; //Duração do ciclo de mentoria, mencionado nas Premissas da US.
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    private Mentor mentor; //Muitas trilhas podem ter o mesmo mentor
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private Mentor mentor;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "trilha_id")

@@ -6,10 +6,7 @@ import app.model.dto.UsuarioCadastroDTO;
 import app.service.interfaces.ParticipanteService;
 import app.service.interfaces.TrilhaService;
 import app.util.ConsoleInput;
-import app.view.CadastroParticipante;
-import app.view.CadastroTrilha;
-import app.view.ConsultaView;
-import app.view.MenuView;
+import app.view.*;
 
 public class MenuPrincipalController {
 
@@ -21,6 +18,8 @@ public class MenuPrincipalController {
     private final ConsultaView consultaView;
     private final MenuConsultas menuConsultas;
     private final CadastroTrilha cadastroTrilha;
+    private final GerenciarTrilha gerenciarTrilha;
+    private final GerenciarParticipante gerenciarParticipante;
 
     public MenuPrincipalController(ParticipanteService participanteService, TrilhaService trilhaService, ConsultaView consultaView) {
         this.participanteService = participanteService;
@@ -28,6 +27,8 @@ public class MenuPrincipalController {
         this.consultaView = consultaView;
         this.menuConsultas = new MenuConsultas(consultaView);
         this.cadastroTrilha = new CadastroTrilha(consultaView);
+        this.gerenciarTrilha = new GerenciarTrilha(trilhaService, consultaView);
+        this.gerenciarParticipante = new GerenciarParticipante(participanteService, consultaView);
     }
 
     private int lerOpcaoMenu() {
@@ -63,12 +64,42 @@ public class MenuPrincipalController {
     }
 
     private void consultar() {
-        menu.consultas();
-        int opcao = lerOpcaoMenu();
-        try {
-            menuConsultas.consultar(opcao);
-        } catch (CampoVazioException e) {
-            System.out.println(e.getMessage());
+        boolean continuarConsultando = true;
+        while (continuarConsultando) {
+            menu.consultas();
+            int opcao = lerOpcaoMenu();
+            try {
+                continuarConsultando = menuConsultas.consultar(opcao);
+            } catch (CampoVazioException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    private void gerenciar() {
+        boolean continuar = true;
+        while (continuar) {
+            menu.gerenciar();
+            int opcao = lerOpcaoMenu();
+            switch (opcao) {
+                case 1:
+                    gerenciarTrilha.editarTrilha();
+                    break;
+                case 2:
+                    gerenciarTrilha.excluirTrilha();
+                    break;
+                case 3:
+                    gerenciarParticipante.editarParticipante();
+                    break;
+                case 4:
+                    gerenciarParticipante.excluirParticipante();
+                    break;
+                case 0:
+                    continuar = false;
+                    break;
+                default:
+                    System.out.println("Opção inválida!");
+            }
         }
     }
 
@@ -95,6 +126,9 @@ public class MenuPrincipalController {
                     consultar();
                     break;
                 case 4:
+                    gerenciar();
+                    break;
+                case 5:
                     sair();
                     break;
                 default:

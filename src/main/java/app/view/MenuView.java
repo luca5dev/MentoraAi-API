@@ -10,21 +10,37 @@ public class MenuView {
                 1- Cadastrar Participante
                 2- Cadastrar Trilha
                 3- Consultas
-                4- Sair
+                4- Gerenciar (Editar/Excluir)
+                5- Sair
                 """);
         System.out.print("Opção: ");
     }
 
-    public void consultas(){
+    public void consultas() {
         System.out.println("""
                 \n----------------
                 Consultas
                 ----------------
 
-                1- Listar Participantes
+                1- Listar todos Participantes
                 2- Listar Mentores
                 3- Listar Mentorados
                 4- Listar Trilhas
+                0- Voltar ao Menu Principal
+                """);
+        System.out.print("Opção: ");
+    }
+
+    public void gerenciar() {
+        System.out.println("""
+                \n------------------------
+                Gerenciar (Editar/Excluir)
+                ------------------------
+                1- Editar Trilha
+                2- Excluir Trilha
+                3- Editar Participante (memória)
+                4- Excluir Participante (memória)
+                0- Voltar ao Menu Principal
                 """);
         System.out.print("Opção: ");
     }

@@ -76,4 +76,33 @@ public class TrilhaImpl implements TrilhaDAO {
        Optional<TrilhaMentoria> trilhaMentoria = Optional.ofNullable(em.find(TrilhaMentoria.class, id));
        return trilhaMentoria;
     }
+
+    @Override
+    public boolean remover(Long id) {
+        EntityManager em = JPAUtil.factory().createEntityManager();
+        try {
+            em.getTransaction().begin();
+
+            TrilhaMentoria trilhaMentoria = em.find(TrilhaMentoria.class, id);
+            if (trilhaMentoria == null) {
+                em.getTransaction().rollback();
+                return false;
+            }
+            em.remove(trilhaMentoria);
+
+            em.getTransaction().commit();
+            return true;
+        } catch (RuntimeException e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            Throwable causa = e.getCause() != null ? e.getCause() : e;
+            System.out.println("Erro ao remover a trilha: " + causa.getMessage());
+            return false;
+        } finally {
+            if (em.isOpen()) {
+                em.close();
+            }
+        }
+    }
 }

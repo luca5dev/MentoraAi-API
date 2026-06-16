@@ -10,7 +10,7 @@ public class MenuConsultas {
         this.consultaView = consultaView;
     }
 
-    public void consultar(int opcao) {
+    public boolean consultar(int opcao) {
         switch (opcao) {
             case 1:
                consultaView.consultarTodosParticipantesEmMemoria();
@@ -24,8 +24,11 @@ public class MenuConsultas {
             case 4:
                 consultaView.consultarTrilhasPersistidas();
                 break;
+            case 0:
+                return false;
             default:
                 System.out.println("Opção inválida!");
         }
+        return true;
     }
 }

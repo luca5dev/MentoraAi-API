@@ -11,6 +11,8 @@ public interface TrilhaDAO {
 
     void update(TrilhaMentoria trilhaMentoria);
 
+    boolean remover(Long id);
+
     List<TrilhaMentoria> listarTrilhas();
 
     Optional<TrilhaMentoria> buscarTrilhaId(long id);

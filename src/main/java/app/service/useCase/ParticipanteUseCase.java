@@ -91,4 +91,31 @@ public class ParticipanteUseCase implements ParticipanteService {
         sequenciaMentor = 1L;
         sequenciaMentorado = 1L;
     }
+
+    @Override
+    public void editarNomeMentorEmMemoria(Long id, String novoNome) {
+        Mentor mentor = buscarMentorPorIdTemporario(id);
+        mentor.setNome(novoNome);
+        System.out.println("Nome do mentor atualizado para: " + mentor.getNome());
+    }
+
+    @Override
+    public void editarNomeMentoradoEmMemoria(Long id, String novoNome) {
+        Mentorado mentorado = mentoradosEmMemoria.stream()
+                .filter(m -> id.equals(m.getId()))
+                .findFirst()
+                .orElseThrow(() -> new ParticipanteNaoEncontradoException("Mentorado não encontrado em memória."));
+        mentorado.setNome(novoNome);
+        System.out.println("Nome do mentorado atualizado para: " + mentorado.getNome());
+    }
+
+    @Override
+    public boolean removerMentorEmMemoria(Long id) {
+        return mentoresEmMemoria.removeIf(mentor -> id.equals(mentor.getId()));
+    }
+
+    @Override
+    public boolean removerMentoradoEmMemoria(Long id) {
+        return mentoradosEmMemoria.removeIf(mentorado -> id.equals(mentorado.getId()));
+    }
 }
