@@ -6,6 +6,7 @@ import app.model.dto.UsuarioCadastroDTO;
 import app.service.interfaces.ParticipanteService;
 import app.service.interfaces.TrilhaService;
 import app.util.ConsoleInput;
+import app.util.ConsoleUI;
 import app.view.*;
 
 public class MenuPrincipalController {
@@ -37,29 +38,58 @@ public class MenuPrincipalController {
                 return ConsoleInput.lerNumero();
             } catch (CampoVazioException | EntradaInvalidaException e) {
                 System.out.println(e.getMessage());
-                iniciaPrograma();
             }
         }
     }
 
     private void cadastrarParticipante() {
-        try {
-            UsuarioCadastroDTO dto = CadastroParticipante.coletarDadosParticipante();
-            participanteService.cadastrar(dto);
-        } catch (CampoVazioException | EntradaInvalidaException | SkillDuplicadaException e) {
-            System.out.println(e.getMessage());
-            cadastrarParticipante();
+        boolean cadastro = false;
+        while (!cadastro) {
+            try {
+                UsuarioCadastroDTO dto = CadastroParticipante.coletarDadosParticipante();
+                participanteService.cadastrar(dto);
+                cadastro = true;
+            } catch (CampoVazioException | EntradaInvalidaException | SkillDuplicadaException e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 
     private void cadastrarTrilha() {
         try {
             TrilhaMentoriaDTO dto = cadastroTrilha.cadastrarTrilha();
+            if (dto == null) {
+                return;
+            }
             trilhaService.cadastrar(dto);
-        } catch (ListaVaziaException | LimiteSkillsUltrapassadoException | CampoVazioException
-                 | CargaHorariaExcedidaException | SkillIncompativelException | NivelDesproporcionalException
-                | MaximoMentoradosAtingidosException e) {
-            System.out.println(e.getMessage());
+        } catch (SkillIncompativelException e) {
+            System.out.println(ConsoleUI.erro(e.getMessage()));
+            System.out.println("""
+                    Como ajustar:
+                    - Edite as skills desejadas dos mentorados (menu Gerenciar), ou
+                    - Cadastre/escolha um mentor que domine pelo menos 70% das skills desejadas.
+                    """);
+        } catch (CargaHorariaExcedidaException e) {
+            System.out.println(ConsoleUI.erro(e.getMessage()));
+            System.out.println("""
+                    Como ajustar:
+                    - Reduza a quantidade de mentorados na trilha, ou
+                    - Diminua as horas dedicadas dos mentorados.
+                    """);
+        } catch (NivelDesproporcionalException e) {
+            System.out.println(ConsoleUI.erro(e.getMessage()));
+            System.out.println("""
+                    Como ajustar:
+                    - Escolha um mentor com senioridade SUPERIOR à de todos os mentorados.
+                    """);
+        } catch (MaximoMentoradosAtingidosException e) {
+            System.out.println(ConsoleUI.erro(e.getMessage()));
+            System.out.println("""
+                    Como ajustar:
+                    - Reduza a quantidade de mentorados para respeitar o limite do mentor.
+                    """);
+        } catch (ListaVaziaException | LimiteSkillsUltrapassadoException | CampoVazioException e) {
+            System.out.println(ConsoleUI.erro(e.getMessage()));
         }
     }
 

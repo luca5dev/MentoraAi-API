@@ -45,7 +45,7 @@ public class ParticipanteUseCase implements ParticipanteService {
         if (participantePrograma instanceof Mentor mentor) {
             mentor.setId(sequenciaMentor++);
             mentoresEmMemoria.add(mentor);
-            System.out.println("Mentor: " + mentor.getNome() + " cadastrado em memória (id temporário = " +  mentor.getId() + ").");
+            System.out.println("\nMentor: " + mentor.getNome() + " cadastrado em memória (id temporário = " +  mentor.getId() + ").");
             return;
 
         }
@@ -53,7 +53,7 @@ public class ParticipanteUseCase implements ParticipanteService {
         if (participantePrograma instanceof Mentorado mentorado) {
             mentorado.setId(sequenciaMentorado++);
             mentoradosEmMemoria.add(mentorado);
-            System.out.println("Mentorado: " + mentorado.getNome() + " cadastrado em memória (id temporário = " + mentorado.getId() + ").");
+            System.out.println("\nMentorado: " + mentorado.getNome() + " cadastrado em memória (id temporário = " + mentorado.getId() + ").");
         }
     }
 

@@ -73,12 +73,31 @@ public class TrilhaImpl implements TrilhaDAO {
     @Override
     public Optional<TrilhaMentoria> buscarTrilhaId(long id) {
        EntityManager em = JPAUtil.factory().createEntityManager();
-       Optional<TrilhaMentoria> trilhaMentoria = Optional.ofNullable(em.find(TrilhaMentoria.class, id));
-       return trilhaMentoria;
+       try {
+           TrilhaMentoria trilhaMentoria = em.createQuery(
+                   "SELECT t FROM TrilhaMentoria t " +
+                           "LEFT JOIN FETCH t.mentor " +
+                           "LEFT JOIN FETCH t.mentorados " +
+                           "WHERE t.id = :id",
+                   TrilhaMentoria.class)
+                   .setParameter("id", id)
+                   .getResultStream()
+                   .findFirst()
+                   .orElse(null);
+
+           if (trilhaMentoria != null) {
+               trilhaMentoria.getSkillsDaTrilha().size();
+           }
+           return Optional.ofNullable(trilhaMentoria);
+       } finally {
+           if (em.isOpen()) {
+               em.close();
+           }
+       }
     }
 
     @Override
-    public boolean remover(Long id) {
+    public boolean remover(long id) {
         EntityManager em = JPAUtil.factory().createEntityManager();
         try {
             em.getTransaction().begin();

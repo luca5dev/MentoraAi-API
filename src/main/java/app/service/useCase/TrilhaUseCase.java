@@ -10,6 +10,7 @@ import app.model.factory.EntityFactory;
 import app.model.validator.ValidacaoTrilha;
 import app.service.interfaces.ParticipanteService;
 import app.service.interfaces.TrilhaService;
+import app.util.ConsoleUI;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,14 +34,15 @@ public class TrilhaUseCase implements TrilhaService {
         dto.setSkills(skillsDaTrilha);
 
         TrilhaMentoria trilhaMentoria = EntityFactory.criarTrilha(dto, mentor, mentorados);
-        System.out.println("Skills que serão ensinadas nesta trilha:");
-        trilhaMentoria.getSkillsDaTrilha().forEach(skill -> System.out.println("- " + skill));
 
         ValidacaoTrilha validator = new ValidacaoTrilha();
         validator.validarCargaHoraria(trilhaMentoria);
         validator.validarQuantidadeMentorados(trilhaMentoria);
         validator.validarSenioridade(trilhaMentoria);
         validator.validarSkills(trilhaMentoria);
+
+        System.out.println("Skills que serão ensinadas nesta trilha:");
+        trilhaMentoria.getSkillsDaTrilha().forEach(skill -> System.out.println("- " + skill));
 
         mentor.setId(null); // Limpa o ID temporário antes de persistir no banco para não dar conflito
         mentorados.forEach(mentorado -> mentorado.setId(null));
@@ -50,7 +52,7 @@ public class TrilhaUseCase implements TrilhaService {
             participanteService.limparMemoriaAposPersistencia();
             imprimirResumoTrilha(trilhaMentoria);
         } else {
-            System.out.println("A Trilha NÃO foi salva no banco de dados. Os dados foram mantidos em memória para você tentar novamente.");
+            System.out.println(ConsoleUI.erro("A Trilha NÃO foi salva no banco de dados. Os dados foram mantidos em memória para você tentar novamente."));
         }
     }
 
@@ -63,8 +65,8 @@ public class TrilhaUseCase implements TrilhaService {
     }
 
     private void imprimirResumoTrilha(TrilhaMentoria trilhaMentoria) {
-        System.out.println("\nTrilha persistida com sucesso!");
-        System.out.println("--------------------------------------------------");
+        System.out.println("\n" + ConsoleUI.sucesso("Trilha persistida com sucesso!"));
+        ConsoleUI.separador();
         System.out.println("Nome da trilha: " + trilhaMentoria.getNomeDaTrilha());
         System.out.println("Duração: " + trilhaMentoria.getCicloEmMeses() + " meses");
 
@@ -83,10 +85,10 @@ public class TrilhaUseCase implements TrilhaService {
         System.out.println("\nHabilidades que serão ensinadas:");
         trilhaMentoria.getSkillsDaTrilha().forEach(skill -> System.out.println("- " + skill));
 
-        System.out.printf("%nCusto de oportunidade mensal: R$ %.2f%n", trilhaMentoria.calcularCustoMensalTotal());
-        System.out.printf("Custo de oportunidade total do ciclo: R$ %.2f%n", trilhaMentoria.calcularCustoTotalDoCiclo());
+        System.out.println("\nCusto de oportunidade mensal: " + ConsoleUI.moeda(trilhaMentoria.calcularCustoMensalTotal()));
+        System.out.println("Custo de oportunidade total do ciclo: " + ConsoleUI.moeda(trilhaMentoria.calcularCustoTotalDoCiclo()));
 
-        System.out.println("--------------------------------------------------\n");
+        ConsoleUI.separador();
     }
 
     @Override
@@ -96,8 +98,8 @@ public class TrilhaUseCase implements TrilhaService {
 
     public void persistirJaValidada(TrilhaMentoria trilhaMentoria) {
         boolean ok = trilhaDAO.persist(trilhaMentoria);
-        if (ok) System.out.println("Trilha persistida com sucesso!");
-        else System.out.println("A persistência falhou.");
+        if (ok) System.out.println(ConsoleUI.sucesso("Trilha persistida com sucesso!"));
+        else System.out.println(ConsoleUI.erro("A persistência falhou."));
     }
 
     @Override

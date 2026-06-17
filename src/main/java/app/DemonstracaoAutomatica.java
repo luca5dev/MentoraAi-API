@@ -11,6 +11,7 @@ import app.model.enums.NivelSenioridade;
 import app.model.enums.Skill;
 import app.model.validator.ValidacaoTrilha;
 import app.service.interfaces.TrilhaService;
+import app.util.ConsoleUI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,18 +35,18 @@ public class DemonstracaoAutomatica {
     public void executar() {
         System.out.println("========== AC6: DEMONSTRAÇÃO AUTOMÁTICA ==========\n");
 
-        cenario1_cargaHorariaExcedida();
+        TrilhaMentoria trilhaInvalida = cenario1_cargaHorariaExcedida();
         cenario2_skillsIncompativeis();
         cenario3_nivelDesproporcional();
-        cenario4_trilhaValidaPersistida();
+        cenario4_trilhaValidaPersistida(trilhaInvalida);
 
         System.out.println("\n========== FIM DA DEMONSTRAÇÃO AUTOMÁTICA ==========");
     }
 
     //Cenário 1: AC2 - Trava de Carga Horária
-    private void cenario1_cargaHorariaExcedida() {
+    private TrilhaMentoria cenario1_cargaHorariaExcedida() {
         System.out.println(">> Cenário 1: Carga horária excedida (limite 20h/mês)");
-        Mentor mentor = novoMentor("Ana", NivelSenioridade.SENIOR, List.of(Skill.JAVA, Skill.SPRING));
+        Mentor mentor = novoMentor("Ana", NivelSenioridade.SENIOR, List.of(Skill.JAVA, Skill.SPRING, Skill.SQL));
         Mentorado mentorado1 = novoMentorado("Bruno", NivelSenioridade.JUNIOR, 5.0, List.of(Skill.JAVA));
         Mentorado mentorado2 = novoMentorado("Carla", NivelSenioridade.JUNIOR, 5.0, List.of(Skill.JAVA));
         Mentorado mentorado3 = novoMentorado("Daniel", NivelSenioridade.JUNIOR, 5.0, List.of(Skill.JAVA));
@@ -56,6 +57,7 @@ public class DemonstracaoAutomatica {
                 new ArrayList<>(List.of(mentorado1, mentorado2, mentorado3, mentorado4)),
                 new ArrayList<>(List.of(Skill.JAVA)));
         tentarValidar(trilha);
+        return trilha;
     }
 
     //Cenário 2: AC3 - Auditoria de Pareamento Técnico
@@ -85,38 +87,45 @@ public class DemonstracaoAutomatica {
         tentarValidar(trilha);
     }
 
-    //Cenário 4: Trilha válida + persistência no banco
-    private void cenario4_trilhaValidaPersistida() {
-        System.out.println(">> Cenário 4: Trilha válida e persistida no banco");
-        Mentor mentor = novoMentor("Fabio", NivelSenioridade.SENIOR,
-                List.of(Skill.JAVA, Skill.SPRING, Skill.SQL));
+    //Cenário 4: Trilha válida. Pega a trilha que falhou no cenário 1, ajusta e persiste via JPA
+    private void cenario4_trilhaValidaPersistida(TrilhaMentoria trilhaInvalida) {
+        System.out.println(">> Cenário 4: Ajuste dos dados da trilha inválida e persistência");
 
-        Mentorado mentorado1 = novoMentorado("Gabi", NivelSenioridade.JUNIOR, 5.0,
-                List.of(Skill.JAVA, Skill.SPRING));
+        double cargaHorariaAntes = trilhaInvalida.getMentorados().stream()
+                .mapToDouble(Mentorado::getHorasDedicadas).sum();
+        System.out.println("Carga mensal ANTES do ajuste: " + ConsoleUI.horas(cargaHorariaAntes) + " (acima do limite de 20h)");
 
-        Mentorado mentorado2 = novoMentorado("Helena", NivelSenioridade.JUNIOR, 5.0,
-                List.of(Skill.JAVA, Skill.SQL));
-
-        TrilhaMentoria trilha = new TrilhaMentoria(
-                "Trilha Java Backend", 3, mentor,
-                new ArrayList<>(List.of(mentorado1, mentorado2)),
-                new ArrayList<>(List.of(Skill.JAVA, Skill.SPRING, Skill.SQL)));
+        List<Mentorado> mentorados = trilhaInvalida.getMentorados();
+        while (mentorados.stream().mapToDouble(Mentorado::getHorasDedicadas).sum() > 20.0
+            && !mentorados.isEmpty()) {
+    Mentorado removido = mentorados.remove(mentorados.size() -1);
+            System.out.println("Ajustando: removendo mentorado \"" + removido.getNome()
+            + "\"(" + ConsoleUI.horas(removido.getHorasDedicadas()) +")");
+            }
+        double cargaHorariaDepois = mentorados.stream()
+                .mapToDouble(Mentorado::getHorasDedicadas).sum();
+        System.out.println("Carga mensal DEPOIS do ajuste: " + ConsoleUI.horas(cargaHorariaDepois) + " (dentro do limite de 20h)");
 
         try {
-            validador.validarCargaHoraria(trilha);
-            validador.validarQuantidadeMentorados(trilha);
-            validador.validarSenioridade(trilha);
-            validador.validarSkills(trilha);
+            validador.validarCargaHoraria(trilhaInvalida);
+            validador.validarQuantidadeMentorados(trilhaInvalida);
+            validador.validarSenioridade(trilhaInvalida);
+            validador.validarSkills(trilhaInvalida);
 
-            System.out.println("Validações passaram. Acionando JPA...");
-            System.out.println("Ciclo da trilha: " + trilha.getCicloEmMeses() + " meses");
-            System.out.println("Carga mensal total prevista: "
-            + trilha.getMentorados().stream().mapToDouble(Mentorado::getHorasDedicadas).sum() + "h");
-            System.out.println("Custo mensal total da trilha: R$" + trilha.calcularCustoMensalTotal());
-            System.out.println("Custo total do ciclo: R$" + trilha.calcularCustoTotalDoCiclo());
-            trilhaService.persistirJaValidada(trilha);
+            System.out.println("Validações passaram após o ajuste. Acionando JPA...");
+            ConsoleUI.cabecalho("Dados da trilha:");
+            System.out.println("Nome: " + trilhaInvalida.getNomeDaTrilha());
+            System.out.println("Duração: " + trilhaInvalida.getCicloEmMeses() + " meses.");
+            System.out.println("Skills da ensinadas: " + trilhaInvalida.getSkillsDaTrilha());
+            System.out.println("Mentor: " + trilhaInvalida.getMentor().getNome() + "-> " + trilhaInvalida.getMentor().getNivelSenioridade());
+            System.out.println("Carga horária mensal prevista: " + ConsoleUI.horas(cargaHorariaDepois));
+            System.out.println("Custo mensal previsto: " + ConsoleUI.moeda(trilhaInvalida.calcularCustoMensalTotal()));
+            System.out.println("Custo total do ciclo completo: " + ConsoleUI.moeda(trilhaInvalida.calcularCustoTotalDoCiclo()));
+            ConsoleUI.separador();
+
+            trilhaService.persistirJaValidada(trilhaInvalida);
         } catch (RuntimeException e) {
-            System.out.println("Falha inesperada: " +  e.getMessage() + "\n");
+            System.out.println("Falha inesperada após ajuste: " + e.getMessage() + "\n");
         }
     }
 

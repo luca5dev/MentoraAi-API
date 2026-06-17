@@ -6,6 +6,7 @@ import app.exception.ParticipanteNaoEncontradoException;
 import app.service.interfaces.ParticipanteService;
 import app.util.ConfirmarContinuar;
 import app.util.ConsoleInput;
+import app.util.ConsoleUI;
 
 public class GerenciarParticipante {
 
@@ -18,8 +19,8 @@ public class GerenciarParticipante {
     }
 
     public void editarParticipante() {
+        ConsoleUI.cabecalho("\n--- Editar Participante (memória) ---");
         System.out.println("""
-                \n--- Editar Participante (memória) ---
                 1- Editar Mentor
                 2- Editar Mentorado
                 0- Voltar
@@ -66,7 +67,7 @@ public class GerenciarParticipante {
         System.out.print("Digite o ID temporário do mentorado que deseja editar: ");
         long id = ConsoleInput.lerId();
 
-        System.out.println("Novo nome do mentorado: ");
+        System.out.print("Novo nome do mentorado: ");
         try {
             String novoNome = ConsoleInput.lerTexto();
             participanteService.editarNomeMentoradoEmMemoria(id, novoNome);
@@ -76,8 +77,8 @@ public class GerenciarParticipante {
     }
 
     public void excluirParticipante() {
+        ConsoleUI.cabecalho("\n--- Excluir Participante (memória) ---");
         System.out.println("""
-                \n--- Excluir Participante (memória) ---
                 1- Excluir Mentor
                 2- Excluir Mentorado
                 0- Voltar
@@ -114,9 +115,9 @@ public class GerenciarParticipante {
 
         boolean removido = participanteService.removerMentorEmMemoria(id);
         if (removido) {
-            System.out.println("Mentor removido com sucesso!");
+            System.out.println(ConsoleUI.sucesso("Mentor removido com sucesso!"));
         } else {
-            System.out.println("Mentor não encontrado com o ID informado.");
+            System.out.println(ConsoleUI.erro("Mentor não encontrado com o ID informado."));
         }
     }
 
@@ -136,9 +137,9 @@ public class GerenciarParticipante {
 
         boolean removido = participanteService.removerMentoradoEmMemoria(id);
         if (removido) {
-            System.out.println("Mentorado removido da memória com sucesso!");
+            System.out.println(ConsoleUI.sucesso("Mentorado removido da memória com sucesso!"));
         } else {
-            System.out.println("Mentorado não encontrado com o ID informado.");
+            System.out.println(ConsoleUI.erro("Mentorado não encontrado com o ID informado."));
         }
     }
 

@@ -5,6 +5,7 @@ import app.model.entity.Mentorado;
 import app.model.entity.TrilhaMentoria;
 import app.service.interfaces.ParticipanteService;
 import app.service.interfaces.TrilhaService;
+import app.util.ConsoleUI;
 
 import java.util.List;
 
@@ -18,39 +19,46 @@ public class ConsultaView {
         this.trilhaService = trilhaService;
     }
 
+    public boolean existemParticipantesParaTrilha() {
+        return !participanteService.listarMentoresEmMemoria().isEmpty()
+                && !participanteService.listarMentoradosEmMemoria().isEmpty();
+    }
+
     public void consultarMentoresEmMemoria() {
         List<Mentor> mentores = participanteService.listarMentoresEmMemoria();
         if (mentores.isEmpty()) {
-            System.out.println("Nenhum mentor cadastrado nesta sessão");
+            System.out.println("\nNenhum mentor cadastrado nesta sessão");
             return;
         }
-        System.out.println("\n--- Mentores em memória (sessão atual) ---");
-        mentores.forEach(mentor -> System.out.println(
-                "ID temporário: " + mentor.getId()
-                + " | Nome: " + mentor.getNome()
-                + " | Senioridade: " + mentor.getNivelSenioridade()
-                + " | Skills: " + mentor.getSkills()
-                + " | Valor/hora: R$" + mentor.getValorHora()
-        ));
-        System.out.println("-------------------------------------------\n");
+        ConsoleUI.cabecalho("Mentores em memória (sessão atual)");
+        mentores.forEach(mentor -> {
+            System.out.println("ID temporário: " + mentor.getId());
+            System.out.println("   Nome.......: " +  mentor.getNome());
+            System.out.println("   Senioridade: " + mentor.getNivelSenioridade());
+            System.out.println("   Skills.....: " + mentor.getSkills());
+            System.out.println("   Valor/hora.: " + ConsoleUI.moeda(mentor.getValorHora()));
+            System.out.println();
+        });
+        ConsoleUI.separador();
     }
 
     public void consultarMentoradosEmMemoria() {
         List<Mentorado> mentorados = participanteService.listarMentoradosEmMemoria();
         if (mentorados.isEmpty()) {
-            System.out.println("\nNenhum mentorado cadastrado nesta sessão.\n");
+            System.out.println("\nNenhum mentorado cadastrado nesta sessão.");
             return;
         }
-        System.out.println("\n--- Mentorados em memória (sessão atual) ---");
-        mentorados.forEach(mentorado -> System.out.println(
-                "ID temporário: " + mentorado.getId()
-                + " | Nome: " + mentorado.getNome()
-                + " | Senioridade: " + mentorado.getNivelSenioridade()
-                + " | Skills: " +  mentorado.getSkills()
-                + " | Valor/hora: R$" + mentorado.getValorHora()
-                + " | Skills desejadas: " + mentorado.getSkillsDesejadas()
-        ));
-        System.out.println("----------------------------------------\n");
+        ConsoleUI.cabecalho("Mentorados em memória (sessão atual)");
+        mentorados.forEach(mentorado -> {
+            System.out.println("ID temporário...: " + mentorado.getId());
+            System.out.println("   Nome.........: " + mentorado.getNome());
+            System.out.println("   Senioridade..: " + mentorado.getNivelSenioridade());
+            System.out.println("   Skills.......: " + mentorado.getSkills());
+            System.out.println("   Skills desejadas: " + mentorado.getSkillsDesejadas());
+            System.out.println("   Valor/hora...: " + ConsoleUI.moeda(mentorado.getValorHora()));
+            System.out.println();
+        });
+        ConsoleUI.separador();
     }
 
     public void consultarTodosParticipantesEmMemoria() {
@@ -64,7 +72,7 @@ public class ConsultaView {
             System.out.println("\nNenhuma trilha cadastrada no banco de dados.\n");
             return;
         }
-        System.out.println("\n--- Trilhas cadastradas ---");
+        ConsoleUI.cabecalho("Trilhas cadastradas no banco de dados.");
         trilhas.forEach(trilha -> {
                     System.out.println("ID: " + trilha.getId()
                             + " | Nome: " + trilha.getNomeDaTrilha()
@@ -82,6 +90,6 @@ public class ConsultaView {
                     ));
                     System.out.println();
                 });
-        System.out.println("--------------------------------------\n");
+        ConsoleUI.separador();
     }
 }

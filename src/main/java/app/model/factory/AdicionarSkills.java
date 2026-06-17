@@ -18,7 +18,7 @@ public class AdicionarSkills {
         while (cadastro) {
             try {
                 System.out.println();
-                skillUseCase.listarSkills().forEach(System.out::println);
+                skillUseCase.listarSkills().forEach(skill -> System.out.println(skill.toStringComId()));
                 System.out.print("Qual skill deseja adicionar? ");
 
                 int opcao = ConsoleInput.lerNumero();
@@ -39,7 +39,7 @@ public class AdicionarSkills {
         while (cadastro) {
             try {
                 System.out.println();
-                skillUseCase.listarSkills().forEach(System.out::println);
+                skillUseCase.listarSkills().forEach(skill -> System.out.println(skill.toStringComId()));
                 System.out.print("Qual Skill o mentorado deseja aprender? ");
 
                 int opcao = ConsoleInput.lerNumero();

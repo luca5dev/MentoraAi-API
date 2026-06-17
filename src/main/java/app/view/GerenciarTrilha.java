@@ -5,6 +5,7 @@ import app.model.entity.TrilhaMentoria;
 import app.service.interfaces.TrilhaService;
 import app.util.ConfirmarContinuar;
 import app.util.ConsoleInput;
+import app.util.ConsoleUI;
 
 import java.util.Optional;
 
@@ -61,7 +62,7 @@ public class GerenciarTrilha {
         }
 
         trilhaService.editarTrilha(trilhaMentoria);
-        System.out.println("Trilha editada com sucesso!");
+        System.out.println(ConsoleUI.sucesso("Trilha editada com sucesso!"));
 
     }
 
@@ -72,7 +73,7 @@ public class GerenciarTrilha {
 
             Optional<TrilhaMentoria> optional = trilhaService.buscarTrilhaId(id);
             if (optional.isEmpty()) {
-                System.out.println("Trilha não encontrada com o ID informado.");
+                System.out.println(ConsoleUI.erro("Trilha não encontrada com o ID informado."));
                 return;
             }
 
@@ -84,9 +85,9 @@ public class GerenciarTrilha {
 
             boolean removida = trilhaService.excluirTrilha(id);
             if (removida) {
-                System.out.println("Trilha excluída com sucesso!");
+                System.out.println(ConsoleUI.sucesso("Trilha excluída com sucesso!"));
             } else {
-                System.out.println("Não foi possível excluir a trilha.");
+                System.out.println(ConsoleUI.erro("Não foi possível excluir a trilha."));
             }
         }
 
