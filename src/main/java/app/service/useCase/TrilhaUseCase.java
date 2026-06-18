@@ -36,6 +36,7 @@ public class TrilhaUseCase implements TrilhaService {
         TrilhaMentoria trilhaMentoria = EntityFactory.criarTrilha(dto, mentor, mentorados);
 
         ValidacaoTrilha validator = new ValidacaoTrilha();
+        validator.validarDuracao(trilhaMentoria);
         validator.validarCargaHoraria(trilhaMentoria);
         validator.validarQuantidadeMentorados(trilhaMentoria);
         validator.validarSenioridade(trilhaMentoria);
@@ -79,7 +80,7 @@ public class TrilhaUseCase implements TrilhaService {
         +" | Skills desejadas: " + ConsoleUI.formataListaSkills(mentorado.getSkillsDesejadas())
         ));
 
-        System.out.println("\nHabilidades que serão ensinadas: " + ConsoleUI.formataListaSkills(trilhaMentoria.getSkillsDaTrilha()));
+        System.out.println("\nSkills que serão ensinadas: " + ConsoleUI.formataListaSkills(trilhaMentoria.getSkillsDaTrilha()));
         System.out.println("Custo de oportunidade mensal: " + ConsoleUI.moeda(trilhaMentoria.calcularCustoMensalTotal()));
         System.out.println("Custo de oportunidade total do ciclo: " + ConsoleUI.moeda(trilhaMentoria.calcularCustoTotalDoCiclo()));
     }

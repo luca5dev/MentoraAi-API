@@ -10,7 +10,7 @@ import java.util.Locale;
 
 public class ConsoleUI {
 
-    private static final int LARGURA = 40;
+    private static final int LARGURA = 60;
     private static final NumberFormat MOEDA =
             new DecimalFormat("'R$'#,##0.00", new DecimalFormatSymbols(Locale.forLanguageTag("pt-BR")));
 

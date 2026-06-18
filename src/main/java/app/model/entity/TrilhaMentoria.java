@@ -2,7 +2,6 @@ package app.model.entity;
 
 import app.model.enums.Skill;
 import jakarta.persistence.*;
-import org.hibernate.annotations.Cascade;
 
 import java.util.ArrayList;
 import java.util.List;

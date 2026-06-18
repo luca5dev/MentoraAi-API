@@ -49,7 +49,6 @@ public class ConsultaView {
             System.out.println("   Valor/hora.: " + ConsoleUI.moeda(mentor.getValorHora()));
             System.out.println();
         });
-        ConsoleUI.separador();
     }
 
     public void consultarMentoradosEmMemoria() {
@@ -64,11 +63,10 @@ public class ConsultaView {
             System.out.println("   Nome.........: " + mentorado.getNome());
             System.out.println("   Senioridade..: " + mentorado.getNivelSenioridade());
             System.out.println("   Skills.......: " + ConsoleUI.formataListaSkills(mentorado.getSkills()));
-            System.out.println("   Skills desejadas: " + ConsoleUI.formataListaSkills(mentorado.getSkillsDesejadas()));
+            System.out.println("   Skills desej.: " + ConsoleUI.formataListaSkills(mentorado.getSkillsDesejadas()));
             System.out.println("   Valor/hora...: " + ConsoleUI.moeda(mentorado.getValorHora()));
             System.out.println();
         });
-        ConsoleUI.separador();
     }
 
     public void consultarTodosParticipantesEmMemoria() {
@@ -82,24 +80,26 @@ public class ConsultaView {
             System.out.println("\nNenhuma trilha cadastrada no banco de dados.\n");
             return;
         }
-        ConsoleUI.cabecalho("Trilhas cadastradas no banco de dados.");
         trilhas.forEach(trilha -> {
-                    System.out.println("ID: " + trilha.getId()
-                            + " | Nome: " + trilha.getNomeDaTrilha()
-                            + " | Duração: " + trilha.getCicloEmMeses() + " meses"
-                            + " | Skills da trilha: " + ConsoleUI.formataListaSkills(trilha.getSkillsDaTrilha()));
+            ConsoleUI.cabecalho("Dados da trilha");
+            System.out.println("ID: " + trilha.getId());
+            System.out.println("Nome da trilha: " + trilha.getNomeDaTrilha());
+            System.out.println("Duração: " + trilha.getCicloEmMeses() + " meses");
 
-                    Mentor mentor = trilha.getMentor();
-                    if (mentor != null) {
-                        System.out.println("        Mentor: " + mentor.getNome()
-                                + " (" + mentor.getNivelSenioridade() + ")");
-                    }
-                    System.out.println("        Mentorados (" + trilha.getMentorados().size() + "):");
-                    trilha.getMentorados().forEach(mentorado -> System.out.println(
-                            "       - " + mentorado.getNome() + " (" + mentorado.getNivelSenioridade() + ")"
-                    ));
-                    System.out.println();
-                });
-        ConsoleUI.separador();
+            System.out.println("\nMentor:");
+            System.out.println("- " + trilha.getMentor().getNome()
+            + " | Senioridade: "  + trilha.getMentor().getNivelSenioridade()
+            + " | Skills: " + ConsoleUI.formataListaSkills(trilha.getMentor().getSkills()));
+
+            System.out.println("\nMentorados:");
+            trilha.getMentorados().forEach(mentorado -> System.out.println(
+                    "- " + mentorado.getNome()
+                    + " | Senioridade: " + mentorado.getNivelSenioridade()
+                    + " | Skills desejadas: " + ConsoleUI.formataListaSkills(mentorado.getSkillsDesejadas())
+            ));
+            System.out.println("\nSkills que serão ensinadas: " + ConsoleUI.formataListaSkills(trilha.getSkillsDaTrilha()));
+            System.out.println("Custo de oportunidade mensal: " + ConsoleUI.moeda(trilha.calcularCustoMensalTotal()));
+            System.out.println("Custo de oportunidade total do ciclo: " + ConsoleUI.moeda(trilha.calcularCustoTotalDoCiclo()));
+        });
     }
 }

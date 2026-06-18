@@ -61,7 +61,14 @@ public class TrilhaImpl implements TrilhaDAO {
                             "LEFT JOIN FETCH t.mentorados " +
                             "ORDER BY t.id ASC",
                     TrilhaMentoria.class).getResultList();
-            trilhas.forEach(trilha -> trilha.getSkillsDaTrilha().size());
+
+            trilhas.forEach(trilha -> {
+                trilha.getSkillsDaTrilha().size();
+                if (trilha.getMentor() != null) {
+                    trilha.getMentor().getSkills().size();
+                }
+                trilha.getMentorados().forEach(mentorado -> mentorado.getSkillsDesejadas().size());
+            });
             return trilhas;
         } finally {
             if (em != null && em.isOpen()) {

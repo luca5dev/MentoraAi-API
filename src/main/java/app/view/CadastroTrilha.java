@@ -37,6 +37,11 @@ public class CadastroTrilha {
                 System.out.print("Digite o ID do mentorado " + (i + 1) + ": ");
                 long idMentorado = ConsoleInput.lerId();
 
+                if (!consultaView.mentoradoExiste(idMentorado)) {
+                    System.out.println("Não existe mentorado com esse ID em memória. Verifique a lista acima e tente novamente.");
+                    i--;
+                    continue;
+                }
                 if (dto.getIdsMentorados().contains(idMentorado)) {
                     System.out.println("Esse mentorado já foi adicionado a trilha. Informe um ID diferente.");
                     i--;
@@ -45,16 +50,22 @@ public class CadastroTrilha {
                 dto.addIdMentorado(idMentorado);
             }
 
-
             consultaView.consultarMentoresEmMemoria();
-            System.out.print("Digite o ID do mentor: ");
-            dto.setIdMentor(ConsoleInput.lerId());
+            long idMentor;
+            while (true) {
+                System.out.print("Digite o ID do mentor: ");
+                idMentor = ConsoleInput.lerId();
+                if (consultaView.mentorExiste(idMentor)) {
+                    break;
+                }
+                System.out.println("Não existe mentor com esse ID em memória. Verifique a lista acima e tente novamente.");
+            }
+            dto.setIdMentor(idMentor);
 
             System.out.print("Digite o nome da trilha: ");
             dto.setNome(ConsoleInput.lerTexto());
 
             dto.setCicloEmMeses(lerQuantidade("Informe o ciclo da trilha em meses: "));
-
         } catch (ListaVaziaException e) {
             System.out.println("Não foi possível criar a trilha: " + e.getMessage());
         } catch (InputMismatchException e){

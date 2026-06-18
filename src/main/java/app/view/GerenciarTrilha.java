@@ -22,7 +22,7 @@ public class GerenciarTrilha {
 
     public void editarTrilha() {
         consultaView.consultarTrilhasPersistidas();
-        System.out.print("Digite o ID da trilha que deseja editar: ");
+        System.out.print("\nDigite o ID da trilha que deseja editar: ");
         long id = ConsoleInput.lerId();
 
         Optional<TrilhaMentoria> optional = trilhaService.buscarTrilhaId(id);
@@ -64,7 +64,29 @@ public class GerenciarTrilha {
 
         try {
             trilhaService.editarTrilha(trilhaMentoria);
-            System.out.println(ConsoleUI.sucesso("Trilha editada com sucesso!"));
+            System.out.println(ConsoleUI.sucesso("\nTrilha editada com sucesso!"));
+            ConsoleUI.cabecalho("Dados da trilha");
+            System.out.println("ID: " + trilhaMentoria.getId());
+            System.out.println("Nome da trilha: " + trilhaMentoria.getNomeDaTrilha());
+            System.out.println("Duração: " + trilhaMentoria.getCicloEmMeses() + " meses");
+
+            System.out.println("\nMentor:");
+            System.out.println("- " + trilhaMentoria.getMentor().getNome()
+                    + " | Senioridade: "  + trilhaMentoria.getMentor().getNivelSenioridade()
+                    + " | Skills: " + ConsoleUI.formataListaSkills(trilhaMentoria.getMentor().getSkills()));
+
+            System.out.println("\nMentorados:");
+            trilhaMentoria.getMentorados().forEach(mentorado -> System.out.println(
+                    "- " + mentorado.getNome()
+                            + " | Senioridade: " + mentorado.getNivelSenioridade()
+                            + " | Skills desejadas: " + ConsoleUI.formataListaSkills(mentorado.getSkillsDesejadas())
+            ));
+            System.out.println("\nSkills que serão ensinadas: " + ConsoleUI.formataListaSkills(trilhaMentoria.getSkillsDaTrilha()));
+            System.out.println("Custo de oportunidade mensal: " + ConsoleUI.moeda(trilhaMentoria.calcularCustoMensalTotal()));
+            System.out.println("Custo de oportunidade total do ciclo: " + ConsoleUI.moeda(trilhaMentoria.calcularCustoTotalDoCiclo()));
+
+
+
         } catch (NumeroForaDoIntervaloException | CargaHorariaExcedidaException
         | MaximoMentoradosAtingidosException | NivelDesproporcionalException
         | SkillIncompativelException e) {
@@ -75,7 +97,7 @@ public class GerenciarTrilha {
 
         public void excluirTrilha() {
             consultaView.consultarTrilhasPersistidas();
-            System.out.print("Digite o ID da trilha que deseja excluir: ");
+            System.out.print("\nDigite o ID da trilha que deseja excluir: ");
             long id = ConsoleInput.lerId();
 
             Optional<TrilhaMentoria> optional = trilhaService.buscarTrilhaId(id);
@@ -92,7 +114,7 @@ public class GerenciarTrilha {
 
             boolean removida = trilhaService.excluirTrilha(id);
             if (removida) {
-                System.out.println(ConsoleUI.sucesso("Trilha excluída com sucesso!"));
+                System.out.println(ConsoleUI.sucesso("\nTrilha excluída com sucesso!"));
             } else {
                 System.out.println(ConsoleUI.erro("Não foi possível excluir a trilha."));
             }

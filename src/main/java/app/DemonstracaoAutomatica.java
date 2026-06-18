@@ -52,7 +52,7 @@ public class DemonstracaoAutomatica {
         Mentorado mentorado3 = novoMentorado("Daniel", NivelSenioridade.JUNIOR, 5.0, List.of(Skill.JAVA));
         Mentorado mentorado4 = novoMentorado("Erica", NivelSenioridade.JUNIOR, 6.0, List.of(Skill.JAVA));
 
-        TrilhaMentoria trilha = new TrilhaMentoria("Trilha Sobrecarregada",
+        TrilhaMentoria trilha = new TrilhaMentoria("Trilha Sobrecarregada e Editada",
                 3, mentor,
                 new ArrayList<>(List.of(mentorado1, mentorado2, mentorado3, mentorado4)),
                 new ArrayList<>(List.of(Skill.JAVA)));
@@ -99,8 +99,8 @@ public class DemonstracaoAutomatica {
         while (mentorados.stream().mapToDouble(Mentorado::getHorasDedicadas).sum() > 20.0
             && !mentorados.isEmpty()) {
     Mentorado removido = mentorados.remove(mentorados.size() -1);
-            System.out.println("Ajustando: removendo mentorado \"" + removido.getNome()
-            + "\"(" + ConsoleUI.horas(removido.getHorasDedicadas()) +")");
+            System.out.println("Ajustando: removendo mentorado " + removido.getNome()
+            + " - " + ConsoleUI.horas(removido.getHorasDedicadas()));
             }
         double cargaHorariaDepois = mentorados.stream()
                 .mapToDouble(Mentorado::getHorasDedicadas).sum();
@@ -116,8 +116,8 @@ public class DemonstracaoAutomatica {
             ConsoleUI.cabecalho("Dados da trilha:");
             System.out.println("Nome: " + trilhaInvalida.getNomeDaTrilha());
             System.out.println("Duração: " + trilhaInvalida.getCicloEmMeses() + " meses.");
-            System.out.println("Skills da ensinadas: " + trilhaInvalida.getSkillsDaTrilha());
-            System.out.println("Mentor: " + trilhaInvalida.getMentor().getNome() + "-> " + trilhaInvalida.getMentor().getNivelSenioridade());
+            System.out.println("Skills da ensinadas: " + ConsoleUI.formataListaSkills(trilhaInvalida.getSkillsDaTrilha()));
+            System.out.println("Mentor: " + trilhaInvalida.getMentor().getNome() + " - " + trilhaInvalida.getMentor().getNivelSenioridade());
             System.out.println("Carga horária mensal prevista: " + ConsoleUI.horas(cargaHorariaDepois));
             System.out.println("Custo mensal previsto: " + ConsoleUI.moeda(trilhaInvalida.calcularCustoMensalTotal()));
             System.out.println("Custo total do ciclo completo: " + ConsoleUI.moeda(trilhaInvalida.calcularCustoTotalDoCiclo()));
