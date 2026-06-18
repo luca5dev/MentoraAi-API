@@ -1,5 +1,6 @@
 package app.view;
 
+import app.exception.*;
 import app.model.entity.Mentorado;
 import app.model.entity.TrilhaMentoria;
 import app.service.interfaces.TrilhaService;
@@ -21,7 +22,7 @@ public class GerenciarTrilha {
 
     public void editarTrilha() {
         consultaView.consultarTrilhasPersistidas();
-        System.out.println("Digite o ID da trilha que deseja editar: ");
+        System.out.print("Digite o ID da trilha que deseja editar: ");
         long id = ConsoleInput.lerId();
 
         Optional<TrilhaMentoria> optional = trilhaService.buscarTrilhaId(id);
@@ -32,20 +33,20 @@ public class GerenciarTrilha {
 
         TrilhaMentoria trilhaMentoria = optional.get();
 
-        System.out.println("Novo nome da trilha (ENTER para manter \"" + trilhaMentoria.getNomeDaTrilha() + "\"): ");
+        System.out.print("Novo nome da trilha (ENTER para manter \"" + trilhaMentoria.getNomeDaTrilha() + "\"): ");
         String novoNome = lerTextoOptional();
         if (novoNome != null) {
             trilhaMentoria.setNomeDaTrilha(novoNome);
         }
 
-        System.out.println("Nova duração em meses (0 para manter " + trilhaMentoria.getCicloEmMeses() + "): ");
+        System.out.print("Nova duração em meses (0 para manter " + trilhaMentoria.getCicloEmMeses() + "): ");
         int novaDuracao = ConsoleInput.lerNumero();
         if (novaDuracao > 0) {
             trilhaMentoria.setCicloEmMeses(novaDuracao);
         }
 
         if (trilhaMentoria.getMentor() != null) {
-            System.out.println("Novo nome do mentor (ENTER para manter \""
+            System.out.print("Novo nome do mentor (ENTER para manter \""
                     + trilhaMentoria.getMentor().getNome() + "\"): ");
             String nomeMentor = lerTextoOptional();
             if (nomeMentor != null) {
@@ -54,21 +55,27 @@ public class GerenciarTrilha {
         }
 
         for (Mentorado mentorado : trilhaMentoria.getMentorados()) {
-            System.out.println("Novo nome do mentorado " + mentorado.getNome() + " (ENTER para manter): ");
+            System.out.print("Novo nome do mentorado " + mentorado.getNome() + " (ENTER para manter): ");
             String nomeMentorado = lerTextoOptional();
             if (nomeMentorado != null) {
                 mentorado.setNome(nomeMentorado);
             }
         }
 
-        trilhaService.editarTrilha(trilhaMentoria);
-        System.out.println(ConsoleUI.sucesso("Trilha editada com sucesso!"));
-
+        try {
+            trilhaService.editarTrilha(trilhaMentoria);
+            System.out.println(ConsoleUI.sucesso("Trilha editada com sucesso!"));
+        } catch (NumeroForaDoIntervaloException | CargaHorariaExcedidaException
+        | MaximoMentoradosAtingidosException | NivelDesproporcionalException
+        | SkillIncompativelException e) {
+            System.out.println(ConsoleUI.erro(e.getMessage()));
+            System.out.println("A trilha NÃO foi alterada. Os dados anteriores foram mantidos.");
+        }
     }
 
         public void excluirTrilha() {
             consultaView.consultarTrilhasPersistidas();
-            System.out.println("Digite o ID da trilha que deseja excluir: ");
+            System.out.print("Digite o ID da trilha que deseja excluir: ");
             long id = ConsoleInput.lerId();
 
             Optional<TrilhaMentoria> optional = trilhaService.buscarTrilhaId(id);

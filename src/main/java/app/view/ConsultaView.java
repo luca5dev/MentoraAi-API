@@ -19,6 +19,16 @@ public class ConsultaView {
         this.trilhaService = trilhaService;
     }
 
+    public boolean mentoradoExiste(long id) {
+        return participanteService.listarMentoradosEmMemoria().stream()
+                .anyMatch(mentorado -> id == mentorado.getId());
+    }
+
+    public boolean mentorExiste(long id) {
+        return participanteService.listarMentoresEmMemoria().stream()
+                .anyMatch(mentor -> id == mentor.getId());
+    }
+
     public boolean existemParticipantesParaTrilha() {
         return !participanteService.listarMentoresEmMemoria().isEmpty()
                 && !participanteService.listarMentoradosEmMemoria().isEmpty();
@@ -27,7 +37,7 @@ public class ConsultaView {
     public void consultarMentoresEmMemoria() {
         List<Mentor> mentores = participanteService.listarMentoresEmMemoria();
         if (mentores.isEmpty()) {
-            System.out.println("\nNenhum mentor cadastrado nesta sessão");
+            System.out.println("\nNenhum mentor cadastrado nesta sessão.");
             return;
         }
         ConsoleUI.cabecalho("Mentores em memória (sessão atual)");
@@ -35,7 +45,7 @@ public class ConsultaView {
             System.out.println("ID temporário: " + mentor.getId());
             System.out.println("   Nome.......: " +  mentor.getNome());
             System.out.println("   Senioridade: " + mentor.getNivelSenioridade());
-            System.out.println("   Skills.....: " + mentor.getSkills());
+            System.out.println("   Skills.....: " + ConsoleUI.formataListaSkills(mentor.getSkills()));
             System.out.println("   Valor/hora.: " + ConsoleUI.moeda(mentor.getValorHora()));
             System.out.println();
         });
@@ -53,8 +63,8 @@ public class ConsultaView {
             System.out.println("ID temporário...: " + mentorado.getId());
             System.out.println("   Nome.........: " + mentorado.getNome());
             System.out.println("   Senioridade..: " + mentorado.getNivelSenioridade());
-            System.out.println("   Skills.......: " + mentorado.getSkills());
-            System.out.println("   Skills desejadas: " + mentorado.getSkillsDesejadas());
+            System.out.println("   Skills.......: " + ConsoleUI.formataListaSkills(mentorado.getSkills()));
+            System.out.println("   Skills desejadas: " + ConsoleUI.formataListaSkills(mentorado.getSkillsDesejadas()));
             System.out.println("   Valor/hora...: " + ConsoleUI.moeda(mentorado.getValorHora()));
             System.out.println();
         });
@@ -77,7 +87,7 @@ public class ConsultaView {
                     System.out.println("ID: " + trilha.getId()
                             + " | Nome: " + trilha.getNomeDaTrilha()
                             + " | Duração: " + trilha.getCicloEmMeses() + " meses"
-                            + " | Skills da trilha: " + trilha.getSkillsDaTrilha());
+                            + " | Skills da trilha: " + ConsoleUI.formataListaSkills(trilha.getSkillsDaTrilha()));
 
                     Mentor mentor = trilha.getMentor();
                     if (mentor != null) {

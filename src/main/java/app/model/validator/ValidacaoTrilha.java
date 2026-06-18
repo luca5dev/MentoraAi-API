@@ -1,9 +1,6 @@
 package app.model.validator;
 
-import app.exception.CargaHorariaExcedidaException;
-import app.exception.MaximoMentoradosAtingidosException;
-import app.exception.NivelDesproporcionalException;
-import app.exception.SkillIncompativelException;
+import app.exception.*;
 import app.model.entity.Mentor;
 import app.model.entity.Mentorado;
 import app.model.entity.TrilhaMentoria;
@@ -21,6 +18,13 @@ public class ValidacaoTrilha {
 
         if (totalHoras > mentor.getHorasDedicadas()) {
             throw new CargaHorariaExcedidaException ("A soma das horas dos mentorados ultrapassa a capacidade mensal do mentor.");
+        }
+    }
+
+    public void validarDuracao(TrilhaMentoria trilha) {
+        Integer ciclo = trilha.getCicloEmMeses();
+        if (ciclo == null || ciclo <= 0) {
+            throw new NumeroForaDoIntervaloException("A duração da trilha deve ser maior que zero.");
         }
     }
 

@@ -88,6 +88,14 @@ public class TrilhaImpl implements TrilhaDAO {
            if (trilhaMentoria != null) {
                trilhaMentoria.getSkillsDaTrilha().size();
            }
+
+           if (trilhaMentoria.getMentor() != null) {
+               trilhaMentoria.getMentor().getSkills().size();
+           }
+           trilhaMentoria.getMentorados().forEach(mentorado -> {
+               mentorado.getSkills().size();
+               mentorado.getSkillsDesejadas().size();
+           });
            return Optional.ofNullable(trilhaMentoria);
        } finally {
            if (em.isOpen()) {

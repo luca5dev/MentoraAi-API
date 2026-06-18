@@ -1,8 +1,11 @@
 package app.util;
 
+import app.model.enums.Skill;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
+import java.util.List;
 import java.util.Locale;
 
 public class ConsoleUI {
@@ -47,5 +50,14 @@ public class ConsoleUI {
 
     public static String erro(String mensagem) {
         return "[ERRO] " + mensagem;
+    }
+
+    public static String formataListaSkills(List<Skill> skills) {
+        if (skills == null || skills.isEmpty()) {
+            return "Nenhuma.";
+        }
+        return skills.stream()
+                .map(Skill::name)
+                .collect(java.util.stream.Collectors.joining(", "));
     }
 }

@@ -19,7 +19,7 @@ public class GerenciarParticipante {
     }
 
     public void editarParticipante() {
-        ConsoleUI.cabecalho("\n--- Editar Participante (memória) ---");
+        ConsoleUI.cabecalho("Editar Participante (memória)");
         System.out.println("""
                 1- Editar Mentor
                 2- Editar Mentorado
@@ -35,8 +35,8 @@ public class GerenciarParticipante {
             case 2:
                 editarMentorado();
                 break;
-            case 0: {
-            }
+            case 0:
+                break;
             default:
                 System.out.println("Opção inválida!");
         }
@@ -77,7 +77,7 @@ public class GerenciarParticipante {
     }
 
     public void excluirParticipante() {
-        ConsoleUI.cabecalho("\n--- Excluir Participante (memória) ---");
+        ConsoleUI.cabecalho("Excluir Participante (memória)");
         System.out.println("""
                 1- Excluir Mentor
                 2- Excluir Mentorado
@@ -93,8 +93,8 @@ public class GerenciarParticipante {
             case 2:
                 excluirMentorado();
                 break;
-            case 0: {
-            }
+            case 0:
+                break;
             default:
                 System.out.println("Opção inválida!");
         }

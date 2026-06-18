@@ -35,8 +35,16 @@ public class CadastroTrilha {
 
             for (int i = 0; i < quantidadeDeMentorados; i++) {
                 System.out.print("Digite o ID do mentorado " + (i + 1) + ": ");
-                dto.addIdMentorado(ConsoleInput.lerId());
+                long idMentorado = ConsoleInput.lerId();
+
+                if (dto.getIdsMentorados().contains(idMentorado)) {
+                    System.out.println("Esse mentorado já foi adicionado a trilha. Informe um ID diferente.");
+                    i--;
+                    continue;
+                }
+                dto.addIdMentorado(idMentorado);
             }
+
 
             consultaView.consultarMentoresEmMemoria();
             System.out.print("Digite o ID do mentor: ");

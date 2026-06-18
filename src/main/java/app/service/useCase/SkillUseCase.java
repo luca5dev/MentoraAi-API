@@ -18,7 +18,7 @@ public class SkillUseCase implements SkillService {
                 return skill;
             }
         }
-        throw new EntradaInvalidaException("Id inválido");
+        throw new EntradaInvalidaException("Id inválido.");
     }
 
     @Override

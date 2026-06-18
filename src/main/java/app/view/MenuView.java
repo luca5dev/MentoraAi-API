@@ -19,9 +19,9 @@ public class MenuView {
     public void consultas() {
         ConsoleUI.cabecalho("Consultas");
         System.out.println("""
-                1- Listar todos Participantes
-                2- Listar Mentores
-                3- Listar Mentorados
+                1- Listar todos Participantes (em memória)
+                2- Listar Mentores (em memória)
+                3- Listar Mentorados (em memória)
                 4- Listar Trilhas
                 0- Voltar ao Menu Principal
                 """);
