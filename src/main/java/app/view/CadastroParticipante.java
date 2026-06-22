@@ -64,7 +64,7 @@ public class CadastroParticipante {
             if (dto.getOpcao() == 2) {
                     while (true) {
                             try {
-                                    System.out.println("Horas dedicadas mensais do mentorado: ");
+                                    System.out.print("Horas dedicadas mensais do mentorado: ");
                                     dto.setHorasDedicadas(ConsoleInput.lerValor());
                                     break;
                             } catch (ValorDaHoraInvalidoException | CampoVazioException | EntradaInvalidaException e) {

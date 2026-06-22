@@ -26,6 +26,10 @@ public enum Skill {
 
     @Override
     public String toString() {
-        return "(" + id + ")" + name();
+        return name();
+    }
+
+    public String toStringComId() {
+        return "(" + id + ") " + name();
     }
 }

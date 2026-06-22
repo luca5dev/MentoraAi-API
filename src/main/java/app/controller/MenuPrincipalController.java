@@ -6,10 +6,8 @@ import app.model.dto.UsuarioCadastroDTO;
 import app.service.interfaces.ParticipanteService;
 import app.service.interfaces.TrilhaService;
 import app.util.ConsoleInput;
-import app.view.CadastroParticipante;
-import app.view.CadastroTrilha;
-import app.view.ConsultaView;
-import app.view.MenuView;
+import app.util.ConsoleUI;
+import app.view.*;
 
 public class MenuPrincipalController {
 
@@ -21,6 +19,8 @@ public class MenuPrincipalController {
     private final ConsultaView consultaView;
     private final MenuConsultas menuConsultas;
     private final CadastroTrilha cadastroTrilha;
+    private final GerenciarTrilha gerenciarTrilha;
+    private final GerenciarParticipante gerenciarParticipante;
 
     public MenuPrincipalController(ParticipanteService participanteService, TrilhaService trilhaService, ConsultaView consultaView) {
         this.participanteService = participanteService;
@@ -28,6 +28,8 @@ public class MenuPrincipalController {
         this.consultaView = consultaView;
         this.menuConsultas = new MenuConsultas(consultaView);
         this.cadastroTrilha = new CadastroTrilha(consultaView);
+        this.gerenciarTrilha = new GerenciarTrilha(trilhaService, consultaView);
+        this.gerenciarParticipante = new GerenciarParticipante(participanteService, consultaView);
     }
 
     private int lerOpcaoMenu() {
@@ -36,39 +38,98 @@ public class MenuPrincipalController {
                 return ConsoleInput.lerNumero();
             } catch (CampoVazioException | EntradaInvalidaException e) {
                 System.out.println(e.getMessage());
-                iniciaPrograma();
             }
         }
     }
 
     private void cadastrarParticipante() {
-        try {
-            UsuarioCadastroDTO dto = CadastroParticipante.coletarDadosParticipante();
-            participanteService.cadastrar(dto);
-        } catch (CampoVazioException | EntradaInvalidaException | SkillDuplicadaException e) {
-            System.out.println(e.getMessage());
-            cadastrarParticipante();
+        boolean cadastro = false;
+        while (!cadastro) {
+            try {
+                UsuarioCadastroDTO dto = CadastroParticipante.coletarDadosParticipante();
+                participanteService.cadastrar(dto);
+                cadastro = true;
+            } catch (CampoVazioException | EntradaInvalidaException | SkillDuplicadaException e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 
     private void cadastrarTrilha() {
         try {
             TrilhaMentoriaDTO dto = cadastroTrilha.cadastrarTrilha();
+            if (dto == null) {
+                return;
+            }
             trilhaService.cadastrar(dto);
-        } catch (ListaVaziaException | LimiteSkillsUltrapassadoException | CampoVazioException
-                 | CargaHorariaExcedidaException | SkillIncompativelException | NivelDesproporcionalException
-                | MaximoMentoradosAtingidosException e) {
-            System.out.println(e.getMessage());
+        } catch (SkillIncompativelException e) {
+            System.out.println(ConsoleUI.erro(e.getMessage()));
+            System.out.println("""
+                    Como ajustar:
+                    - Edite as skills desejadas dos mentorados (menu Gerenciar), ou
+                    - Cadastre/escolha um mentor que domine pelo menos 70% das skills desejadas.
+                    """);
+        } catch (CargaHorariaExcedidaException e) {
+            System.out.println(ConsoleUI.erro(e.getMessage()));
+            System.out.println("""
+                    Como ajustar:
+                    - Reduza a quantidade de mentorados na trilha, ou
+                    - Diminua as horas dedicadas dos mentorados.
+                    """);
+        } catch (NivelDesproporcionalException e) {
+            System.out.println(ConsoleUI.erro(e.getMessage()));
+            System.out.println("""
+                    Como ajustar:
+                    - Escolha um mentor com senioridade SUPERIOR à de todos os mentorados.
+                    """);
+        } catch (MaximoMentoradosAtingidosException e) {
+            System.out.println(ConsoleUI.erro(e.getMessage()));
+            System.out.println("""
+                    Como ajustar:
+                    - Reduza a quantidade de mentorados para respeitar o limite do mentor.
+                    """);
+        } catch (ListaVaziaException | LimiteSkillsUltrapassadoException | CampoVazioException e) {
+            System.out.println(ConsoleUI.erro(e.getMessage()));
         }
     }
 
     private void consultar() {
-        menu.consultas();
-        int opcao = lerOpcaoMenu();
-        try {
-            menuConsultas.consultar(opcao);
-        } catch (CampoVazioException e) {
-            System.out.println(e.getMessage());
+        boolean continuarConsultando = true;
+        while (continuarConsultando) {
+            menu.consultas();
+            int opcao = lerOpcaoMenu();
+            try {
+                continuarConsultando = menuConsultas.consultar(opcao);
+            } catch (CampoVazioException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    private void gerenciar() {
+        boolean continuar = true;
+        while (continuar) {
+            menu.gerenciar();
+            int opcao = lerOpcaoMenu();
+            switch (opcao) {
+                case 1:
+                    gerenciarTrilha.editarTrilha();
+                    break;
+                case 2:
+                    gerenciarTrilha.excluirTrilha();
+                    break;
+                case 3:
+                    gerenciarParticipante.editarParticipante();
+                    break;
+                case 4:
+                    gerenciarParticipante.excluirParticipante();
+                    break;
+                case 0:
+                    continuar = false;
+                    break;
+                default:
+                    System.out.println("Opção inválida!");
+            }
         }
     }
 
@@ -95,6 +156,9 @@ public class MenuPrincipalController {
                     consultar();
                     break;
                 case 4:
+                    gerenciar();
+                    break;
+                case 5:
                     sair();
                     break;
                 default:

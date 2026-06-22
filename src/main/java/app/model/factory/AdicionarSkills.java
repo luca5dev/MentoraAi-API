@@ -18,7 +18,7 @@ public class AdicionarSkills {
         while (cadastro) {
             try {
                 System.out.println();
-                skillUseCase.listarSkills().forEach(System.out::println);
+                skillUseCase.listarSkills().forEach(skill -> System.out.println(skill.toStringComId()));
                 System.out.print("Qual skill deseja adicionar? ");
 
                 int opcao = ConsoleInput.lerNumero();
@@ -27,7 +27,7 @@ public class AdicionarSkills {
                 dto.adicionarSkill(skillSelecionada);
                 cadastro = ConfirmarContinuar.confirmar();
 
-            } catch (EntradaInvalidaException e) {
+            } catch (EntradaInvalidaException | SkillDuplicadaException e) {
                 System.out.println(e.getMessage());
             }
         }
@@ -39,8 +39,8 @@ public class AdicionarSkills {
         while (cadastro) {
             try {
                 System.out.println();
-                skillUseCase.listarSkills().forEach(System.out::println);
-                System.out.print("Qual Skill o mentorado deseja aprender?");
+                skillUseCase.listarSkills().forEach(skill -> System.out.println(skill.toStringComId()));
+                System.out.print("Qual Skill o mentorado deseja aprender? ");
 
                 int opcao = ConsoleInput.lerNumero();
                 Skill skillSelecionada = skillUseCase.buscaSkill(opcao);

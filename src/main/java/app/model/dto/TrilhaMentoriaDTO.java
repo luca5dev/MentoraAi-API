@@ -65,6 +65,10 @@ public class TrilhaMentoriaDTO {
         return skills;
     }
 
+    public void setSkills(List<Skill> skills) {
+        this.skills = new ArrayList<>(skills);
+    }
+
     public void addIdMentorado(Long idMentorado){
         this.idsMentorados.add(idMentorado);
    }

@@ -45,7 +45,7 @@ public class ParticipanteUseCase implements ParticipanteService {
         if (participantePrograma instanceof Mentor mentor) {
             mentor.setId(sequenciaMentor++);
             mentoresEmMemoria.add(mentor);
-            System.out.println("Mentor: " + mentor.getNome() + " cadastrado em memória (id temporário = " +  mentor.getId() + ").");
+            System.out.println("\nMentor: " + mentor.getNome() + " cadastrado em memória (id temporário = " +  mentor.getId() + ").");
             return;
 
         }
@@ -53,7 +53,7 @@ public class ParticipanteUseCase implements ParticipanteService {
         if (participantePrograma instanceof Mentorado mentorado) {
             mentorado.setId(sequenciaMentorado++);
             mentoradosEmMemoria.add(mentorado);
-            System.out.println("Mentorado: " + mentorado.getNome() + " cadastrado em memória (id temporário = " + mentorado.getId() + ").");
+            System.out.println("\nMentorado: " + mentorado.getNome() + " cadastrado em memória (id temporário = " + mentorado.getId() + ").");
         }
     }
 
@@ -90,5 +90,32 @@ public class ParticipanteUseCase implements ParticipanteService {
         mentoradosEmMemoria.clear();
         sequenciaMentor = 1L;
         sequenciaMentorado = 1L;
+    }
+
+    @Override
+    public void editarNomeMentorEmMemoria(Long id, String novoNome) {
+        Mentor mentor = buscarMentorPorIdTemporario(id);
+        mentor.setNome(novoNome);
+        System.out.println("Nome do mentor atualizado para: " + mentor.getNome());
+    }
+
+    @Override
+    public void editarNomeMentoradoEmMemoria(Long id, String novoNome) {
+        Mentorado mentorado = mentoradosEmMemoria.stream()
+                .filter(m -> id.equals(m.getId()))
+                .findFirst()
+                .orElseThrow(() -> new ParticipanteNaoEncontradoException("Mentorado não encontrado em memória."));
+        mentorado.setNome(novoNome);
+        System.out.println("Nome do mentorado atualizado para: " + mentorado.getNome());
+    }
+
+    @Override
+    public boolean removerMentorEmMemoria(Long id) {
+        return mentoresEmMemoria.removeIf(mentor -> id.equals(mentor.getId()));
+    }
+
+    @Override
+    public boolean removerMentoradoEmMemoria(Long id) {
+        return mentoradosEmMemoria.removeIf(mentorado -> id.equals(mentorado.getId()));
     }
 }

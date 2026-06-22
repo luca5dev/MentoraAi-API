@@ -1,9 +1,10 @@
 package app.view;
 
-import app.exception.LimiteSkillsUltrapassadoException;
+import app.exception.EntradaInvalidaException;
 import app.exception.ListaVaziaException;
+import app.exception.NumeroForaDoIntervaloException;
 import app.model.dto.TrilhaMentoriaDTO;
-import app.service.useCase.SkillUseCase;
+import app.service.interfaces.ParticipanteService;
 import app.util.ConsoleInput;
 
 import java.util.InputMismatchException;
@@ -11,7 +12,7 @@ import java.util.InputMismatchException;
 public class CadastroTrilha {
 
     private final ConsultaView consultaView;
-    private final SkillUseCase skillUseCase = new SkillUseCase();
+    private final int LIMITE_SKILLS_TRILHA = 3;
 
     public CadastroTrilha(ConsultaView consultaView) {
         this.consultaView = consultaView;
@@ -19,48 +20,68 @@ public class CadastroTrilha {
 
     public TrilhaMentoriaDTO cadastrarTrilha() {
         TrilhaMentoriaDTO dto = new TrilhaMentoriaDTO();
+
+        if (!consultaView.existemParticipantesParaTrilha()) {
+            System.out.println("""
+                    \nNão há participantes suficientes cadastrados nesta sessão.
+                    Para criar uma trilha, cadastre pelo menos 1 mentor e 1 mentorado
+                    na opção "1- Cadastrar Participante" do menu principal.
+                    """);
+            return null;
+        }
         try {
+            consultaView.consultarMentoradosEmMemoria();
+            int quantidadeDeMentorados = lerQuantidade("Informe a quantidade de mentorados na trilha: ");
+
+            for (int i = 0; i < quantidadeDeMentorados; i++) {
+                System.out.print("Digite o ID do mentorado " + (i + 1) + ": ");
+                long idMentorado = ConsoleInput.lerId();
+
+                if (!consultaView.mentoradoExiste(idMentorado)) {
+                    System.out.println("Não existe mentorado com esse ID em memória. Verifique a lista acima e tente novamente.");
+                    i--;
+                    continue;
+                }
+                if (dto.getIdsMentorados().contains(idMentorado)) {
+                    System.out.println("Esse mentorado já foi adicionado a trilha. Informe um ID diferente.");
+                    i--;
+                    continue;
+                }
+                dto.addIdMentorado(idMentorado);
+            }
+
             consultaView.consultarMentoresEmMemoria();
-            System.out.print("ID do mentor: ");
-            dto.setIdMentor(ConsoleInput.lerId());
+            long idMentor;
+            while (true) {
+                System.out.print("Digite o ID do mentor: ");
+                idMentor = ConsoleInput.lerId();
+                if (consultaView.mentorExiste(idMentor)) {
+                    break;
+                }
+                System.out.println("Não existe mentor com esse ID em memória. Verifique a lista acima e tente novamente.");
+            }
+            dto.setIdMentor(idMentor);
 
             System.out.print("Digite o nome da trilha: ");
             dto.setNome(ConsoleInput.lerTexto());
 
-            System.out.print("Informe o ciclo da trilha em meses: ");
-            dto.setCicloEmMeses(ConsoleInput.lerNumeroPositivo());
-
-            consultaView.consultarMentoradosEmMemoria();
-            System.out.print("Informe a quantidade de mentorados na trilha: ");
-            int quantidadeDeMentorados = ConsoleInput.lerNumeroPositivo();
-
-            for (int i = 0; i < quantidadeDeMentorados; i++) {
-                System.out.println("Digite o ID do mentorado " + (i + 1) + ": ");
-                dto.addIdMentorado(ConsoleInput.lerId());
-            }
-
-            // (limte: 3 Skills por trilha)
-            System.out.println("Quantidade de Skills da trilha (limite: 3)");
-            int limite = ConsoleInput.lerNumero();
-
-            if (limite < 0 || limite > 3){
-                throw new LimiteSkillsUltrapassadoException("Erro: O mínimo de skills é 0 e o máximo deve ser 3");
-            }
-
-            for (int i = 0; i < limite; i++) {
-                System.out.println("Quais skills a trilha vai ter?");
-                System.out.println("Skills: ");
-                System.out.print("1- Java 2- Spring 3- SQL\n");
-                System.out.print("4- Git 5- Docker 6- AWS\n");
-                System.out.print("7- Angular 8- React 9- Postgresql\n");
-                System.out.print("10- HTML 11- CSS\n");
-                skillUseCase.adicionarSkillTrilhaMentoria(dto, skillUseCase.buscaSkill(ConsoleInput.lerNumero()));
-            }
-        } catch (ListaVaziaException e){
+            dto.setCicloEmMeses(lerQuantidade("Informe o ciclo da trilha em meses: "));
+        } catch (ListaVaziaException e) {
             System.out.println("Não foi possível criar a trilha: " + e.getMessage());
         } catch (InputMismatchException e){
             System.out.println("Caractere inválido!");
         }
         return dto;
+    }
+
+    private int lerQuantidade(String mensagem) {
+        while (true) {
+            try {
+                System.out.print(mensagem);
+                return ConsoleInput.lerNumeroPositivo();
+            } catch (NumeroForaDoIntervaloException | EntradaInvalidaException e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 }
