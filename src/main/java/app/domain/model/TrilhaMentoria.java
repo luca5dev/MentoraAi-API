@@ -10,5 +10,5 @@ public class TrilhaMentoria {
    private List<Mentorado> mentorados;
    private List<Skill> skills;
 
-
+   // desenvolver os metodos trilhaMentoria - calcularCustoMensalTotal - calcularCustoMensalDoCiclo -  e gts e sets
 }
