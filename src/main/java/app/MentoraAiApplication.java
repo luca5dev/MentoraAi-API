@@ -11,10 +11,16 @@ import app.service.interfaces.TrilhaService;
 import app.service.useCase.ParticipanteUseCase;
 import app.service.useCase.TrilhaUseCase;
 import app.view.ConsultaView;
+import org.springframework.boot.SpringApplication;
 
 public class MentoraAiApplication {
 
     public static void main(String[] args) {
+
+        SpringApplication.run(MentoraAiApplication.class, args);
+
+    /* Fluxo legado via console.
+        Mantido temporáriamente, vou remover depois
 
         ParticipanteDAO participanteDAO = new ParticipanteImpl();
         TrilhaDAO trilhaDAO = new TrilhaImpl();
@@ -33,5 +39,6 @@ public class MentoraAiApplication {
         } finally {
             JPAUtil.fecharFactory();
         }
+        */
     }
 }
