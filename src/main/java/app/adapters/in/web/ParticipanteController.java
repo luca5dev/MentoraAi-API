@@ -1,9 +1,7 @@
 package app.adapters.in.web;
 
-import app.adapters.in.web.dto.CadastrarMentorRequest;
-import app.adapters.in.web.dto.CadastrarMentoradoRequest;
-import app.adapters.in.web.dto.MentorResponse;
-import app.adapters.in.web.dto.MentoradoResponse;
+import app.adapters.in.web.dto.*;
+import app.adapters.in.web.mapper.WebResponseMapper;
 import app.domain.port.in.CadastrarMentorDados;
 import app.domain.port.in.CadastrarMentorPort;
 import app.domain.port.in.CadastrarMentoradoDados;
@@ -28,16 +26,19 @@ public class ParticipanteController {
    public MentorResponse cadastrarMentor(@RequestBody CadastrarMentorRequest request){
       var dados = new CadastrarMentorDados(
               //falta pegar os dados dos mentores com os gets e criar um web response no mapper para usar como retorno
-      )
-              return ;
+      );
+              return WebResponseMapper.toResponse(cadastrarMentoradoPort.cadastrar(dados)); // implementar o método cadastrar
    }
 
    @PostMapping("/mentorados")
    @ResponseStatus(HttpStatus.CREATED)
    public MentoradoResponse cadastrarMentorado(@RequestBody CadastrarMentoradoRequest request){
       var dados = new CadastrarMentoradoDados(
-              // aqui também falta pegar os dados dos mentores com os gets
-      )
-              return ; // usar um  web response como retorno
+              // aqui também falta pegar os dados dos mentores com os gets e implementar o CadastrarMentoradoDados
+              WebEnumMapper.toNivelSenioridade(request.getNivelSenioridade()),
+              WebEnumMapper.toSkills(request.getSkills()),
+              WebEnumMapper.toSkills(request.getSkillsDesejadas())
+      );
+              return WebResponseMapper.toResponse(cadastrarMentoradoPort.cadastrar(dados)); // implementar método cadastrar
    }
 }

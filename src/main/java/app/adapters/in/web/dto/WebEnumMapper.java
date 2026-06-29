@@ -20,18 +20,18 @@ public final class WebEnumMapper {
       }
    }
 
-   public static List<Skill> toSkill(List<String> valores){
+   public static List<Skill> toSkills(List<String> valores){
       if (valores == null){
          return List.of();
       }
-      return valores.stream().map(WebEnumMapper::toSkill).toList();
+      return valores.stream().map(WebEnumMapper::toSkills).toList();
    }
 
    public static List<String> toSkillNames(List<Skill> skills){
       return skills.stream().map(Skill::name).toList();
    }
 
-   private static Skill toSkill(String valor){
+   private static Skill toSkills(String valor){
       try{
          return Skill.valueOf(ValorObrigatorio(valor));
       }catch (IllegalArgumentException exception){
