@@ -1,11 +1,30 @@
 package app.adapters.out.persistence.entity;
 
-//anotações entity e table "mentorados"
-public class MentoradoJpaEntity {
+import app.domain.model.Skill;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.Table;
 
-   /* essa classe é onde vai ficar a tabela de mentorados que vai persistir no banco
-   vc pode colocar a as anotações de Id, generatedvalue, enumerated, elementcollection.
-   pode fazer uma lista de skills de skillsDesejadas e depois os gets e sets
-    */
+import java.util.ArrayList;
+import java.util.List;
 
+@Entity
+@Table(name = "mentorado")
+@PrimaryKeyJoinColumn(name = "id")
+public class MentoradoJpaEntity extends ParticipanteJpaEntity {
+
+    @ElementCollection(targetClass = Skill.class)
+    @Enumerated(EnumType.STRING)
+    private List<Skill> skillsDesejadas = new ArrayList<>();
+
+    public List<Skill> getSkillsDesejadas() {
+        return skillsDesejadas;
+    }
+
+    public void setSkillsDesejadas(List<Skill> skillsDesejadas) {
+        this.skillsDesejadas = skillsDesejadas;
+    }
 }

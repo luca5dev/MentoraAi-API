@@ -1,7 +1,30 @@
 package app.domain.usecase;
 
-public class CadastrarMentoradoUseCase {
+import app.domain.model.Mentorado;
+import app.domain.port.in.CadastrarMentoradoDados;
+import app.domain.port.in.CadastrarMentoradoPort;
+import app.domain.port.out.ParticipanteRepositoryPort;
 
-   //implements CadastrarMentoradoPort - regras de nome obrigatorio do mentorado - regra nivel de senioridade - regra ao menos uma skill
+public class CadastrarMentoradoUseCase implements CadastrarMentoradoPort {
 
+    private final ParticipanteRepositoryPort participanteRepositoryPort;
+
+    public CadastrarMentoradoUseCase(ParticipanteRepositoryPort participanteRepositoryPort) {
+        this.participanteRepositoryPort = participanteRepositoryPort;
+    }
+
+    @Override
+    public Mentorado cadastrar(CadastrarMentoradoDados dados) {
+        Mentorado mentorado = new Mentorado(
+                dados.nome(),
+                dados.nivelSenioridade(),
+                dados.skills(),
+                dados.valorHora(),
+                dados.horasDedicadas(),
+                dados.skillsDesejadas()
+        );
+
+        participanteRepositoryPort.persist(mentorado);
+        return mentorado;
+    }
 }

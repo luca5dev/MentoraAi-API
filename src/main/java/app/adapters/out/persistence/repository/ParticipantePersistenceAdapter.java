@@ -1,23 +1,60 @@
 package app.adapters.out.persistence.repository;
 
-public class ParticipantePersistenceAdapter {
+import app.domain.model.Mentor;
+import app.domain.model.Mentorado;
+import app.domain.model.ParticipantePrograma;
+import app.domain.port.out.ParticipanteRepositoryPort;
+import org.springframework.stereotype.Component;
 
-   /*essa classe vai implementar o ParticipanteRepositoryPort, aí vai ter aqui os metodos Mentor com o salvarMentor
-   Mentorado com o salvarMentorado, Mentor com buscarMentorPorId <- aqui da pra usar a excessão de participante não encontrado
-   e a lista de mentorado pra buscar mentorados por id. depois fazer as associações em um metodo toDomain e toEntity. vou colocar um exemplo em seguida
+import java.util.List;
+import java.util.Optional;
 
-   private MentorJpaEntity toEntity(Mentor mentor) {
-        MentorJpaEntity entity = new MentorJpaEntity();
-        entity.setId(mentor.getId());
-        entity.setNome(mentor.getNome());
-        entity.setNivelSenioridade(mentor.getNivelSenioridade());
-        entity.setSkills(mentor.getSkills());
-        entity.setValorHora(mentor.getValorHora());
-        entity.setHorasDedicadas(mentor.getHorasDedicadas());
-        entity.setMaximoMentorados(mentor.getMaximoMentorados());
-        return entity;
+@Component
+public class ParticipantePersistenceAdapter implements ParticipanteRepositoryPort {
+
+    private final ParticipanteJpaRepository participanteJpaRepository;
+    private final ParticipanteJpaMapper mapper;
+
+    public ParticipantePersistenceAdapter(ParticipanteJpaRepository participanteJpaRepository,
+                                          ParticipanteJpaMapper mapper) {
+        this.participanteJpaRepository = participanteJpaRepository;
+        this.mapper = mapper;
     }
 
-    */
+    @Override
+    public void persist(ParticipantePrograma participantePrograma) {
+        var entity = mapper.toJpa(participantePrograma);
+        participanteJpaRepository.save(entity);
+    }
 
+    @Override
+    public void update(ParticipantePrograma participantePrograma) {
+        var entity = mapper.toJpa(participantePrograma);
+        participanteJpaRepository.save(entity);
+    }
+
+    @Override
+    public List<ParticipantePrograma> listarTodosParticipantes() {
+        return participanteJpaRepository.findAll().stream()
+                .map(mapper::toDomainParticipante)
+                .toList();
+    }
+
+    @Override
+    public Optional<ParticipantePrograma> buscarParticipantePorId(Long id) {
+        return participanteJpaRepository.findById(id)
+                .map(mapper::toDomainParticipante);
+    }
+
+    @Override
+    public Optional<Mentor> buscarMentorPorId(Long id) {
+        return participanteJpaRepository.findMentorById(id).map(mapper::toDomainMentor);
+    }
+
+    @Override
+    public List<Mentorado> buscarMentoradosPorIds(List<Long> ids) {
+        return participanteJpaRepository.findMentoradosByIds(ids).stream()
+                .map(mapper::toDomainMentorado)
+                .toList();
+    }
 }

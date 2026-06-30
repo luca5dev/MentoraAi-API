@@ -1,7 +1,16 @@
 package app.domain.port.in;
 
-public record CadastrarMentoradoDados() {
+import app.domain.model.NivelSenioridade;
+import app.domain.model.Skill;
 
-   // aqui também as variáveis String nome, NivelSenioridade nivelSenioridade, <Skill> skills, Double valorHora, Double horasDedicadas, <Skill> skillsDesejadas
+import java.util.List;
 
+public record CadastrarMentoradoDados(
+        String nome,
+        NivelSenioridade nivelSenioridade,
+        List<Skill> skills,
+        Double valorHora,
+        Double horasDedicadas,
+        List<Skill> skillsDesejadas
+) {
 }

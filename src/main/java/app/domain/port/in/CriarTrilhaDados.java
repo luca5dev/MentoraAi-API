@@ -1,6 +1,14 @@
 package app.domain.port.in;
 
-public record CriarTrilhaDados() {
+import app.domain.model.Skill;
 
-   //aqui é só as variaveis String nome, Integer cicloEmMeses, Long idMentor, List<Long> idsMentorados, e uma lista de <Skill> skills
+import java.util.List;
+
+public record CriarTrilhaDados(
+        String nomeDaTrilha,
+        Integer cicloEmMeses,
+        Long mentorId,
+        List<Long> mentoradosIds,
+        List<Skill> skillsDaTrilha
+) {
 }
