@@ -1,15 +1,9 @@
 package app.config;
 
-import app.domain.port.in.CadastrarMentorPort;
-import app.domain.port.in.CadastrarMentoradoPort;
-import app.domain.port.in.CriarTrilhaPort;
-import app.domain.port.in.ListarTrilhasPort;
+import app.domain.port.in.*;
 import app.domain.port.out.ParticipanteRepositoryPort;
 import app.domain.port.out.TrilhaRepositoryPort;
-import app.domain.usecase.CadastrarMentorUseCase;
-import app.domain.usecase.CadastrarMentoradoUseCase;
-import app.domain.usecase.CriarTrilhaUseCase;
-import app.domain.usecase.ListarTrilhasUseCase;
+import app.domain.usecase.*;
 import app.domain.validator.ValidadorTrilhaDomain;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,6 +38,13 @@ public class UseCaseConfig {
    @Bean
    public ListarTrilhasPort listarTrilhasPort(TrilhaRepositoryPort trilhaRepositoryPort) {
       return new ListarTrilhasUseCase(trilhaRepositoryPort);
+   }
+
+   @Bean
+   public ExecutarDemonstracaoPort executarDemonstracaoPort(
+           TrilhaRepositoryPort trilhaRepositoryPort,
+           ValidadorTrilhaDomain validadorTrilhaDomain) {
+      return new ExecutarDemonstracaoAutomaticaUseCase(trilhaRepositoryPort, validadorTrilhaDomain);
    }
 
 }
