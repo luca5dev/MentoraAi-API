@@ -13,24 +13,40 @@ public final class WebResponseMapper {
 
    }
 
-   public static MentorResponse toResponse(Mentor mentor){
+   public static MentorResponse toResponse(Mentor mentor) {
       return new MentorResponse(
-              //Adicionar dados do mentor para respostas utilizando a classe abstrata Participante
-              WebEnumMapper.toSkillNames(mentor.getSKills()) //getSkills vindos do Participante
+              mentor.getId(),
+              mentor.getNome(),
+              mentor.getNivelSenioridade().name(),
+              WebEnumMapper.toSkillNames(mentor.getSkills()),
+              mentor.getValorHora(),
+              mentor.getHorasDedicadas(),
+              mentor.getMaximoMentorados()
       );
    }
 
    public static MentoradoResponse toResponse(Mentorado mentorado){
       return new MentoradoResponse(
-              //Adicionar dados do mentorado para respostas utilizando a classe abstrata Participante
-              WebEnumMapper.toSkillNames(mentorado.getSkills()),// getSkills vindos do Participante
+              mentorado.getId(),
+              mentorado.getNome(),
+              mentorado.getNivelSenioridade().name(),
+              WebEnumMapper.toSkillNames(mentorado.getSkills()),// getSkills vindos do ParticipantePrograma = domain.model
+              mentorado.getValorHora(),
+              mentorado.getHorasDedicadas(),
               WebEnumMapper.toSkillNames(mentorado.getSkillsDesejadas()) //getSkillsDesejadas vindos do Mentorado
       );
    }
 
    public static TrilhaResponse toResponse(TrilhaMentoria trilha){
       return new TrilhaResponse(
-              WebEnumMapper.toSkillNames(trilha.getSkills()), //getSkills() vindo do TrilhaMentoria
-      )
+              trilha.getId(),
+              trilha.getNomeDaTrilha(),
+              trilha.getCicloEmMeses(),
+              trilha.getMentor().getId(),
+              trilha.getMentorados().stream().map(Mentorado::getId).toList(),
+              WebEnumMapper.toSkillNames(trilha.getSkillsDaTrilha()),
+              trilha.calcularCustoMensalTotal(),
+              trilha.calcularCustoTotalDoCiclo()
+      );
    }
 }

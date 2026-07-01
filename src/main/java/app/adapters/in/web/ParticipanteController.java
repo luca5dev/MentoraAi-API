@@ -25,19 +25,27 @@ public class ParticipanteController {
    @ResponseStatus(HttpStatus.CREATED)
    public MentorResponse cadastrarMentor(@RequestBody CadastrarMentorRequest request){
       var dados = new CadastrarMentorDados(
-              //falta pegar os dados dos mentores com os gets e criar um web response no mapper para usar como retorno
+              request.getNome(),
+              WebEnumMapper.toNivelSenioridade(request.getNivelSenioridade()),
+              WebEnumMapper.toSkills(request.getSkills()),
+              request.getValorHora(),
+              request.getHorasDedicadas(),
+              request.getMaximoMentorados()
       );
-              return WebResponseMapper.toResponse(cadastrarMentoradoPort.cadastrar(dados)); // implementar o método cadastrar
+              return WebResponseMapper.toResponse(cadastrarMentorPort.cadastrar(dados));
    }
 
    @PostMapping("/mentorados")
    @ResponseStatus(HttpStatus.CREATED)
    public MentoradoResponse cadastrarMentorado(@RequestBody CadastrarMentoradoRequest request){
       var dados = new CadastrarMentoradoDados(
-              // aqui também falta pegar os dados dos mentores com os gets e implementar o CadastrarMentoradoDados
+              request.getNome(),
               WebEnumMapper.toNivelSenioridade(request.getNivelSenioridade()),
               WebEnumMapper.toSkills(request.getSkills()),
+              request.getValorHora(),
+              request.getHorasDedicadas(),
               WebEnumMapper.toSkills(request.getSkillsDesejadas())
+              // aqui também falta pegar os dados dos mentores com os gets e implementar o CadastrarMentoradoDados
       );
               return WebResponseMapper.toResponse(cadastrarMentoradoPort.cadastrar(dados)); // implementar método cadastrar
    }

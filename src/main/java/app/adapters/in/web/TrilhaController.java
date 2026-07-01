@@ -31,7 +31,7 @@ public class TrilhaController {
       var dadosCriar = new CriarTrilhaDados(
               request.getNome(),request.getCicloEmMeses(),request.getIdMentor(),request.getIdsMentorados(), WebEnumMapper.toSkills(request.getSkills())
       );
-      return WebResponseMapper.toResponse(criarTrilhaPort.criar(dadosCriar)); //implementar metodo criar
+      return WebResponseMapper.toResponse(criarTrilhaPort.executar(dadosCriar));
    }
 
    @GetMapping
