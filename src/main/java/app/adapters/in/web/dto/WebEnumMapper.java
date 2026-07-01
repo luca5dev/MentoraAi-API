@@ -2,7 +2,7 @@ package app.adapters.in.web.dto;
 
 import app.domain.model.Skill;
 import app.exception.EntradaInvalidaException;
-import app.model.enums.NivelSenioridade;
+import app.domain.model.NivelSenioridade;
 
 import java.util.List;
 

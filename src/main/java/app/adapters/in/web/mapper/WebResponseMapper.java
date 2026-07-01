@@ -16,7 +16,7 @@ public final class WebResponseMapper {
    public static MentorResponse toResponse(Mentor mentor){
       return new MentorResponse(
               //Adicionar dados do mentor para respostas utilizando a classe abstrata Participante
-              WebEnumMapper.toSkillNames(mentor.getSKills()), //getSkills vindos do Participante
+              WebEnumMapper.toSkillNames(mentor.getSKills()) //getSkills vindos do Participante
       );
    }
 
