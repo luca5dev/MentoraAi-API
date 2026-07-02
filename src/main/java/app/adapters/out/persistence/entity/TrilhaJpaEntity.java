@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "trilha_mentoria")
+@Table(name = "trilhamentoria")
 public class TrilhaJpaEntity {
 
     @Id

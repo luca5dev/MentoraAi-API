@@ -14,8 +14,6 @@ import app.exception.MaximoMentoradosAtingidosException;
 import app.exception.NivelDesproporcionalException;
 import app.exception.SkillIncompativelException;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +23,12 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
     private final ValidadorTrilhaDomain validador;
     private final List<String> logs = new ArrayList<>();
     private final List<DemonstracaoResponse.CenarioResponse> cenarios = new ArrayList<>();
+
+    private static final List<String> NOMES_TRILHAS_DEMONSTRACAO = List.of(
+            "Trilha Sobrecarregada e Editada",
+            "Trilha Skills",
+            "Trilha Nível"
+    );
 
     public ExecutarDemonstracaoAutomaticaUseCase(
             TrilhaRepositoryPort trilhaRepositoryPort,
@@ -38,19 +42,18 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
         logs.clear();
         cenarios.clear();
 
+        try {
+            limparDadosAnteriorDaDemonstracao();
+        } catch (Exception e) {
+            // ignora se falhar (dados podem não existir)
+        }
+
         adicionarLog("========== AC6: DEMONSTRAÇÃO AUTOMÁTICA ==========");
         adicionarLog("");
 
-        //Cenário 1
         TrilhaMentoria trilhaInvalida = cenario1_cargaHorariaExcedida();
-
-        // Cenário 2
         cenario2_skillsIncompativeis();
-
-        // Cenário 3
         cenario3_nivelDesproporcional();
-
-        // Cenário 4
         cenario4_trilhaValidaPersistida(trilhaInvalida);
 
         adicionarLog("");
@@ -120,58 +123,90 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
         tentarValidar(trilha, 3);
     }
 
-    private void cenario4_trilhaValidaPersistida(TrilhaMentoria trilhaInvalida) {
-        adicionarLog(">> Cenário 4: Ajuste dos dados da trilha inválida e persistência");
+     private void cenario4_trilhaValidaPersistida(TrilhaMentoria trilhaInvalida) {
+          adicionarLog(">> Cenário 4: Ajuste dos dados da trilha inválida e persistência");
 
-        double cargaHorariaAntes = trilhaInvalida.getMentorados().stream()
-                .mapToDouble(Mentorado::getHorasDedicadas).sum();
-        adicionarLog("Carga mensal ANTES do ajuste: " + formatarHoras(cargaHorariaAntes) + " (acima do limite de 20h)");
+          double cargaHorariaAntes = trilhaInvalida.getMentorados().stream()
+                  .mapToDouble(Mentorado::getHorasDedicadas).sum();
+          adicionarLog("Carga mensal ANTES do ajuste: " + formatarHoras(cargaHorariaAntes) + " (acima do limite de 20h)");
 
-        List<Mentorado> mentorados = trilhaInvalida.getMentorados();
-        while (mentorados.stream().mapToDouble(Mentorado::getHorasDedicadas).sum() > 20.0 && !mentorados.isEmpty()) {
-            Mentorado removido = mentorados.remove(mentorados.size() - 1);
-            adicionarLog("Ajustando: removendo mentorado " + removido.getNome() + " - " + formatarHoras(removido.getHorasDedicadas()));
-        }
+          List<Mentorado> mentorados = new ArrayList<>(trilhaInvalida.getMentorados());
+          while (mentorados.stream().mapToDouble(Mentorado::getHorasDedicadas).sum() > 20.0 && !mentorados.isEmpty()) {
+              Mentorado removido = mentorados.remove(mentorados.size() - 1);
+              adicionarLog("Ajustando: removendo mentorado " + removido.getNome() + " - " + formatarHoras(removido.getHorasDedicadas()));
+          }
 
-        double cargaHorariaDepois = mentorados.stream()
-                .mapToDouble(Mentorado::getHorasDedicadas).sum();
-        adicionarLog("Carga mensal DEPOIS do ajuste: " + formatarHoras(cargaHorariaDepois) + " (dentro do limite de 20h)");
+          double cargaHorariaDepois = mentorados.stream()
+                  .mapToDouble(Mentorado::getHorasDedicadas).sum();
+          adicionarLog("Carga mensal DEPOIS do ajuste: " + formatarHoras(cargaHorariaDepois) + " (dentro do limite de 20h)");
 
-        try {
-            validador.validarTudo(trilhaInvalida);
+          try {
+              // Cria novos objetos de mentor e mentorado para evitar conflitos com persistence context
+              // Os objetos da trilha inválida já estão no persistence context do Hibernate,
+              // então reusá-los causaria UPDATE ao invés de INSERT
+              Mentor novoMentor = novoMentor(
+                      trilhaInvalida.getMentor().getNome(),
+                      trilhaInvalida.getMentor().getNivelSenioridade(),
+                      new ArrayList<>(trilhaInvalida.getMentor().getSkills())
+              );
 
-            adicionarLog("Validações passaram após o ajuste. Acionando JPA...");
-            adicionarLog("--- Dados da trilha: ---");
-            adicionarLog("Nome: " + trilhaInvalida.getNomeDaTrilha());
-            adicionarLog("Duração: " + trilhaInvalida.getCicloEmMeses() + " meses.");
-            adicionarLog("Skills da ensinadas: " + formatarSkills(trilhaInvalida.getSkillsDaTrilha()));
-            adicionarLog("Mentor: " + trilhaInvalida.getMentor().getNome() + " - " + trilhaInvalida.getMentor().getNivelSenioridade());
-            adicionarLog("Carga horária mensal prevista: " + formatarHoras(cargaHorariaDepois));
-            adicionarLog("Custo mensal previsto: " + formatarMoeda(trilhaInvalida.calcularCustoMensalTotal()));
-            adicionarLog("Custo total do ciclo completo: " + formatarMoeda(trilhaInvalida.calcularCustoTotalDoCiclo()));
-            adicionarLog("");
+              List<Mentorado> novosMentorados = new ArrayList<>();
+              for (Mentorado mentorado : mentorados) {
+                  Mentorado novoMentorado = new Mentorado(
+                          mentorado.getNome(),
+                          mentorado.getNivelSenioridade(),
+                          new ArrayList<>(mentorado.getSkills()),
+                          mentorado.getValorHora(),
+                          mentorado.getHorasDedicadas(),
+                          new ArrayList<>(mentorado.getSkillsDesejadas())
+                  );
+                  novosMentorados.add(novoMentorado);
+              }
 
-            trilhaRepositoryPort.persist(trilhaInvalida);
-            adicionarLog("Trilha persistida com sucesso!");
+              // Cria uma nova trilha com os objetos novos
+              TrilhaMentoria novaTrilha = new TrilhaMentoria(
+                      trilhaInvalida.getNomeDaTrilha(),
+                      trilhaInvalida.getCicloEmMeses(),
+                      novoMentor,
+                      novosMentorados,
+                      new ArrayList<>(trilhaInvalida.getSkillsDaTrilha())
+              );
 
-            cenarios.add(new DemonstracaoResponse.CenarioResponse(
-                    4,
-                    "Trilha Válida e Persistida",
-                    "SUCESSO: Trilha persistida com sucesso",
-                    null
-            ));
-        } catch (RuntimeException e) {
-            String mensagemErro = "Falha inesperada após ajuste: " + e.getMessage();
-            adicionarLog(mensagemErro);
+              validador.validarTudo(novaTrilha);
 
-            cenarios.add(new DemonstracaoResponse.CenarioResponse(
-                    4,
-                    "Trilha Válida e Persistida",
-                    "ERRO",
-                    e.getMessage()
-            ));
-        }
-    }
+              adicionarLog("Validações passaram após o ajuste. Acionando JPA...");
+              adicionarLog("--- Dados da trilha: ---");
+              adicionarLog("Nome: " + novaTrilha.getNomeDaTrilha());
+              adicionarLog("Duração: " + novaTrilha.getCicloEmMeses() + " meses.");
+              adicionarLog("Skills da ensinadas: " + formatarSkills(novaTrilha.getSkillsDaTrilha()));
+              adicionarLog("Mentor: " + novaTrilha.getMentor().getNome() + " - " + novaTrilha.getMentor().getNivelSenioridade());
+              adicionarLog("Carga horária mensal prevista: " + formatarHoras(cargaHorariaDepois));
+              adicionarLog("Custo mensal previsto: " + formatarMoeda(novaTrilha.calcularCustoMensalTotal()));
+              adicionarLog("Custo total do ciclo completo: " + formatarMoeda(novaTrilha.calcularCustoTotalDoCiclo()));
+              adicionarLog("");
+
+              // Persiste a nova trilha (que nunca esteve no persistence context)
+              trilhaRepositoryPort.persist(novaTrilha);
+              adicionarLog("Trilha persistida com sucesso!");
+
+             cenarios.add(new DemonstracaoResponse.CenarioResponse(
+                     4,
+                     "Trilha Válida e Persistida",
+                     "SUCESSO: Trilha persistida com sucesso",
+                     null
+             ));
+         } catch (RuntimeException e) {
+             String mensagemErro = "Falha inesperada após ajuste: " + e.getMessage();
+             adicionarLog(mensagemErro);
+
+             cenarios.add(new DemonstracaoResponse.CenarioResponse(
+                     4,
+                     "Trilha Válida e Persistida",
+                     "ERRO",
+                     e.getMessage()
+             ));
+         }
+     }
 
     private void tentarValidar(TrilhaMentoria trilha, int numeroCenario) {
         try {
@@ -227,4 +262,35 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
     private String formatarSkills(List<Skill> skills) {
         return skills.isEmpty() ? "Nenhuma" : String.join(", ", skills.stream().map(Skill::name).toList());
     }
+
+      private void limparDadosAnteriorDaDemonstracao() {
+          try {
+              List<TrilhaMentoria> todasTrilhas = trilhaRepositoryPort.listarTodasTrilhas();
+
+              List<TrilhaMentoria> trilhasParaLimpar = todasTrilhas.stream()
+                      .filter(trilha -> NOMES_TRILHAS_DEMONSTRACAO.contains(trilha.getNomeDaTrilha()))
+                      .toList();
+
+              for (TrilhaMentoria trilha : trilhasParaLimpar) {
+                  try {
+                      trilhaRepositoryPort.delete(trilha.getId());
+                      // Se falhar na primeira tentativa, tenta novamente
+                  } catch (Exception e) {
+                      try {
+                          Thread.sleep(100);
+                          trilhaRepositoryPort.delete(trilha.getId());
+                      } catch (Exception retry) {
+                          // Ignora se falhar na segunda tentativa também
+                          System.out.println("Aviso: Falha ao limpar trilha " + trilha.getNomeDaTrilha() + ": " + retry.getMessage());
+                      }
+                  }
+              }
+
+              // Limpa mentorados órfãos após deletar as trilhas
+              trilhaRepositoryPort.limparMentoradosOrfaos();
+          } catch (Exception e) {
+              System.out.println("Aviso: Erro geral na limpeza de dados: " + e.getMessage());
+          }
+      }
+
 }

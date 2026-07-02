@@ -3,6 +3,7 @@ package app.adapters.out.persistence.repository;
 import app.domain.model.TrilhaMentoria;
 import app.domain.port.out.TrilhaRepositoryPort;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +33,11 @@ public class TrilhaPersistenceAdapter implements TrilhaRepositoryPort {
     }
 
     @Override
+    public void delete(Long id) {
+        trilhaJpaRepository.deleteById(id);
+    }
+
+    @Override
     public List<TrilhaMentoria> listarTodasTrilhas() {
         return trilhaJpaRepository.findAll().stream()
                 .map(trilhaJpaMapper::toDomain)
@@ -43,5 +49,12 @@ public class TrilhaPersistenceAdapter implements TrilhaRepositoryPort {
         return trilhaJpaRepository.findById(id)
                 .map(trilhaJpaMapper::toDomain);
     }
+
+     @Override
+     @Transactional
+     public void limparMentoradosOrfaos() {
+         trilhaJpaRepository.limparMentoradosOrfaos();
+     }
 }
+
 

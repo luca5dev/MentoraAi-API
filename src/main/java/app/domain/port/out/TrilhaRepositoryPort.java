@@ -11,8 +11,11 @@ public interface TrilhaRepositoryPort {
 
     void update(TrilhaMentoria trilhaMentoria);
 
+    void delete(Long id);
+
     List<TrilhaMentoria> listarTodasTrilhas();
 
     Optional<TrilhaMentoria> buscarPorId(Long id);
 
+    void limparMentoradosOrfaos();
 }

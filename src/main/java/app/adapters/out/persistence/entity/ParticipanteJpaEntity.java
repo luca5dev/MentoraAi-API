@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "participante_programa")
+@Table(name = "participanteprograma")
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class ParticipanteJpaEntity {
 
