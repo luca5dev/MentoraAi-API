@@ -5,6 +5,7 @@ import app.domain.model.Mentorado;
 import app.domain.model.ParticipantePrograma;
 import app.domain.port.out.ParticipanteRepositoryPort;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,16 +25,19 @@ public class ParticipantePersistenceAdapter implements ParticipanteRepositoryPor
     @Override
     public void persist(ParticipantePrograma participantePrograma) {
         var entity = mapper.toJpa(participantePrograma);
-        participanteJpaRepository.save(entity);
+        var savedEntity = participanteJpaRepository.save(entity);
+        participantePrograma.setId(savedEntity.getId());
     }
 
     @Override
     public void update(ParticipantePrograma participantePrograma) {
         var entity = mapper.toJpa(participantePrograma);
-        participanteJpaRepository.save(entity);
+        var savedEntity = participanteJpaRepository.save(entity);
+        participantePrograma.setId(savedEntity.getId());
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ParticipantePrograma> listarTodosParticipantes() {
         return participanteJpaRepository.findAll().stream()
                 .map(mapper::toDomainParticipante)
@@ -41,17 +45,20 @@ public class ParticipantePersistenceAdapter implements ParticipanteRepositoryPor
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<ParticipantePrograma> buscarParticipantePorId(Long id) {
         return participanteJpaRepository.findById(id)
                 .map(mapper::toDomainParticipante);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<Mentor> buscarMentorPorId(Long id) {
         return participanteJpaRepository.findMentorById(id).map(mapper::toDomainMentor);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Mentorado> buscarMentoradosPorIds(List<Long> ids) {
         return participanteJpaRepository.findMentoradosByIds(ids).stream()
                 .map(mapper::toDomainMentorado)

@@ -2,7 +2,6 @@ package app.adapters.in.web;
 
 import app.adapters.in.web.dto.CriarTrilhaRequest;
 import app.adapters.in.web.dto.TrilhaResponse;
-import app.adapters.in.web.dto.WebEnumMapper;
 import app.adapters.in.web.mapper.WebResponseMapper;
 import app.domain.port.in.CriarTrilhaDados;
 import app.domain.port.in.CriarTrilhaPort;
@@ -28,8 +27,7 @@ public class TrilhaController {
    @PostMapping
    @ResponseStatus(HttpStatus.CREATED)
    public TrilhaResponse criar(@RequestBody CriarTrilhaRequest request){
-      var dadosCriar = new CriarTrilhaDados(
-              request.getNome(),request.getCicloEmMeses(),request.getIdMentor(),request.getIdsMentorados(), WebEnumMapper.toSkills(request.getSkills())
+      var dadosCriar = new CriarTrilhaDados(request.getNome(), request.getCicloEmMeses(), request.getIdMentor(), request.getIdsMentorados()
       );
       return WebResponseMapper.toResponse(criarTrilhaPort.executar(dadosCriar));
    }

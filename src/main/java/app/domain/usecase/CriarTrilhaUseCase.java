@@ -4,6 +4,7 @@ package app.domain.usecase;
 
 import app.domain.model.Mentor;
 import app.domain.model.Mentorado;
+import app.domain.model.Skill;
 import app.domain.model.TrilhaMentoria;
 import app.domain.port.in.CriarTrilhaDados;
 import app.domain.port.in.CriarTrilhaPort;
@@ -32,7 +33,7 @@ public class CriarTrilhaUseCase implements CriarTrilhaPort {
     @Override
     public TrilhaMentoria executar(CriarTrilhaDados dados) {
         Mentor mentor = participanteRepositoryPort.buscarMentorPorId(dados.mentorId())
-                .orElseThrow(() -> new ParticipanteNaoEncontradoException("Mentor não encontrado: " +  dados.mentorId()));
+                .orElseThrow(() -> new ParticipanteNaoEncontradoException("Mentor não encontrado: " + dados.mentorId()));
 
         List<Mentorado> mentorados = participanteRepositoryPort.buscarMentoradosPorIds(dados.mentoradosIds());
 
@@ -45,9 +46,13 @@ public class CriarTrilhaUseCase implements CriarTrilhaPort {
         trilha.setCicloEmMeses(dados.cicloEmMeses());
         trilha.setMentor(mentor);
         trilha.setMentorados(mentorados);
-        if (dados.skillsDaTrilha() != null) {
-            trilha.setSkillsDaTrilha(dados.skillsDaTrilha());
-        }
+
+        List<Skill> skillsEnsinadas = mentorados.stream()
+                .flatMap(m -> m.getSkillsDesejadas().stream())
+                .distinct()
+                .filter(skill -> mentor.getSkills().contains(skill))
+                .toList();
+        trilha.setSkillsDaTrilha(skillsEnsinadas);
 
         validadorTrilhaDomain.validarTudo(trilha);
 
