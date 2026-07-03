@@ -5,11 +5,11 @@ import app.domain.model.Mentorado;
 import app.domain.model.NivelSenioridade;
 import app.domain.model.Skill;
 import app.domain.model.TrilhaMentoria;
-import app.exception.CargaHorariaExcedidaException;
-import app.exception.MaximoMentoradosAtingidosException;
-import app.exception.NivelDesproporcionalException;
-import app.exception.NumeroForaDoIntervaloException;
-import app.exception.SkillIncompativelException;
+import app.domain.exception.CargaHorariaExcedidaException;
+import app.domain.exception.MaximoMentoradosAtingidosException;
+import app.domain.exception.NivelDesproporcionalException;
+import app.domain.exception.NumeroForaDoIntervaloException;
+import app.domain.exception.SkillIncompativelException;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

@@ -11,8 +11,8 @@ import app.domain.port.in.CriarTrilhaPort;
 import app.domain.port.out.ParticipanteRepositoryPort;
 import app.domain.port.out.TrilhaRepositoryPort;
 import app.domain.validator.ValidadorTrilhaDomain;
-import app.exception.ListaVaziaException;
-import app.exception.ParticipanteNaoEncontradoException;
+import app.domain.exception.ListaVaziaException;
+import app.domain.exception.ParticipanteNaoEncontradoException;
 
 import java.util.List;
 

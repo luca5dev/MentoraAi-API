@@ -9,7 +9,7 @@ import app.domain.port.in.CriarTrilhaDados;
 import app.domain.port.out.ParticipanteRepositoryPort;
 import app.domain.port.out.TrilhaRepositoryPort;
 import app.domain.validator.ValidadorTrilhaDomain;
-import app.exception.ParticipanteNaoEncontradoException;
+import app.domain.exception.ParticipanteNaoEncontradoException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;

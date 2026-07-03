@@ -1,4 +1,4 @@
-package app.exception;
+package app.domain.exception;
 
 public class CampoVazioException extends RuntimeException {
     public CampoVazioException(String message) {

@@ -1,4 +1,4 @@
-package app.exception;
+package app.domain.exception;
 
 import java.util.InputMismatchException;
 

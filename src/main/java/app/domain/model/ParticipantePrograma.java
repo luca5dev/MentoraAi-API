@@ -1,7 +1,7 @@
 package app.domain.model;
 
-import app.exception.CampoVazioException;
-import app.exception.SkillDuplicadaException;
+import app.domain.exception.CampoVazioException;
+import app.domain.exception.SkillDuplicadaException;
 
 import java.util.ArrayList;
 import java.util.List;

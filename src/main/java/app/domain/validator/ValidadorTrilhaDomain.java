@@ -1,10 +1,10 @@
 package app.domain.validator;
 
+import app.domain.exception.*;
 import app.domain.model.Mentor;
 import app.domain.model.Mentorado;
 import app.domain.model.NivelSenioridade;
 import app.domain.model.TrilhaMentoria;
-import app.exception.*;
 
 public class ValidadorTrilhaDomain {
 
@@ -27,7 +27,7 @@ public class ValidadorTrilhaDomain {
                 .sum();
 
         if (totalHoras > mentor.getHorasDedicadas()) {
-            throw new CargaHorariaExcedidaException ("A soma das horas dos mentorados ultrapassa a capacidade mensal do mentor.");
+            throw new CargaHorariaExcedidaException("A soma das horas dos mentorados ultrapassa a capacidade mensal do mentor.");
         }
     }
 

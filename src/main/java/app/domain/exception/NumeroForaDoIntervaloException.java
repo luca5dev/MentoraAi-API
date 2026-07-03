@@ -1,4 +1,4 @@
-package app.exception;
+package app.domain.exception;
 
 public class NumeroForaDoIntervaloException extends RuntimeException {
     public NumeroForaDoIntervaloException(String message) {

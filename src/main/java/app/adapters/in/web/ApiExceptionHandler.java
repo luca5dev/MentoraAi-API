@@ -1,12 +1,10 @@
 package app.adapters.in.web;
 
 import app.adapters.in.web.dto.ErroResponse;
-import app.exception.*;
+import app.domain.exception.*;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;

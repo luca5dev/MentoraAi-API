@@ -9,10 +9,10 @@ import app.domain.model.TrilhaMentoria;
 import app.domain.port.in.ExecutarDemonstracaoPort;
 import app.domain.port.out.TrilhaRepositoryPort;
 import app.domain.validator.ValidadorTrilhaDomain;
-import app.exception.CargaHorariaExcedidaException;
-import app.exception.MaximoMentoradosAtingidosException;
-import app.exception.NivelDesproporcionalException;
-import app.exception.SkillIncompativelException;
+import app.domain.exception.CargaHorariaExcedidaException;
+import app.domain.exception.MaximoMentoradosAtingidosException;
+import app.domain.exception.NivelDesproporcionalException;
+import app.domain.exception.SkillIncompativelException;
 
 import java.util.ArrayList;
 import java.util.List;
