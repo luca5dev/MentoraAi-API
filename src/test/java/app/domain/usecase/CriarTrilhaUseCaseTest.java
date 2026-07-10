@@ -57,8 +57,7 @@ class CriarTrilhaUseCaseTest {
                 "Trilha Backend",
                 4,
                 mentor.getId(),
-                List.of(mentorado.getId()),
-                List.of(Skill.JAVA, Skill.SPRING)
+                List.of(mentorado.getId())
         );
 
         when(participanteRepositoryPort.buscarMentorPorId(10L)).thenReturn(Optional.of(mentor));
@@ -83,8 +82,7 @@ class CriarTrilhaUseCaseTest {
                 "Trilha Backend",
                 4,
                 999L,
-                List.of(1L),
-                List.of(Skill.JAVA)
+                List.of(1L)
         );
 
         when(participanteRepositoryPort.buscarMentorPorId(999L)).thenReturn(Optional.empty());

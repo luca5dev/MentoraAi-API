@@ -41,6 +41,11 @@ public class UseCaseConfig {
    }
 
    @Bean
+   public ListarParticipantesPort listarParticipantesPort(ParticipanteRepositoryPort participanteRepositoryPort) {
+      return new ListarParticipantesUseCase(participanteRepositoryPort);
+   }
+
+   @Bean
    public ExecutarDemonstracaoPort executarDemonstracaoPort(
            TrilhaRepositoryPort trilhaRepositoryPort,
            ValidadorTrilhaDomain validadorTrilhaDomain) {
