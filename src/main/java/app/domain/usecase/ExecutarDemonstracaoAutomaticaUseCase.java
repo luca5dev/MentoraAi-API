@@ -13,11 +13,15 @@ import app.domain.exception.CargaHorariaExcedidaException;
 import app.domain.exception.MaximoMentoradosAtingidosException;
 import app.domain.exception.NivelDesproporcionalException;
 import app.domain.exception.SkillIncompativelException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstracaoPort {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExecutarDemonstracaoAutomaticaUseCase.class);
 
     private final TrilhaRepositoryPort trilhaRepositoryPort;
     private final ValidadorTrilhaDomain validador;
@@ -25,9 +29,9 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
     private final List<DemonstracaoResponse.CenarioResponse> cenarios = new ArrayList<>();
 
     private static final List<String> NOMES_TRILHAS_DEMONSTRACAO = List.of(
-            "Trilha Sobrecarregada e Editada",
-            "Trilha Skills",
-            "Trilha Nível"
+            MensagensDemonstracao.NOME_TRILHA_SOBRECARREGADA,
+            MensagensDemonstracao.NOME_TRILHA_SKILLS,
+            MensagensDemonstracao.NOME_TRILHA_NIVEL
     );
 
     public ExecutarDemonstracaoAutomaticaUseCase(
@@ -42,13 +46,9 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
         logs.clear();
         cenarios.clear();
 
-        try {
-            limparDadosAnteriorDaDemonstracao();
-        } catch (Exception e) {
-            // ignora se falhar (dados podem não existir)
-        }
+        limparDadosAnteriorDaDemonstracao();
 
-        adicionarLog("========== AC6: DEMONSTRAÇÃO AUTOMÁTICA ==========");
+        adicionarLog(MensagensDemonstracao.INICIO_DEMONSTRACAO);
         adicionarLog("");
 
         TrilhaMentoria trilhaInvalida = cenario1_cargaHorariaExcedida();
@@ -57,18 +57,18 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
         cenario4_trilhaValidaPersistida(trilhaInvalida);
 
         adicionarLog("");
-        adicionarLog("========== FIM DA DEMONSTRAÇÃO AUTOMÁTICA ==========");
+        adicionarLog(MensagensDemonstracao.FIM_DEMONSTRACAO);
 
         return new DemonstracaoResponse(
-                "AC6: DEMONSTRAÇÃO AUTOMÁTICA",
-                "Demonstração executada com sucesso",
+                MensagensDemonstracao.TITULO_DEMONSTRACAO,
+                MensagensDemonstracao.MENSAGEM_SUCESSO,
                 cenarios,
                 logs
         );
     }
 
     private TrilhaMentoria cenario1_cargaHorariaExcedida() {
-        adicionarLog(">> Cenário 1: Carga horária excedida (limite 20h/mês)");
+        adicionarLog(MensagensDemonstracao.CENARIO_1_CARGA_HORARIA);
 
         Mentor mentor = novoMentor("Ana", NivelSenioridade.SENIOR, List.of(Skill.JAVA, Skill.SPRING, Skill.SQL));
         Mentorado mentorado1 = novoMentorado("Bruno", NivelSenioridade.JUNIOR, 5.0, List.of(Skill.JAVA));
@@ -77,7 +77,7 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
         Mentorado mentorado4 = novoMentorado("Erica", NivelSenioridade.JUNIOR, 6.0, List.of(Skill.JAVA));
 
         TrilhaMentoria trilha = new TrilhaMentoria(
-                "Trilha Sobrecarregada e Editada",
+                MensagensDemonstracao.NOME_TRILHA_SOBRECARREGADA,
                 3,
                 mentor,
                 new ArrayList<>(List.of(mentorado1, mentorado2, mentorado3, mentorado4)),
@@ -89,14 +89,14 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
     }
 
     private void cenario2_skillsIncompativeis() {
-        adicionarLog(">> Cenário 2: Skills incompatíveis (mentor não tem 70% das skills desejadas)");
+        adicionarLog(MensagensDemonstracao.CENARIO_2_SKILLS);
 
         Mentor mentor = novoMentor("Ana", NivelSenioridade.SENIOR, List.of(Skill.JAVA));
         Mentorado mentorado1 = novoMentorado("Bruno", NivelSenioridade.JUNIOR, 5.0,
                 List.of(Skill.JAVA, Skill.ANGULAR, Skill.REACT, Skill.DOCKER));
 
         TrilhaMentoria trilha = new TrilhaMentoria(
-                "Trilha Skills",
+                MensagensDemonstracao.NOME_TRILHA_SKILLS,
                 3,
                 mentor,
                 new ArrayList<>(List.of(mentorado1)),
@@ -107,13 +107,13 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
     }
 
     private void cenario3_nivelDesproporcional() {
-        adicionarLog(">> Cenário 3: Nível desproporcional (PLENO, mentorando PLENO)");
+        adicionarLog(MensagensDemonstracao.CENARIO_3_NIVEL);
 
         Mentor mentor = novoMentor("Diego", NivelSenioridade.PLENO, List.of(Skill.JAVA, Skill.SPRING));
         Mentorado mentorado1 = novoMentorado("Eva", NivelSenioridade.PLENO, 5.0, List.of(Skill.JAVA, Skill.SPRING));
 
         TrilhaMentoria trilha = new TrilhaMentoria(
-                "Trilha Nível",
+                MensagensDemonstracao.NOME_TRILHA_NIVEL,
                 3,
                 mentor,
                 new ArrayList<>(List.of(mentorado1)),
@@ -124,7 +124,7 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
     }
 
      private void cenario4_trilhaValidaPersistida(TrilhaMentoria trilhaInvalida) {
-          adicionarLog(">> Cenário 4: Ajuste dos dados da trilha inválida e persistência");
+          adicionarLog(MensagensDemonstracao.CENARIO_4_AJUSTE);
 
           double cargaHorariaAntes = trilhaInvalida.getMentorados().stream()
                   .mapToDouble(Mentorado::getHorasDedicadas).sum();
@@ -187,22 +187,24 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
 
               // Persiste a nova trilha (que nunca esteve no persistence context)
               trilhaRepositoryPort.persist(novaTrilha);
-              adicionarLog("Trilha persistida com sucesso!");
+              adicionarLog(MensagensDemonstracao.TRILHA_PERSISTIDA);
 
              cenarios.add(new DemonstracaoResponse.CenarioResponse(
                      4,
-                     "Trilha Válida e Persistida",
-                     "SUCESSO: Trilha persistida com sucesso",
+                     MensagensDemonstracao.TITULO_TRILHA_VALIDA,
+                     MensagensDemonstracao.RESULTADO_TRILHA_PERSISTIDA,
                      null
              ));
          } catch (RuntimeException e) {
              String mensagemErro = "Falha inesperada após ajuste: " + e.getMessage();
+             LOGGER.warn(MensagensDemonstracao.LOG_FALHA_TRILHA_AJUSTADA,
+                     trilhaInvalida.getNomeDaTrilha(), e);
              adicionarLog(mensagemErro);
 
              cenarios.add(new DemonstracaoResponse.CenarioResponse(
                      4,
-                     "Trilha Válida e Persistida",
-                     "ERRO",
+                     MensagensDemonstracao.TITULO_TRILHA_VALIDA,
+                     MensagensDemonstracao.RESULTADO_ERRO,
                      e.getMessage()
              ));
          }
@@ -217,7 +219,7 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
             cenarios.add(new DemonstracaoResponse.CenarioResponse(
                     numeroCenario,
                     "Cenário " + numeroCenario,
-                    "INESPERADO: Trilha passou nas validações",
+                    MensagensDemonstracao.RESULTADO_INESPERADO,
                     null
             ));
 
@@ -231,7 +233,7 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
             cenarios.add(new DemonstracaoResponse.CenarioResponse(
                     numeroCenario,
                     "Cenário " + numeroCenario,
-                    "EXCEÇÃO CAPTURADA",
+                    MensagensDemonstracao.RESULTADO_EXCECAO_CAPTURADA,
                     e.getClass().getSimpleName() + ": " + e.getMessage()
             ));
         }
@@ -248,7 +250,7 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
 
     private void adicionarLog(String mensagem) {
         logs.add(mensagem);
-        System.out.println(mensagem);
+        LOGGER.info(mensagem);
     }
 
     private String formatarHoras(double horas) {
@@ -274,22 +276,27 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
               for (TrilhaMentoria trilha : trilhasParaLimpar) {
                   try {
                       trilhaRepositoryPort.delete(trilha.getId());
-                      // Se falhar na primeira tentativa, tenta novamente
                   } catch (Exception e) {
+                      LOGGER.warn(MensagensDemonstracao.LOG_FALHA_LIMPEZA_RETRY,
+                              trilha.getId(), trilha.getNomeDaTrilha(), e);
+
                       try {
                           Thread.sleep(100);
                           trilhaRepositoryPort.delete(trilha.getId());
+                      } catch (InterruptedException retry) {
+                          Thread.currentThread().interrupt();
+                          LOGGER.warn(MensagensDemonstracao.LOG_INTERRUPCAO_LIMPEZA,
+                                  trilha.getId(), trilha.getNomeDaTrilha(), retry);
                       } catch (Exception retry) {
-                          // Ignora se falhar na segunda tentativa também
-                          System.out.println("Aviso: Falha ao limpar trilha " + trilha.getNomeDaTrilha() + ": " + retry.getMessage());
+                          LOGGER.warn(MensagensDemonstracao.LOG_FALHA_SEGUNDA_TENTATIVA,
+                                  trilha.getId(), trilha.getNomeDaTrilha(), retry);
                       }
                   }
               }
 
-              // Limpa mentorados órfãos após deletar as trilhas
               trilhaRepositoryPort.limparMentoradosOrfaos();
           } catch (Exception e) {
-              System.out.println("Aviso: Erro geral na limpeza de dados: " + e.getMessage());
+              LOGGER.warn(MensagensDemonstracao.LOG_ERRO_LIMPEZA_GERAL, e);
           }
       }
 
