@@ -30,9 +30,9 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
     private final List<DemonstracaoResponse.CenarioResponse> cenarios = new ArrayList<>();
 
     private static final List<String> NOMES_TRILHAS_DEMONSTRACAO = List.of(
-            MensagensDemonstracao.NOME_TRILHA_SOBRECARREGADA,
-            MensagensDemonstracao.NOME_TRILHA_SKILLS,
-            MensagensDemonstracao.NOME_TRILHA_NIVEL
+            MensagensLogger.NOME_TRILHA_SOBRECARREGADA,
+            MensagensLogger.NOME_TRILHA_SKILLS,
+            MensagensLogger.NOME_TRILHA_NIVEL
     );
 
     public ExecutarDemonstracaoAutomaticaUseCase(
@@ -61,8 +61,8 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
         adicionarLog(MensagensLogger.FIM_DEMONSTRACAO);
 
         return new DemonstracaoResponse(
-                MensagensDemonstracao.TITULO_DEMONSTRACAO,
-                MensagensDemonstracao.MENSAGEM_SUCESSO,
+                MensagensLogger.TITULO_DEMONSTRACAO,
+                MensagensLogger.MENSAGEM_SUCESSO,
                 cenarios,
                 logs
         );
@@ -78,7 +78,7 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
         Mentorado mentorado4 = novoMentorado("Erica", NivelSenioridade.JUNIOR, 6.0, List.of(Skill.JAVA));
 
         TrilhaMentoria trilha = new TrilhaMentoria(
-                MensagensDemonstracao.NOME_TRILHA_SOBRECARREGADA,
+                MensagensLogger.NOME_TRILHA_SOBRECARREGADA,
                 3,
                 mentor,
                 new ArrayList<>(List.of(mentorado1, mentorado2, mentorado3, mentorado4)),
@@ -97,7 +97,7 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
                 List.of(Skill.JAVA, Skill.ANGULAR, Skill.REACT, Skill.DOCKER));
 
         TrilhaMentoria trilha = new TrilhaMentoria(
-                MensagensDemonstracao.NOME_TRILHA_SKILLS,
+                MensagensLogger.NOME_TRILHA_SKILLS,
                 3,
                 mentor,
                 new ArrayList<>(List.of(mentorado1)),
@@ -114,7 +114,7 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
         Mentorado mentorado1 = novoMentorado("Eva", NivelSenioridade.PLENO, 5.0, List.of(Skill.JAVA, Skill.SPRING));
 
         TrilhaMentoria trilha = new TrilhaMentoria(
-                MensagensDemonstracao.NOME_TRILHA_NIVEL,
+                MensagensLogger.NOME_TRILHA_NIVEL,
                 3,
                 mentor,
                 new ArrayList<>(List.of(mentorado1)),
@@ -187,8 +187,8 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
 
              cenarios.add(new DemonstracaoResponse.CenarioResponse(
                      4,
-                     MensagensDemonstracao.TITULO_TRILHA_VALIDA,
-                     MensagensDemonstracao.RESULTADO_TRILHA_PERSISTIDA,
+                     MensagensLogger.TITULO_TRILHA_VALIDA,
+                     MensagensLogger.RESULTADO_TRILHA_PERSISTIDA,
                      null
              ));
          } catch (RuntimeException e) {
@@ -200,8 +200,8 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
 
              cenarios.add(new DemonstracaoResponse.CenarioResponse(
                      4,
-                     MensagensDemonstracao.TITULO_TRILHA_VALIDA,
-                     MensagensDemonstracao.RESULTADO_ERRO,
+                     MensagensLogger.TITULO_TRILHA_VALIDA,
+                     MensagensLogger.RESULTADO_ERRO,
                      e.getMessage()
              ));
          }
@@ -216,7 +216,7 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
             cenarios.add(new DemonstracaoResponse.CenarioResponse(
                     numeroCenario,
                     "Cenário " + numeroCenario,
-                    MensagensDemonstracao.RESULTADO_INESPERADO,
+                    MensagensLogger.RESULTADO_INESPERADO,
                     null
             ));
 
@@ -230,7 +230,7 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
             cenarios.add(new DemonstracaoResponse.CenarioResponse(
                     numeroCenario,
                     "Cenário " + numeroCenario,
-                    MensagensDemonstracao.RESULTADO_EXCECAO_CAPTURADA,
+                    MensagensLogger.RESULTADO_EXCECAO_CAPTURADA,
                     e.getClass().getSimpleName() + ": " + e.getMessage()
             ));
         }
