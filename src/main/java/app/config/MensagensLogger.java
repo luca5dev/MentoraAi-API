@@ -4,6 +4,14 @@ import org.slf4j.Logger;
 
 public class MensagensLogger {
 
+    public static final String INICIO_DEMONSTRACAO = "========== AC6: DEMONSTRAÇÃO AUTOMÁTICA ==========";
+    public static final String FIM_DEMONSTRACAO = "========== FIM DA DEMONSTRAÇÃO AUTOMÁTICA ==========";
+    public static final String CENARIO_1_CARGA_HORARIA = ">> Cenário 1: Carga horária excedida (limite 20h/mês)";
+    public static final String CENARIO_2_SKILLS = ">> Cenário 2: Skills incompatíveis (mentor não tem 70% das skills desejadas)";
+    public static final String CENARIO_3_NIVEL = ">> Cenário 3: Nível desproporcional (PLENO, mentorando PLENO)";
+    public static final String CENARIO_4_AJUSTE = ">> Cenário 4: Ajuste dos dados da trilha inválida e persistência";
+    public static final String TRILHA_PERSISTIDA = "Trilha persistida com sucesso!";
+
     public static final String ERRO_PROCESSAMENTO_ENTIDADE = "Erro de processamento da entidade";
     public static final String ERRO_REGRA_NEGOCIO_TRATADO = "Erro de regra de negocio tratado. tipo={}";
     public static final String FALHA_TRILHA_AJUSTADA = "Falha ao validar ou persistir trilha ajustada da demonstracao. nome={}";

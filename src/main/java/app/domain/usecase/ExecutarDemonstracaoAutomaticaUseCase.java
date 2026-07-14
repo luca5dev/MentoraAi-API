@@ -49,7 +49,7 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
 
         limparDadosAnteriorDaDemonstracao();
 
-        adicionarLog(MensagensDemonstracao.INICIO_DEMONSTRACAO);
+        adicionarLog(MensagensLogger.INICIO_DEMONSTRACAO);
         adicionarLog("");
 
         TrilhaMentoria trilhaInvalida = cenario1_cargaHorariaExcedida();
@@ -58,7 +58,7 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
         cenario4_trilhaValidaPersistida(trilhaInvalida);
 
         adicionarLog("");
-        adicionarLog(MensagensDemonstracao.FIM_DEMONSTRACAO);
+        adicionarLog(MensagensLogger.FIM_DEMONSTRACAO);
 
         return new DemonstracaoResponse(
                 MensagensDemonstracao.TITULO_DEMONSTRACAO,
@@ -69,7 +69,7 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
     }
 
     private TrilhaMentoria cenario1_cargaHorariaExcedida() {
-        adicionarLog(MensagensDemonstracao.CENARIO_1_CARGA_HORARIA);
+        adicionarLog(MensagensLogger.CENARIO_1_CARGA_HORARIA);
 
         Mentor mentor = novoMentor("Ana", NivelSenioridade.SENIOR, List.of(Skill.JAVA, Skill.SPRING, Skill.SQL));
         Mentorado mentorado1 = novoMentorado("Bruno", NivelSenioridade.JUNIOR, 5.0, List.of(Skill.JAVA));
@@ -90,7 +90,7 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
     }
 
     private void cenario2_skillsIncompativeis() {
-        adicionarLog(MensagensDemonstracao.CENARIO_2_SKILLS);
+        adicionarLog(MensagensLogger.CENARIO_2_SKILLS);
 
         Mentor mentor = novoMentor("Ana", NivelSenioridade.SENIOR, List.of(Skill.JAVA));
         Mentorado mentorado1 = novoMentorado("Bruno", NivelSenioridade.JUNIOR, 5.0,
@@ -108,7 +108,7 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
     }
 
     private void cenario3_nivelDesproporcional() {
-        adicionarLog(MensagensDemonstracao.CENARIO_3_NIVEL);
+        adicionarLog(MensagensLogger.CENARIO_3_NIVEL);
 
         Mentor mentor = novoMentor("Diego", NivelSenioridade.PLENO, List.of(Skill.JAVA, Skill.SPRING));
         Mentorado mentorado1 = novoMentorado("Eva", NivelSenioridade.PLENO, 5.0, List.of(Skill.JAVA, Skill.SPRING));
@@ -125,7 +125,7 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
     }
 
      private void cenario4_trilhaValidaPersistida(TrilhaMentoria trilhaInvalida) {
-          adicionarLog(MensagensDemonstracao.CENARIO_4_AJUSTE);
+          adicionarLog(MensagensLogger.CENARIO_4_AJUSTE);
 
           double cargaHorariaAntes = trilhaInvalida.getMentorados().stream()
                   .mapToDouble(Mentorado::getHorasDedicadas).sum();
@@ -183,7 +183,7 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
               adicionarLog("");
 
               trilhaRepositoryPort.persist(novaTrilha);
-              adicionarLog(MensagensDemonstracao.TRILHA_PERSISTIDA);
+              adicionarLog(MensagensLogger.TRILHA_PERSISTIDA);
 
              cenarios.add(new DemonstracaoResponse.CenarioResponse(
                      4,
