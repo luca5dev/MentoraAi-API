@@ -39,7 +39,7 @@ public class ParticipantePersistenceAdapter implements ParticipanteRepositoryPor
     @Override
     @Transactional(readOnly = true)
     public List<ParticipantePrograma> listarTodosParticipantes() {
-        return participanteJpaRepository.findAll().stream()
+        return participanteJpaRepository.findAllAtivos().stream()
                 .map(mapper::toDomainParticipante)
                 .toList();
     }
@@ -47,7 +47,7 @@ public class ParticipantePersistenceAdapter implements ParticipanteRepositoryPor
     @Override
     @Transactional(readOnly = true)
     public Optional<ParticipantePrograma> buscarParticipantePorId(Long id) {
-        return participanteJpaRepository.findById(id)
+        return participanteJpaRepository.findAtivoById(id)
                 .map(mapper::toDomainParticipante);
     }
 

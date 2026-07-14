@@ -26,6 +26,7 @@ public abstract class ParticipanteJpaEntity {
 
     private Double valorHora;
     private Double horasDedicadas;
+    private Boolean ativo = true;
 
     public ParticipanteJpaEntity() {}
 
@@ -83,5 +84,13 @@ public abstract class ParticipanteJpaEntity {
 
     public void setHorasDedicadas(Double horasDedicadas) {
         this.horasDedicadas = horasDedicadas;
+    }
+
+    public Boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
     }
 }
