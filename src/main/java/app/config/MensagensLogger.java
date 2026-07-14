@@ -28,6 +28,11 @@ public class MensagensLogger {
     public static final String NIVEL_SENIORIDADE_INVALIDO = "Nível de senioridade inválido!";
     public static final String SKILL_INVALIDA = "Skill inválida!";
     public static final String VALOR_OBRIGATORIO_NAO_INFORMADO = "Valor obrigatório não informado!";
+    public static final String CARGA_HORARIA_EXCEDIDA = "A soma das horas dos mentorados ultrapassa a capacidade mensal do mentor.";
+    public static final String DURACAO_TRILHA_INVALIDA = "A duração da trilha deve ser maior que zero.";
+    public static final String COMPATIBILIDADE_SKILLS_INVALIDA = "Compatibilidade de skills menor que 70%";
+    public static final String SENIORIDADE_MENTOR_INVALIDA = "O mentor deve ter senioridade superior a todos os mentorados.";
+    public static final String MAXIMO_MENTORADOS_ATINGIDO = "Máximo de mentorados atingido para este mentor.";
     public static final String ERRO_REGRA_NEGOCIO_TRATADO = "Erro de regra de negocio tratado. tipo={}";
     public static final String FALHA_TRILHA_AJUSTADA = "Falha ao validar ou persistir trilha ajustada da demonstracao. nome={}";
     public static final String FALHA_LIMPEZA_TRILHA_RETRY = "Falha ao limpar trilha da demonstracao. Tentando novamente. id={}, nome={}";

@@ -1,5 +1,6 @@
 package app.domain.validator;
 
+import app.config.MensagensLogger;
 import app.domain.exception.*;
 import app.domain.model.Mentor;
 import app.domain.model.Mentorado;
@@ -27,14 +28,14 @@ public class ValidadorTrilhaDomain {
                 .sum();
 
         if (totalHoras > mentor.getHorasDedicadas()) {
-            throw new CargaHorariaExcedidaException("A soma das horas dos mentorados ultrapassa a capacidade mensal do mentor.");
+            throw new CargaHorariaExcedidaException(MensagensLogger.CARGA_HORARIA_EXCEDIDA);
         }
     }
 
     public void validarDuracao(TrilhaMentoria trilha) {
         Integer ciclo = trilha.getCicloEmMeses();
         if (ciclo == null || ciclo <= 0) {
-            throw new NumeroForaDoIntervaloException("A duração da trilha deve ser maior que zero.");
+            throw new NumeroForaDoIntervaloException(MensagensLogger.DURACAO_TRILHA_INVALIDA);
         }
     }
 
@@ -50,7 +51,7 @@ public class ValidadorTrilhaDomain {
             double percentual = (double) skillsCompativeis / mentorado.getSkillsDesejadas().size();
 
             if (percentual < PERCENTUAL_MINIMO_SKILL) {
-                throw new SkillIncompativelException("Compatibilidade de skills menor que 70%");
+                throw new SkillIncompativelException(MensagensLogger.COMPATIBILIDADE_SKILLS_INVALIDA);
             }
         });
     }
@@ -62,7 +63,7 @@ public class ValidadorTrilhaDomain {
                 .anyMatch(mentorado -> mentorSenioridade.getId() <= mentorado.getNivelSenioridade().getId());
 
         if (invalido) {
-            throw new NivelDesproporcionalException("O mentor deve ter senioridade superior a todos os mentorados.");
+            throw new NivelDesproporcionalException(MensagensLogger.SENIORIDADE_MENTOR_INVALIDA);
         }
     }
 
@@ -70,7 +71,7 @@ public class ValidadorTrilhaDomain {
         long quantidadeMentorados = trilha.getMentorados().stream().count();
 
         if (quantidadeMentorados > trilha.getMentor().getMaximoMentorados()) {
-            throw new MaximoMentoradosAtingidosException("Máximo de mentorados atingido para este mentor.");
+            throw new MaximoMentoradosAtingidosException(MensagensLogger.MAXIMO_MENTORADOS_ATINGIDO);
         }
     }
 }
