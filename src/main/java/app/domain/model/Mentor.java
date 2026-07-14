@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Mentor extends ParticipantePrograma {
 
-    private static final double HORAS_MAXIMAS_MENTOR = 20.0; //horasDedicadas
+    private static final double HORAS_MAXIMAS_MENTOR = 20.0;
     private static final int MAXIMO_MENTORADOS = 4;
 
     private Integer maximoMentorados;
@@ -19,10 +19,7 @@ public class Mentor extends ParticipantePrograma {
         super(nome, nivelSenioridade, skills, valorHora, HORAS_MAXIMAS_MENTOR);
         this.maximoMentorados = MAXIMO_MENTORADOS;
     }
-    /*
-     * Calcula o custo de oportunidade mensal do mentor.
-     * Considera o valor/hora e a carga horária máxima dedicada ao programa.
-     */
+
     @Override
     public Double calcularCustoOportunidadeMensal() {
         return getValorHora() * getHorasDedicadas() * getNivelSenioridade().getFatorCusto();

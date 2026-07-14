@@ -1,6 +1,7 @@
 package app.domain.usecase;
 
 import app.adapters.in.web.dto.DemonstracaoResponse;
+import app.config.MensagensLogger;
 import app.domain.model.Mentor;
 import app.domain.model.Mentorado;
 import app.domain.model.NivelSenioridade;
@@ -141,9 +142,6 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
           adicionarLog("Carga mensal DEPOIS do ajuste: " + formatarHoras(cargaHorariaDepois) + " (dentro do limite de 20h)");
 
           try {
-              // Cria novos objetos de mentor e mentorado para evitar conflitos com persistence context
-              // Os objetos da trilha inválida já estão no persistence context do Hibernate,
-              // então reusá-los causaria UPDATE ao invés de INSERT
               Mentor novoMentor = novoMentor(
                       trilhaInvalida.getMentor().getNome(),
                       trilhaInvalida.getMentor().getNivelSenioridade(),
@@ -163,7 +161,6 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
                   novosMentorados.add(novoMentorado);
               }
 
-              // Cria uma nova trilha com os objetos novos
               TrilhaMentoria novaTrilha = new TrilhaMentoria(
                       trilhaInvalida.getNomeDaTrilha(),
                       trilhaInvalida.getCicloEmMeses(),
@@ -185,7 +182,6 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
               adicionarLog("Custo total do ciclo completo: " + formatarMoeda(novaTrilha.calcularCustoTotalDoCiclo()));
               adicionarLog("");
 
-              // Persiste a nova trilha (que nunca esteve no persistence context)
               trilhaRepositoryPort.persist(novaTrilha);
               adicionarLog(MensagensDemonstracao.TRILHA_PERSISTIDA);
 
@@ -197,7 +193,8 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
              ));
          } catch (RuntimeException e) {
              String mensagemErro = "Falha inesperada após ajuste: " + e.getMessage();
-             LOGGER.warn(MensagensDemonstracao.LOG_FALHA_TRILHA_AJUSTADA,
+             MensagensLogger.warn(LOGGER,
+                     MensagensLogger.FALHA_TRILHA_AJUSTADA,
                      trilhaInvalida.getNomeDaTrilha(), e);
              adicionarLog(mensagemErro);
 
@@ -250,7 +247,7 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
 
     private void adicionarLog(String mensagem) {
         logs.add(mensagem);
-        LOGGER.info(mensagem);
+        MensagensLogger.info(LOGGER, mensagem);
     }
 
     private String formatarHoras(double horas) {
@@ -277,7 +274,8 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
                   try {
                       trilhaRepositoryPort.delete(trilha.getId());
                   } catch (Exception e) {
-                      LOGGER.warn(MensagensDemonstracao.LOG_FALHA_LIMPEZA_RETRY,
+                      MensagensLogger.warn(LOGGER,
+                              MensagensLogger.FALHA_LIMPEZA_TRILHA_RETRY,
                               trilha.getId(), trilha.getNomeDaTrilha(), e);
 
                       try {
@@ -285,10 +283,12 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
                           trilhaRepositoryPort.delete(trilha.getId());
                       } catch (InterruptedException retry) {
                           Thread.currentThread().interrupt();
-                          LOGGER.warn(MensagensDemonstracao.LOG_INTERRUPCAO_LIMPEZA,
+                          MensagensLogger.warn(LOGGER,
+                                  MensagensLogger.INTERRUPCAO_LIMPEZA_TRILHA,
                                   trilha.getId(), trilha.getNomeDaTrilha(), retry);
                       } catch (Exception retry) {
-                          LOGGER.warn(MensagensDemonstracao.LOG_FALHA_SEGUNDA_TENTATIVA,
+                          MensagensLogger.warn(LOGGER,
+                                  MensagensLogger.FALHA_SEGUNDA_TENTATIVA_LIMPEZA,
                                   trilha.getId(), trilha.getNomeDaTrilha(), retry);
                       }
                   }
@@ -296,7 +296,7 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
 
               trilhaRepositoryPort.limparMentoradosOrfaos();
           } catch (Exception e) {
-              LOGGER.warn(MensagensDemonstracao.LOG_ERRO_LIMPEZA_GERAL, e);
+              MensagensLogger.warn(LOGGER, MensagensLogger.ERRO_LIMPEZA_DEMONSTRACAO, e);
           }
       }
 

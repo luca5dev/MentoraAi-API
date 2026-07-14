@@ -1,7 +1,5 @@
 package app.domain.usecase;
 
-//implements CriarTrilhaPort - Criação classe TrilhaMentoria criar - ValidarCargaHoraria - ValidarQuantidadeMentorados - ValidarSenioridade - ValidarSkills
-
 import app.domain.model.Mentor;
 import app.domain.model.Mentorado;
 import app.domain.model.Skill;

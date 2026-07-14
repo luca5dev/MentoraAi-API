@@ -30,10 +30,10 @@ public final class WebResponseMapper {
               mentorado.getId(),
               mentorado.getNome(),
               mentorado.getNivelSenioridade().name(),
-              WebEnumMapper.toSkillNames(mentorado.getSkills()),// getSkills vindos do ParticipantePrograma = domain.model
+              WebEnumMapper.toSkillNames(mentorado.getSkills()),
               mentorado.getValorHora(),
               mentorado.getHorasDedicadas(),
-              WebEnumMapper.toSkillNames(mentorado.getSkillsDesejadas()) //getSkillsDesejadas vindos do Mentorado
+              WebEnumMapper.toSkillNames(mentorado.getSkillsDesejadas())
       );
    }
 

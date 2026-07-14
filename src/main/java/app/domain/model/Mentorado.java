@@ -9,7 +9,7 @@ import java.util.List;
 public class Mentorado extends ParticipantePrograma {
 
     private List<Skill> skillsDesejadas = new ArrayList<>();
-    private static final double HORAS_MINIMAS_MENTORADO = 1.0; //horasDedicadas
+    private static final double HORAS_MINIMAS_MENTORADO = 1.0;
 
     public Mentorado() {}
 
@@ -33,10 +33,7 @@ public class Mentorado extends ParticipantePrograma {
         }
         return horasDedicadas;
     }
-    /*
-     *Aqui representa o custo de oportunidade para a empresa.
-     * Valor da hora do funcionário * horasDedicadas
-     */
+
     @Override
     public Double calcularCustoOportunidadeMensal() {
         return getValorHora() * getHorasDedicadas() * getNivelSenioridade().getFatorCusto();

@@ -23,12 +23,6 @@ public class MensagensDemonstracao {
     public static final String RESULTADO_INESPERADO = "INESPERADO: Trilha passou nas validações";
     public static final String TITULO_TRILHA_VALIDA = "Trilha Válida e Persistida";
 
-    public static final String LOG_FALHA_TRILHA_AJUSTADA = "Falha ao validar ou persistir trilha ajustada da demonstracao. nome={}";
-    public static final String LOG_FALHA_LIMPEZA_RETRY = "Falha ao limpar trilha da demonstracao. Tentando novamente. id={}, nome={}";
-    public static final String LOG_INTERRUPCAO_LIMPEZA = "Thread interrompida ao tentar limpar trilha da demonstracao. id={}, nome={}";
-    public static final String LOG_FALHA_SEGUNDA_TENTATIVA = "Falha na segunda tentativa de limpar trilha da demonstracao. id={}, nome={}";
-    public static final String LOG_ERRO_LIMPEZA_GERAL = "Erro ao limpar dados anteriores da demonstracao.";
-
     private MensagensDemonstracao() {
     }
 }

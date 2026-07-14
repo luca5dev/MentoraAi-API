@@ -1,7 +1,10 @@
 package app.adapters.in.web;
 
 import app.adapters.in.web.dto.ErroResponse;
+import app.config.MensagensLogger;
 import app.domain.exception.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -11,6 +14,8 @@ import java.time.LocalDateTime;
 
 @RestControllerAdvice
 public class ApiExceptionHandler {
+
+   private static final Logger LOGGER = LoggerFactory.getLogger(ApiExceptionHandler.class);
 
    @ExceptionHandler({
            CargaHorariaExcedidaException.class,
@@ -23,8 +28,16 @@ public class ApiExceptionHandler {
    })
    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
    public ErroResponse tratarRegraDeNegocio(RuntimeException exception) {
+      MensagensLogger.warn(LOGGER,
+              MensagensLogger.ERRO_REGRA_NEGOCIO_TRATADO,
+              exception.getClass().getSimpleName(),
+              exception);
+
       return new ErroResponse(
-              HttpStatus.UNPROCESSABLE_ENTITY.value(), "Erro de processamento da entidade", exception.getMessage(), LocalDateTime.now());
+              HttpStatus.UNPROCESSABLE_ENTITY.value(),
+              MensagensLogger.ERRO_PROCESSAMENTO_ENTIDADE,
+              exception.getMessage(),
+              LocalDateTime.now());
    }
 
 }

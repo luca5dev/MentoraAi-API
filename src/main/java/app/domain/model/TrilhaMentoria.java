@@ -7,7 +7,7 @@ public class TrilhaMentoria {
 
    private Long id;
    private String nomeDaTrilha;
-   private Integer cicloEmMeses; //Duração do ciclo de mentoria, mencionado nas Premissas da US.
+   private Integer cicloEmMeses;
    private Mentor mentor;
    private List<Mentorado> mentorados = new ArrayList<>();
    private List<Skill> skillsDaTrilha = new ArrayList<>();
