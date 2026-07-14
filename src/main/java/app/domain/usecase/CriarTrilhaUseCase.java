@@ -1,5 +1,6 @@
 package app.domain.usecase;
 
+import app.config.MensagensLogger;
 import app.domain.model.Mentor;
 import app.domain.model.Mentorado;
 import app.domain.model.Skill;
@@ -31,12 +32,12 @@ public class CriarTrilhaUseCase implements CriarTrilhaPort {
     @Override
     public TrilhaMentoria executar(CriarTrilhaDados dados) {
         Mentor mentor = participanteRepositoryPort.buscarMentorPorId(dados.mentorId())
-                .orElseThrow(() -> new ParticipanteNaoEncontradoException("Mentor não encontrado: " + dados.mentorId()));
+                .orElseThrow(() -> new ParticipanteNaoEncontradoException(MensagensLogger.MENTOR_NAO_ENCONTRADO + dados.mentorId()));
 
         List<Mentorado> mentorados = participanteRepositoryPort.buscarMentoradosPorIds(dados.mentoradosIds());
 
         if (mentorados == null || mentorados.isEmpty()) {
-            throw new ListaVaziaException("É necessário informar ao menos um mentorado para a trilha.");
+            throw new ListaVaziaException(MensagensLogger.MENTORADO_OBRIGATORIO_TRILHA);
         }
 
         TrilhaMentoria trilha = new TrilhaMentoria();
