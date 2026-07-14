@@ -12,15 +12,9 @@ import java.util.Optional;
 
 public interface ParticipanteJpaRepository extends JpaRepository<ParticipanteJpaEntity, Long> {
 
-    @Query("select p from ParticipanteJpaEntity p where p.ativo = true or p.ativo is null")
-    List<ParticipanteJpaEntity> findAllAtivos();
-
-    @Query("select p from ParticipanteJpaEntity p where p.id = :id and (p.ativo = true or p.ativo is null)")
-    Optional<ParticipanteJpaEntity> findAtivoById(@Param("id") Long id);
-
-    @Query("select m from MentorJpaEntity m where m.id = :id and (m.ativo = true or m.ativo is null)")
+    @Query("select m from MentorJpaEntity m where m.id = :id")
     Optional<MentorJpaEntity> findMentorById(@Param("id") Long id);
 
-    @Query("select m from MentoradoJpaEntity m where m.id in :ids and (m.ativo = true or m.ativo is null)")
+    @Query("select m from MentoradoJpaEntity m where m.id in :ids")
     List<MentoradoJpaEntity> findMentoradosByIds(@Param("ids") List<Long> ids);
 }

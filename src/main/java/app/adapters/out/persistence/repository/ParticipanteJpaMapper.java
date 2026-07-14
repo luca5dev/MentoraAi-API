@@ -71,7 +71,6 @@ public class ParticipanteJpaMapper {
         entity.setSkills(new ArrayList<>(domain.getSkills()));
         entity.setValorHora(domain.getValorHora());
         entity.setHorasDedicadas(domain.getHorasDedicadas());
-        entity.setAtivo(true);
     }
 
     private void copyBaseToDomain(ParticipanteJpaEntity entity, ParticipantePrograma domain) {

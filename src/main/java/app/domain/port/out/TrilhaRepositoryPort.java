@@ -16,6 +16,4 @@ public interface TrilhaRepositoryPort {
     List<TrilhaMentoria> listarTodasTrilhas();
 
     Optional<TrilhaMentoria> buscarPorId(Long id);
-
-    void limparMentoradosOrfaos();
 }

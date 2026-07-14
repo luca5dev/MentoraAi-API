@@ -59,8 +59,6 @@ class ExecutarDemonstracaoAutomaticaUseCaseTest {
 
         assertEquals("SUCESSO: Trilha persistida com sucesso", response.cenarios().get(3).resultado());
 
-        verify(trilhaRepositoryPort).limparMentoradosOrfaos();
-
         ArgumentCaptor<TrilhaMentoria> trilhaCaptor = ArgumentCaptor.forClass(TrilhaMentoria.class);
         verify(trilhaRepositoryPort).persist(trilhaCaptor.capture());
 

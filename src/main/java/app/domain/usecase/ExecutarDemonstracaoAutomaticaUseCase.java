@@ -293,8 +293,6 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
                       }
                   }
               }
-
-              trilhaRepositoryPort.limparMentoradosOrfaos();
           } catch (Exception e) {
               MensagensLogger.warn(LOGGER, MensagensLogger.ERRO_LIMPEZA_DEMONSTRACAO, e);
           }
