@@ -25,6 +25,9 @@ public class MensagensLogger {
     public static final String TITULO_TRILHA_VALIDA = "Trilha Válida e Persistida";
 
     public static final String ERRO_PROCESSAMENTO_ENTIDADE = "Erro de processamento da entidade";
+    public static final String NIVEL_SENIORIDADE_INVALIDO = "Nível de senioridade inválido!";
+    public static final String SKILL_INVALIDA = "Skill inválida!";
+    public static final String VALOR_OBRIGATORIO_NAO_INFORMADO = "Valor obrigatório não informado!";
     public static final String ERRO_REGRA_NEGOCIO_TRATADO = "Erro de regra de negocio tratado. tipo={}";
     public static final String FALHA_TRILHA_AJUSTADA = "Falha ao validar ou persistir trilha ajustada da demonstracao. nome={}";
     public static final String FALHA_LIMPEZA_TRILHA_RETRY = "Falha ao limpar trilha da demonstracao. Tentando novamente. id={}, nome={}";

@@ -1,5 +1,6 @@
 package app.adapters.in.web.dto;
 
+import app.config.MensagensLogger;
 import app.domain.model.Skill;
 import app.domain.exception.EntradaInvalidaException;
 import app.domain.model.NivelSenioridade;
@@ -16,7 +17,7 @@ public final class WebEnumMapper {
       try{
          return NivelSenioridade.valueOf(ValorObrigatorio(valor));
       }catch (IllegalArgumentException exception) {
-         throw new EntradaInvalidaException("Nível de senioridade inválido!" + valor);
+         throw new EntradaInvalidaException(MensagensLogger.NIVEL_SENIORIDADE_INVALIDO + valor);
       }
    }
 
@@ -35,13 +36,13 @@ public final class WebEnumMapper {
       try{
          return Skill.valueOf(ValorObrigatorio(valor));
       }catch (IllegalArgumentException exception){
-         throw new EntradaInvalidaException("Skill inválida!" + valor);
+         throw new EntradaInvalidaException(MensagensLogger.SKILL_INVALIDA + valor);
       }
    }
 
    private static String ValorObrigatorio(String valor){
       if (valor == null || valor.isBlank()){
-         throw new EntradaInvalidaException("Valor obrigatório não informado!");
+         throw new EntradaInvalidaException(MensagensLogger.VALOR_OBRIGATORIO_NAO_INFORMADO);
       }
       return valor.trim().toUpperCase();
    }
