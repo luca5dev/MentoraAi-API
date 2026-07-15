@@ -43,6 +43,10 @@ public class ValidadorTrilhaDomain {
         Mentor mentor = trilha.getMentor();
 
         trilha.getMentorados().forEach(mentorado -> {
+            if (mentorado.getSkillsDesejadas().isEmpty()) {
+                throw new SkillIncompativelException(MensagensLogger.COMPATIBILIDADE_SKILLS_INVALIDA);
+            }
+
             long skillsCompativeis = mentorado.getSkillsDesejadas()
                     .stream()
                     .filter(skill -> mentor.getSkills().contains(skill))

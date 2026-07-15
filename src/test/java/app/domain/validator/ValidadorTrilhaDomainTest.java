@@ -65,6 +65,14 @@ class ValidadorTrilhaDomainTest {
     }
 
     @Test
+    void deveLancarQuandoMentoradoNaoTemSkillsDesejadas() {
+        TrilhaMentoria trilha = trilhaValida();
+        trilha.getMentorados().get(0).getSkillsDesejadas().clear();
+
+        assertThrows(SkillIncompativelException.class, () -> validador.validarTudo(trilha));
+    }
+
+    @Test
     void deveLancarQuandoMaximoMentoradosExcedido() {
         TrilhaMentoria trilha = trilhaValida();
         trilha.getMentor().setMaximoMentorados(1);
