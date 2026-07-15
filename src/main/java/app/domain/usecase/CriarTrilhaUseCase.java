@@ -40,6 +40,10 @@ public class CriarTrilhaUseCase implements CriarTrilhaPort {
             throw new ListaVaziaException(MensagensLogger.MENTORADO_OBRIGATORIO_TRILHA);
         }
 
+        if (mentorados.size() != dados.mentoradosIds().size()) {
+            throw new ParticipanteNaoEncontradoException(MensagensLogger.MENTORADO_NAO_ENCONTRADO);
+        }
+
         TrilhaMentoria trilha = new TrilhaMentoria();
         trilha.setNomeDaTrilha(dados.nomeDaTrilha());
         trilha.setCicloEmMeses(dados.cicloEmMeses());

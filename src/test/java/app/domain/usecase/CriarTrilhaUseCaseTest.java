@@ -89,5 +89,29 @@ class CriarTrilhaUseCaseTest {
 
         assertThrows(ParticipanteNaoEncontradoException.class, () -> criarTrilhaUseCase.executar(dados));
     }
+
+    @Test
+    void deveLancarQuandoAlgumMentoradoNaoForEncontrado() {
+        Mentor mentor = new Mentor("Mentor", NivelSenioridade.SENIOR,
+                new ArrayList<>(List.of(Skill.JAVA, Skill.SPRING, Skill.SQL)), 150.0);
+        mentor.setId(10L);
+
+        Mentorado mentorado = new Mentorado("Mentorado", NivelSenioridade.JUNIOR,
+                new ArrayList<>(List.of(Skill.JAVA)), 60.0, 4.0,
+                new ArrayList<>(List.of(Skill.JAVA, Skill.SPRING)));
+        mentorado.setId(20L);
+
+        CriarTrilhaDados dados = new CriarTrilhaDados(
+                "Trilha Backend",
+                4,
+                mentor.getId(),
+                List.of(20L, 30L)
+        );
+
+        when(participanteRepositoryPort.buscarMentorPorId(10L)).thenReturn(Optional.of(mentor));
+        when(participanteRepositoryPort.buscarMentoradosPorIds(List.of(20L, 30L))).thenReturn(List.of(mentorado));
+
+        assertThrows(ParticipanteNaoEncontradoException.class, () -> criarTrilhaUseCase.executar(dados));
+    }
 }
 

@@ -34,6 +34,7 @@ public class MensagensLogger {
     public static final String SENIORIDADE_MENTOR_INVALIDA = "O mentor deve ter senioridade superior a todos os mentorados.";
     public static final String MAXIMO_MENTORADOS_ATINGIDO = "Máximo de mentorados atingido para este mentor.";
     public static final String MENTOR_NAO_ENCONTRADO = "Mentor não encontrado: ";
+    public static final String MENTORADO_NAO_ENCONTRADO = "Um ou mais mentorados informados não foram encontrados.";
     public static final String MENTORADO_OBRIGATORIO_TRILHA = "É necessário informar ao menos um mentorado para a trilha.";
     public static final String MENTOR_VINCULADO_TRILHA = "Não é possível excluir mentor vinculado a uma trilha.";
     public static final String ERRO_REGRA_NEGOCIO_TRATADO = "Erro de regra de negocio tratado. tipo={}";
