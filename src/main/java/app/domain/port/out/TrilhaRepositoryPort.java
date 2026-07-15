@@ -16,4 +16,6 @@ public interface TrilhaRepositoryPort {
     List<TrilhaMentoria> listarTodasTrilhas();
 
     Optional<TrilhaMentoria> buscarPorId(Long id);
+
+    boolean existeTrilhaComMentor(Long mentorId);
 }

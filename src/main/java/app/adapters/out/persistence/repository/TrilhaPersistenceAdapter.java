@@ -62,6 +62,12 @@ public class TrilhaPersistenceAdapter implements TrilhaRepositoryPort {
                 .map(trilhaJpaMapper::toDomain);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public boolean existeTrilhaComMentor(Long mentorId) {
+        return trilhaJpaRepository.existsByMentorId(mentorId);
+    }
+
     private void vincularEntidadesGerenciadas(TrilhaJpaEntity entity, TrilhaMentoria trilha) {
         if (trilha.getMentor() != null && trilha.getMentor().getId() != null) {
             var mentorGerenciado = participanteJpaRepository

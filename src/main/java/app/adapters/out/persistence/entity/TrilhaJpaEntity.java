@@ -17,7 +17,7 @@ public class TrilhaJpaEntity {
     private String nomeDaTrilha;
     private Integer cicloEmMeses;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private MentorJpaEntity mentor;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)

@@ -35,6 +35,7 @@ public class MensagensLogger {
     public static final String MAXIMO_MENTORADOS_ATINGIDO = "Máximo de mentorados atingido para este mentor.";
     public static final String MENTOR_NAO_ENCONTRADO = "Mentor não encontrado: ";
     public static final String MENTORADO_OBRIGATORIO_TRILHA = "É necessário informar ao menos um mentorado para a trilha.";
+    public static final String MENTOR_VINCULADO_TRILHA = "Não é possível excluir mentor vinculado a uma trilha.";
     public static final String ERRO_REGRA_NEGOCIO_TRATADO = "Erro de regra de negocio tratado. tipo={}";
     public static final String FALHA_TRILHA_AJUSTADA = "Falha ao validar ou persistir trilha ajustada da demonstracao. nome={}";
     public static final String FALHA_LIMPEZA_TRILHA_RETRY = "Falha ao limpar trilha da demonstracao. Tentando novamente. id={}, nome={}";

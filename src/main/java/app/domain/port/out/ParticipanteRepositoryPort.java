@@ -13,6 +13,8 @@ public interface ParticipanteRepositoryPort {
 
     void update(ParticipantePrograma participantePrograma);
 
+    void delete(Long id);
+
     List<ParticipantePrograma> listarTodosParticipantes();
 
     Optional<ParticipantePrograma> buscarParticipantePorId(Long id);

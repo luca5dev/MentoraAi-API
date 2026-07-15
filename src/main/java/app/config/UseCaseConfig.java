@@ -27,6 +27,12 @@ public class UseCaseConfig {
    }
 
    @Bean
+   public ExcluirMentorPort excluirMentorPort(ParticipanteRepositoryPort participanteRepositoryPort,
+                                              TrilhaRepositoryPort trilhaRepositoryPort) {
+      return new ExcluirMentorUseCase(participanteRepositoryPort, trilhaRepositoryPort);
+   }
+
+   @Bean
    public CriarTrilhaPort criarTrilhaPort(
            ParticipanteRepositoryPort participanteRepositoryPort,
            TrilhaRepositoryPort trilhaRepositoryPort,

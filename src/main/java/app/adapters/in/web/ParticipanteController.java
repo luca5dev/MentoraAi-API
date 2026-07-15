@@ -10,9 +10,12 @@ import app.domain.port.in.CadastrarMentorDados;
 import app.domain.port.in.CadastrarMentorPort;
 import app.domain.port.in.CadastrarMentoradoDados;
 import app.domain.port.in.CadastrarMentoradoPort;
+import app.domain.port.in.ExcluirMentorPort;
 import app.domain.port.in.ListarParticipantesPort;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,13 +30,16 @@ public class ParticipanteController {
 
    private final CadastrarMentorPort cadastrarMentorPort;
    private final CadastrarMentoradoPort cadastrarMentoradoPort;
+   private final ExcluirMentorPort excluirMentorPort;
    private final ListarParticipantesPort listarParticipantesPort;
 
    public ParticipanteController(CadastrarMentorPort cadastrarMentorPort,
                                  CadastrarMentoradoPort cadastrarMentoradoPort,
+                                 ExcluirMentorPort excluirMentorPort,
                                  ListarParticipantesPort listarParticipantesPort) {
       this.cadastrarMentorPort = cadastrarMentorPort;
       this.cadastrarMentoradoPort = cadastrarMentoradoPort;
+      this.excluirMentorPort = excluirMentorPort;
       this.listarParticipantesPort = listarParticipantesPort;
    }
 
@@ -70,6 +76,12 @@ public class ParticipanteController {
       return listarParticipantesPort.listarMentores().stream()
               .map(WebResponseMapper::toResponse)
               .toList();
+   }
+
+   @DeleteMapping("/mentores/{id}")
+   @ResponseStatus(HttpStatus.NO_CONTENT)
+   public void excluirMentor(@PathVariable Long id) {
+      excluirMentorPort.excluir(id);
    }
 
    @GetMapping("/mentorados")

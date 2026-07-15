@@ -37,6 +37,11 @@ public class ParticipantePersistenceAdapter implements ParticipanteRepositoryPor
     }
 
     @Override
+    public void delete(Long id) {
+        participanteJpaRepository.deleteById(id);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public List<ParticipantePrograma> listarTodosParticipantes() {
         return participanteJpaRepository.findAll().stream()
