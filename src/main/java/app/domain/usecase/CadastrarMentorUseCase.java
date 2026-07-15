@@ -19,7 +19,8 @@ public class CadastrarMentorUseCase implements CadastrarMentorPort {
                 dados.nome(),
                 dados.nivelSenioridade(),
                 dados.skills(),
-                dados.valorHora()
+                dados.valorHora(),
+                dados.horasDedicadas()
         );
 
         if (dados.maximoMentorados() != null) {

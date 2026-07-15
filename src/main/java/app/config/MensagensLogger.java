@@ -37,6 +37,9 @@ public class MensagensLogger {
     public static final String MENTORADO_NAO_ENCONTRADO = "Um ou mais mentorados informados não foram encontrados.";
     public static final String MENTORADO_OBRIGATORIO_TRILHA = "É necessário informar ao menos um mentorado para a trilha.";
     public static final String MENTOR_VINCULADO_TRILHA = "Não é possível excluir mentor vinculado a uma trilha.";
+    public static final String HORAS_MENTOR_OBRIGATORIAS = "Horas dedicadas do mentor devem ser informadas.";
+    public static final String HORAS_MENTOR_INVALIDAS = "Horas dedicadas do mentor devem ser maiores que zero.";
+    public static final String HORAS_MENTOR_EXCEDIDAS = "Horas dedicadas do mentor não podem ultrapassar 20h.";
     public static final String ERRO_REGRA_NEGOCIO_TRATADO = "Erro de regra de negocio tratado. tipo={}";
     public static final String FALHA_TRILHA_AJUSTADA = "Falha ao validar ou persistir trilha ajustada da demonstracao. nome={}";
     public static final String FALHA_LIMPEZA_TRILHA_RETRY = "Falha ao limpar trilha da demonstracao. Tentando novamente. id={}, nome={}";
