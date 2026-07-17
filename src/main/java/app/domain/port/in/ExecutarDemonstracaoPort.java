@@ -1,7 +1,7 @@
 package app.domain.port.in;
 
-import app.adapters.in.web.dto.DemonstracaoResponse;
+import app.domain.model.DemonstracaoResultado;
 
 public interface ExecutarDemonstracaoPort {
-    DemonstracaoResponse executar();
+    DemonstracaoResultado executar();
 }

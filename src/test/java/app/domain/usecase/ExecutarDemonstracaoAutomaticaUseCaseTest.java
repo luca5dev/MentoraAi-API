@@ -1,9 +1,9 @@
 package app.domain.usecase;
 
-import app.adapters.in.web.dto.DemonstracaoResponse;
 import app.domain.exception.CargaHorariaExcedidaException;
 import app.domain.exception.NivelDesproporcionalException;
 import app.domain.exception.SkillIncompativelException;
+import app.domain.model.DemonstracaoResultado;
 import app.domain.model.TrilhaMentoria;
 import app.domain.port.out.TrilhaRepositoryPort;
 import app.domain.validator.ValidadorTrilhaDomain;
@@ -42,7 +42,7 @@ class ExecutarDemonstracaoAutomaticaUseCaseTest {
         when(trilhaRepositoryPort.listarTodasTrilhas()).thenReturn(List.of());
         simularExcecoesDosTresPrimeirosCenarios();
 
-        DemonstracaoResponse response = useCase.executar();
+        DemonstracaoResultado response = useCase.executar();
 
         assertEquals("AC6: DEMONSTRAÇÃO AUTOMÁTICA", response.titulo());
         assertEquals("Demonstração executada com sucesso", response.mensagem());
@@ -76,9 +76,9 @@ class ExecutarDemonstracaoAutomaticaUseCaseTest {
         doThrow(new RuntimeException("banco indisponivel"))
                 .when(trilhaRepositoryPort).persist(any(TrilhaMentoria.class));
 
-        DemonstracaoResponse response = useCase.executar();
+        DemonstracaoResultado response = useCase.executar();
 
-        DemonstracaoResponse.CenarioResponse cenarioPersistencia = response.cenarios().get(3);
+        DemonstracaoResultado.CenarioResultado cenarioPersistencia = response.cenarios().get(3);
         assertEquals(4, cenarioPersistencia.numero());
         assertEquals("Trilha Válida e Persistida", cenarioPersistencia.titulo());
         assertEquals("ERRO", cenarioPersistencia.resultado());

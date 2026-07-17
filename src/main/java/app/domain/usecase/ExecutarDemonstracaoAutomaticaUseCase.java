@@ -1,7 +1,7 @@
 package app.domain.usecase;
 
-import app.adapters.in.web.dto.DemonstracaoResponse;
 import app.config.MensagensLogger;
+import app.domain.model.DemonstracaoResultado;
 import app.domain.model.Mentor;
 import app.domain.model.Mentorado;
 import app.domain.model.NivelSenioridade;
@@ -27,7 +27,7 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
     private final TrilhaRepositoryPort trilhaRepositoryPort;
     private final ValidadorTrilhaDomain validador;
     private final List<String> logs = new ArrayList<>();
-    private final List<DemonstracaoResponse.CenarioResponse> cenarios = new ArrayList<>();
+    private final List<DemonstracaoResultado.CenarioResultado> cenarios = new ArrayList<>();
 
     private static final List<String> NOMES_TRILHAS_DEMONSTRACAO = List.of(
             MensagensLogger.NOME_TRILHA_SOBRECARREGADA,
@@ -43,7 +43,7 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
     }
 
     @Override
-    public DemonstracaoResponse executar() {
+    public DemonstracaoResultado executar() {
         logs.clear();
         cenarios.clear();
 
@@ -60,7 +60,7 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
         adicionarLog("");
         adicionarLog(MensagensLogger.FIM_DEMONSTRACAO);
 
-        return new DemonstracaoResponse(
+        return new DemonstracaoResultado(
                 MensagensLogger.TITULO_DEMONSTRACAO,
                 MensagensLogger.MENSAGEM_SUCESSO,
                 cenarios,
@@ -185,7 +185,7 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
               trilhaRepositoryPort.persist(novaTrilha);
               adicionarLog(MensagensLogger.TRILHA_PERSISTIDA);
 
-             cenarios.add(new DemonstracaoResponse.CenarioResponse(
+             cenarios.add(new DemonstracaoResultado.CenarioResultado(
                      4,
                      MensagensLogger.TITULO_TRILHA_VALIDA,
                      MensagensLogger.RESULTADO_TRILHA_PERSISTIDA,
@@ -198,7 +198,7 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
                      trilhaInvalida.getNomeDaTrilha(), e);
              adicionarLog(mensagemErro);
 
-             cenarios.add(new DemonstracaoResponse.CenarioResponse(
+             cenarios.add(new DemonstracaoResultado.CenarioResultado(
                      4,
                      MensagensLogger.TITULO_TRILHA_VALIDA,
                      MensagensLogger.RESULTADO_ERRO,
@@ -213,7 +213,7 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
             adicionarLog("    (Inesperado) Trilha passou nas validações.");
             adicionarLog("");
 
-            cenarios.add(new DemonstracaoResponse.CenarioResponse(
+            cenarios.add(new DemonstracaoResultado.CenarioResultado(
                     numeroCenario,
                     "Cenário " + numeroCenario,
                     MensagensLogger.RESULTADO_INESPERADO,
@@ -227,7 +227,7 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
             adicionarLog(mensagem);
             adicionarLog("");
 
-            cenarios.add(new DemonstracaoResponse.CenarioResponse(
+            cenarios.add(new DemonstracaoResultado.CenarioResultado(
                     numeroCenario,
                     "Cenário " + numeroCenario,
                     MensagensLogger.RESULTADO_EXCECAO_CAPTURADA,
