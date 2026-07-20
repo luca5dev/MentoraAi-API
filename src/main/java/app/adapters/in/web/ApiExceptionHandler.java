@@ -21,10 +21,15 @@ public class ApiExceptionHandler {
            CargaHorariaExcedidaException.class,
            CampoVazioException.class,
            EntradaInvalidaException.class,
+           LimiteSkillsUltrapassadoException.class,
+           ListaVaziaException.class,
            MaximoMentoradosAtingidosException.class,
            NivelDesproporcionalException.class,
+           NumeroForaDoIntervaloException.class,
            SkillIncompativelException.class,
-           ParticipanteNaoEncontradoException.class
+           ParticipanteNaoEncontradoException.class,
+           SkillDuplicadaException.class,
+           ValorDaHoraInvalidoException.class
    })
    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
    public ErroResponse tratarRegraDeNegocio(RuntimeException exception) {
