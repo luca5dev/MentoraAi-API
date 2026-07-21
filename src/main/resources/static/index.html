@@ -295,7 +295,7 @@
     }
 
     document.getElementById('btnDemonstracao').addEventListener('click', async () => {
-      await chamarApi('/api/demonstracao/automatica', { method: 'GET' }, 'saidaDemonstracao');
+      await chamarApi('/api/demonstracao/automatica', { method: 'POST' }, 'saidaDemonstracao');
     });
 
     document.getElementById('formMentor').addEventListener('submit', async event => {

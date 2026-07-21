@@ -4,7 +4,7 @@ import app.adapters.in.web.dto.DemonstracaoResponse;
 import app.domain.model.DemonstracaoResultado;
 import app.domain.port.in.ExecutarDemonstracaoPort;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +19,7 @@ public class DemonstracaoController {
         this.executarDemonstracaoPort = executarDemonstracaoPort;
     }
 
-    @GetMapping("/automatica")
+    @PostMapping("/automatica")
     @ResponseStatus(HttpStatus.OK)
     public DemonstracaoResponse executarDemostracao() {
         DemonstracaoResultado resultado = executarDemonstracaoPort.executar();
