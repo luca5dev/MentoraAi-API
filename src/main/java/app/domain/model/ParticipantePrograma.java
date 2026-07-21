@@ -27,8 +27,8 @@ public abstract class ParticipantePrograma {
             adicionarSkill(skill);
          }
       }
-      this.valorHora = valorHora;
-      this.horasDedicadas = horasDedicadas;
+      setValorHora(valorHora);
+      setHorasDedicadas(horasDedicadas);
    }
 
    public abstract Double calcularCustoOportunidadeMensal();

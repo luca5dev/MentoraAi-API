@@ -1,6 +1,7 @@
 package app.domain.usecase;
 
 import app.domain.exception.CargaHorariaExcedidaException;
+import app.domain.exception.CampoVazioException;
 import app.domain.model.Mentor;
 import app.domain.model.NivelSenioridade;
 import app.domain.model.Skill;
@@ -61,5 +62,19 @@ class CadastrarMentorUseCaseTest {
         );
 
         assertThrows(CargaHorariaExcedidaException.class, () -> cadastrarMentorUseCase.cadastrar(dados));
+    }
+
+    @Test
+    void deveLancarQuandoValorHoraDoMentorForInvalido() {
+        CadastrarMentorDados dados = new CadastrarMentorDados(
+                "Mentor",
+                NivelSenioridade.SENIOR,
+                List.of(Skill.JAVA, Skill.SPRING),
+                -10.0,
+                12.0,
+                3
+        );
+
+        assertThrows(CampoVazioException.class, () -> cadastrarMentorUseCase.cadastrar(dados));
     }
 }
