@@ -26,8 +26,6 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
 
     private final TrilhaRepositoryPort trilhaRepositoryPort;
     private final ValidadorTrilhaDomain validador;
-    private final List<String> logs = new ArrayList<>();
-    private final List<DemonstracaoResultado.CenarioResultado> cenarios = new ArrayList<>();
 
     private static final List<String> NOMES_TRILHAS_DEMONSTRACAO = List.of(
             MensagensLogger.NOME_TRILHA_SOBRECARREGADA,
@@ -44,21 +42,21 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
 
     @Override
     public DemonstracaoResultado executar() {
-        logs.clear();
-        cenarios.clear();
+        List<String> logs = new ArrayList<>();
+        List<DemonstracaoResultado.CenarioResultado> cenarios = new ArrayList<>();
 
         limparDadosAnteriorDaDemonstracao();
 
-        adicionarLog(MensagensLogger.INICIO_DEMONSTRACAO);
-        adicionarLog("");
+        adicionarLog(logs, MensagensLogger.INICIO_DEMONSTRACAO);
+        adicionarLog(logs, "");
 
-        TrilhaMentoria trilhaInvalida = cenario1_cargaHorariaExcedida();
-        cenario2_skillsIncompativeis();
-        cenario3_nivelDesproporcional();
-        cenario4_trilhaValidaPersistida(trilhaInvalida);
+        TrilhaMentoria trilhaInvalida = cenario1_cargaHorariaExcedida(logs, cenarios);
+        cenario2_skillsIncompativeis(logs, cenarios);
+        cenario3_nivelDesproporcional(logs, cenarios);
+        cenario4_trilhaValidaPersistida(trilhaInvalida, logs, cenarios);
 
-        adicionarLog("");
-        adicionarLog(MensagensLogger.FIM_DEMONSTRACAO);
+        adicionarLog(logs, "");
+        adicionarLog(logs, MensagensLogger.FIM_DEMONSTRACAO);
 
         return new DemonstracaoResultado(
                 MensagensLogger.TITULO_DEMONSTRACAO,
@@ -68,8 +66,9 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
         );
     }
 
-    private TrilhaMentoria cenario1_cargaHorariaExcedida() {
-        adicionarLog(MensagensLogger.CENARIO_1_CARGA_HORARIA);
+    private TrilhaMentoria cenario1_cargaHorariaExcedida(List<String> logs,
+                                                         List<DemonstracaoResultado.CenarioResultado> cenarios) {
+        adicionarLog(logs, MensagensLogger.CENARIO_1_CARGA_HORARIA);
 
         Mentor mentor = novoMentor("Ana", NivelSenioridade.SENIOR, List.of(Skill.JAVA, Skill.SPRING, Skill.SQL));
         Mentorado mentorado1 = novoMentorado("Bruno", NivelSenioridade.JUNIOR, 5.0, List.of(Skill.JAVA));
@@ -85,12 +84,13 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
                 new ArrayList<>(List.of(Skill.JAVA))
         );
 
-        tentarValidar(trilha, 1);
+        tentarValidar(trilha, 1, logs, cenarios);
         return trilha;
     }
 
-    private void cenario2_skillsIncompativeis() {
-        adicionarLog(MensagensLogger.CENARIO_2_SKILLS);
+    private void cenario2_skillsIncompativeis(List<String> logs,
+                                              List<DemonstracaoResultado.CenarioResultado> cenarios) {
+        adicionarLog(logs, MensagensLogger.CENARIO_2_SKILLS);
 
         Mentor mentor = novoMentor("Ana", NivelSenioridade.SENIOR, List.of(Skill.JAVA));
         Mentorado mentorado1 = novoMentorado("Bruno", NivelSenioridade.JUNIOR, 5.0,
@@ -104,11 +104,12 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
                 new ArrayList<>(List.of(Skill.JAVA, Skill.ANGULAR))
         );
 
-        tentarValidar(trilha, 2);
+        tentarValidar(trilha, 2, logs, cenarios);
     }
 
-    private void cenario3_nivelDesproporcional() {
-        adicionarLog(MensagensLogger.CENARIO_3_NIVEL);
+    private void cenario3_nivelDesproporcional(List<String> logs,
+                                               List<DemonstracaoResultado.CenarioResultado> cenarios) {
+        adicionarLog(logs, MensagensLogger.CENARIO_3_NIVEL);
 
         Mentor mentor = novoMentor("Diego", NivelSenioridade.PLENO, List.of(Skill.JAVA, Skill.SPRING));
         Mentorado mentorado1 = novoMentorado("Eva", NivelSenioridade.PLENO, 5.0, List.of(Skill.JAVA, Skill.SPRING));
@@ -121,25 +122,27 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
                 new ArrayList<>(List.of(Skill.JAVA))
         );
 
-        tentarValidar(trilha, 3);
+        tentarValidar(trilha, 3, logs, cenarios);
     }
 
-     private void cenario4_trilhaValidaPersistida(TrilhaMentoria trilhaInvalida) {
-          adicionarLog(MensagensLogger.CENARIO_4_AJUSTE);
+    private void cenario4_trilhaValidaPersistida(TrilhaMentoria trilhaInvalida,
+                                                 List<String> logs,
+                                                 List<DemonstracaoResultado.CenarioResultado> cenarios) {
+        adicionarLog(logs, MensagensLogger.CENARIO_4_AJUSTE);
 
           double cargaHorariaAntes = trilhaInvalida.getMentorados().stream()
                   .mapToDouble(Mentorado::getHorasDedicadas).sum();
-          adicionarLog("Carga mensal ANTES do ajuste: " + formatarHoras(cargaHorariaAntes) + " (acima do limite de 20h)");
+          adicionarLog(logs, "Carga mensal ANTES do ajuste: " + formatarHoras(cargaHorariaAntes) + " (acima do limite de 20h)");
 
           List<Mentorado> mentorados = new ArrayList<>(trilhaInvalida.getMentorados());
           while (mentorados.stream().mapToDouble(Mentorado::getHorasDedicadas).sum() > 20.0 && !mentorados.isEmpty()) {
               Mentorado removido = mentorados.remove(mentorados.size() - 1);
-              adicionarLog("Ajustando: removendo mentorado " + removido.getNome() + " - " + formatarHoras(removido.getHorasDedicadas()));
+              adicionarLog(logs, "Ajustando: removendo mentorado " + removido.getNome() + " - " + formatarHoras(removido.getHorasDedicadas()));
           }
 
           double cargaHorariaDepois = mentorados.stream()
                   .mapToDouble(Mentorado::getHorasDedicadas).sum();
-          adicionarLog("Carga mensal DEPOIS do ajuste: " + formatarHoras(cargaHorariaDepois) + " (dentro do limite de 20h)");
+          adicionarLog(logs, "Carga mensal DEPOIS do ajuste: " + formatarHoras(cargaHorariaDepois) + " (dentro do limite de 20h)");
 
           try {
               Mentor novoMentor = novoMentor(
@@ -171,19 +174,19 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
 
               validador.validarTudo(novaTrilha);
 
-              adicionarLog("Validações passaram após o ajuste. Acionando JPA...");
-              adicionarLog("--- Dados da trilha: ---");
-              adicionarLog("Nome: " + novaTrilha.getNomeDaTrilha());
-              adicionarLog("Duração: " + novaTrilha.getCicloEmMeses() + " meses.");
-              adicionarLog("Skills da ensinadas: " + formatarSkills(novaTrilha.getSkillsDaTrilha()));
-              adicionarLog("Mentor: " + novaTrilha.getMentor().getNome() + " - " + novaTrilha.getMentor().getNivelSenioridade());
-              adicionarLog("Carga horária mensal prevista: " + formatarHoras(cargaHorariaDepois));
-              adicionarLog("Custo mensal previsto: " + formatarMoeda(novaTrilha.calcularCustoMensalTotal()));
-              adicionarLog("Custo total do ciclo completo: " + formatarMoeda(novaTrilha.calcularCustoTotalDoCiclo()));
-              adicionarLog("");
+              adicionarLog(logs, "Validações passaram após o ajuste. Acionando JPA...");
+              adicionarLog(logs, "--- Dados da trilha: ---");
+              adicionarLog(logs, "Nome: " + novaTrilha.getNomeDaTrilha());
+              adicionarLog(logs, "Duração: " + novaTrilha.getCicloEmMeses() + " meses.");
+              adicionarLog(logs, "Skills da ensinadas: " + formatarSkills(novaTrilha.getSkillsDaTrilha()));
+              adicionarLog(logs, "Mentor: " + novaTrilha.getMentor().getNome() + " - " + novaTrilha.getMentor().getNivelSenioridade());
+              adicionarLog(logs, "Carga horária mensal prevista: " + formatarHoras(cargaHorariaDepois));
+              adicionarLog(logs, "Custo mensal previsto: " + formatarMoeda(novaTrilha.calcularCustoMensalTotal()));
+              adicionarLog(logs, "Custo total do ciclo completo: " + formatarMoeda(novaTrilha.calcularCustoTotalDoCiclo()));
+              adicionarLog(logs, "");
 
               trilhaRepositoryPort.persist(novaTrilha);
-              adicionarLog(MensagensLogger.TRILHA_PERSISTIDA);
+              adicionarLog(logs, MensagensLogger.TRILHA_PERSISTIDA);
 
              cenarios.add(new DemonstracaoResultado.CenarioResultado(
                      4,
@@ -196,7 +199,7 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
              MensagensLogger.warn(LOGGER,
                      MensagensLogger.FALHA_TRILHA_AJUSTADA,
                      trilhaInvalida.getNomeDaTrilha(), e);
-             adicionarLog(mensagemErro);
+             adicionarLog(logs, mensagemErro);
 
              cenarios.add(new DemonstracaoResultado.CenarioResultado(
                      4,
@@ -207,11 +210,14 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
          }
      }
 
-    private void tentarValidar(TrilhaMentoria trilha, int numeroCenario) {
+    private void tentarValidar(TrilhaMentoria trilha,
+                               int numeroCenario,
+                               List<String> logs,
+                               List<DemonstracaoResultado.CenarioResultado> cenarios) {
         try {
             validador.validarTudo(trilha);
-            adicionarLog("    (Inesperado) Trilha passou nas validações.");
-            adicionarLog("");
+            adicionarLog(logs, "    (Inesperado) Trilha passou nas validações.");
+            adicionarLog(logs, "");
 
             cenarios.add(new DemonstracaoResultado.CenarioResultado(
                     numeroCenario,
@@ -224,8 +230,8 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
                  NivelDesproporcionalException | MaximoMentoradosAtingidosException e) {
 
             String mensagem = "Exceção tratada: " + e.getClass().getSimpleName() + " -> " + e.getMessage();
-            adicionarLog(mensagem);
-            adicionarLog("");
+            adicionarLog(logs, mensagem);
+            adicionarLog(logs, "");
 
             cenarios.add(new DemonstracaoResultado.CenarioResultado(
                     numeroCenario,
@@ -245,7 +251,7 @@ public class ExecutarDemonstracaoAutomaticaUseCase implements ExecutarDemonstrac
         return new Mentorado(nome, nivelSenioridade, new ArrayList<>(), 80.0, horasDedicadas, new ArrayList<>(skillsDesejadas));
     }
 
-    private void adicionarLog(String mensagem) {
+    private void adicionarLog(List<String> logs, String mensagem) {
         logs.add(mensagem);
         MensagensLogger.info(LOGGER, mensagem);
     }
