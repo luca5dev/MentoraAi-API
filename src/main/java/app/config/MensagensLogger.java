@@ -40,6 +40,10 @@ public class MensagensLogger {
     public static final String HORAS_MENTOR_OBRIGATORIAS = "Horas dedicadas do mentor devem ser informadas.";
     public static final String HORAS_MENTOR_INVALIDAS = "Horas dedicadas do mentor devem ser maiores que zero.";
     public static final String HORAS_MENTOR_EXCEDIDAS = "Horas dedicadas do mentor não podem ultrapassar 20h.";
+    public static final String SKILL_OBRIGATORIA = "Skill não pode ser nula.";
+    public static final String SKILL_DUPLICADA = "Skill já adicionada.";
+    public static final String VALOR_HORA_INVALIDO = "Valor hora deve ser positivo.";
+    public static final String HORAS_DEDICADAS_INVALIDAS = "Horas dedicadas deve ser positivo.";
     public static final String ERRO_REGRA_NEGOCIO_TRATADO = "Erro de regra de negocio tratado. tipo={}";
     public static final String FALHA_TRILHA_AJUSTADA = "Falha ao validar ou persistir trilha ajustada da demonstracao. nome={}";
     public static final String FALHA_LIMPEZA_TRILHA_RETRY = "Falha ao limpar trilha da demonstracao. Tentando novamente. id={}, nome={}";

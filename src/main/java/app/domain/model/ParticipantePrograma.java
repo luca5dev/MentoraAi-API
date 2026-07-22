@@ -1,5 +1,6 @@
 package app.domain.model;
 
+import app.config.MensagensLogger;
 import app.domain.exception.CampoVazioException;
 import app.domain.exception.SkillDuplicadaException;
 
@@ -63,11 +64,11 @@ public abstract class ParticipantePrograma {
 
    public void adicionarSkill(Skill skill) {
       if (skill == null) {
-         throw new CampoVazioException("Skill não pode ser nula.");
+         throw new CampoVazioException(MensagensLogger.SKILL_OBRIGATORIA);
       }
 
       if (this.skills.contains(skill)) {
-         throw new SkillDuplicadaException("Skill já adicionada.");
+         throw new SkillDuplicadaException(MensagensLogger.SKILL_DUPLICADA);
       }
       this.skills.add(skill);
    }
@@ -78,7 +79,7 @@ public abstract class ParticipantePrograma {
 
    public void setValorHora(Double valorHora) {
       if (valorHora == null || valorHora <= 0) {
-         throw new CampoVazioException("Valor hora deve ser positivo.");
+         throw new CampoVazioException(MensagensLogger.VALOR_HORA_INVALIDO);
       }
       this.valorHora = valorHora;
    }
@@ -89,7 +90,7 @@ public abstract class ParticipantePrograma {
 
    public void setHorasDedicadas(Double horasDedicadas) {
       if (horasDedicadas == null || horasDedicadas <= 0) {
-         throw new CampoVazioException("Horas dedicadas deve ser positivo.");
+         throw new CampoVazioException(MensagensLogger.HORAS_DEDICADAS_INVALIDAS);
       }
       this.horasDedicadas = horasDedicadas;
    }
